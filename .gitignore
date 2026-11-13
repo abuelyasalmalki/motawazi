@@ -1,0 +1,30 @@
+# نظام
+.DS_Store
+Thumbs.db
+
+# محرّرات
+.vscode/
+.idea/
+*.swp
+
+# Node
+node_modules/
+
+# مجلّد النشر (يبنيه build_site.sh)
+dist/
+
+# مفاتيح حسّاسة — لا تُرفع إطلاقًا
+serviceAccountKey.json
+*serviceAccount*.json
+*-firebase-adminsdk-*.json
+*.key
+*.pem
+.secrets/
+secrets/
+
+# متغيّرات بيئة الدوال
+functions/.env
+functions/.env.*
+.runtimeconfig.json
+firebase-debug.log
+firebase-debug.*.log

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>تسجيل الدخول — متوازي</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main class="wrap">
+  <div class="top">
+    <a class="brand" href="/">متوازي</a>
+  </div>
+
+  <div class="card">
+    <h1 id="title">تسجيل الدخول</h1>
+
+    <button class="btn ghost" id="google" type="button">الدخول بحساب Google</button>
+
+    <div class="divider">أو بالبريد</div>
+
+    <form id="form" novalidate>
+      <div id="nameRow" class="hidden">
+        <label for="name">الاسم</label>
+        <input id="name" type="text" autocomplete="name" maxlength="80">
+      </div>
+
+      <label for="email">البريد الإلكتروني</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email" required dir="ltr">
+
+      <label for="pw">كلمة المرور</label>
+      <input id="pw" type="password" autocomplete="current-password" minlength="6" required dir="ltr">
+
+      <button class="btn" id="submit" type="submit">دخول</button>
+    </form>
+
+    <p class="msg" id="msg" role="status" aria-live="polite"></p>
+
+    <p class="small">
+      <button class="link-btn" id="toggle" type="button">ما عندك حساب؟ أنشئ حساباً</button>
+    </p>
+    <p class="small">
+      <button class="link-btn" id="forgot" type="button">نسيت كلمة المرور؟</button>
+    </p>
+  </div>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+<script src="/auth.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var mode = "in";   // in | up
+  var busy = false;
+
+  /* وجهة ما بعد الدخول: مسار داخلي فقط (منع إعادة التوجيه لموقع خارجي) */
+  function nextUrl() {
+    var n = new URLSearchParams(location.search).get("next") || "";
+    return /^\/[a-z0-9\-\/#?=&]*$/i.test(n) && n.indexOf("//") !== 0 ? n : "/account";
+  }
+
+  function say(text, kind) {
+    var m = $("msg");
+    m.textContent = text || "";
+    m.className = "msg" + (kind ? " " + kind : "");
+  }
+
+  var ERRORS = {
+    "auth/invalid-email": "البريد غير صحيح.",
+    "auth/missing-password": "اكتب كلمة المرور.",
+    "auth/weak-password": "كلمة المرور قصيرة — ٦ أحرف على الأقل.",
+    "auth/email-already-in-use": "هذا البريد مسجّل — جرّب تسجيل الدخول.",
+    "auth/invalid-credential": "البريد أو كلمة المرور غير صحيحة.",
+    "auth/wrong-password": "البريد أو كلمة المرور غير صحيحة.",
+    "auth/user-not-found": "البريد أو كلمة المرور غير صحيحة.",
+    "auth/too-many-requests": "محاولات كثيرة — انتظر شوي وجرّب مرة ثانية.",
+    "auth/popup-closed-by-user": "انقفلت نافذة Google قبل ما يكتمل الدخول.",
+    "auth/network-request-failed": "تعذّر الاتصال — تأكد من الإنترنت."
+  };
+  function errText(e) { return ERRORS[e && e.code] || "صار خطأ، حاول مرة ثانية."; }
+
+  function setMode(m) {
+    mode = m;
+    var up = m === "up";
+    $("title").textContent = up ? "إنشاء حساب" : "تسجيل الدخول";
+    $("submit").textContent = up ? "إنشاء الحساب" : "دخول";
+    $("nameRow").classList.toggle("hidden", !up);
+    $("pw").setAttribute("autocomplete", up ? "new-password" : "current-password");
+    $("toggle").textContent = up ? "عندك حساب؟ سجّل دخولك" : "ما عندك حساب؟ أنشئ حساباً";
+    say("");
+  }
+
+  function guard() {
+    if (!Auth.ready) { say("الدخول غير متاح حالياً.", "err"); return false; }
+    return !busy;
+  }
+
+  function run(p) {
+    busy = true;
+    $("submit").disabled = true;
+    $("google").disabled = true;
+    return p.then(function () {
+      location.replace(nextUrl());
+    }).catch(function (e) {
+      say(errText(e), "err");
+    }).then(function () {
+      busy = false;
+      $("submit").disabled = false;
+      $("google").disabled = false;
+    });
+  }
+
+  $("toggle").addEventListener("click", function () { setMode(mode === "in" ? "up" : "in"); });
+
+  $("google").addEventListener("click", function () {
+    if (!guard()) return;
+    run(Auth.signInGoogle());
+  });
+
+  $("form").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    if (!guard()) return;
+    var email = $("email").value.trim();
+    var pw = $("pw").value;
+    if (!email || !pw) { say("اكتب البريد وكلمة المرور.", "err"); return; }
+    if (mode === "up") {
+      var name = $("name").value.trim();
+      if (!name) { say("اكتب اسمك.", "err"); return; }
+      run(Auth.signUpEmail(name, email, pw));
+    } else {
+      run(Auth.signInEmail(email, pw));
+    }
+  });
+
+  $("forgot").addEventListener("click", function () {
+    if (!guard()) return;
+    var email = $("email").value.trim();
+    if (!email) { say("اكتب بريدك أولاً ثم اضغط «نسيت كلمة المرور».", "err"); return; }
+    Auth.resetPassword(email).then(function () {
+      say("إذا كان البريد مسجّلاً، بيوصلك رابط لتعيين كلمة مرور جديدة.", "ok");
+    }).catch(function (e) { say(errText(e), "err"); });
+  });
+
+  /* مسجّل دخول أصلاً ⇒ مباشرة للوجهة */
+  Auth.onChange(function (u) {
+    if (u && !busy) location.replace(nextUrl());
+  });
+  /* auth.js يتهيّأ عند DOMContentLoaded — نفحص الجاهزية بعده */
+  window.addEventListener("load", function () {
+    if (!Auth.ready) say("الدخول غير متاح حالياً.", "err");
+  });
+})();
+</script>
+</body>
+</html>

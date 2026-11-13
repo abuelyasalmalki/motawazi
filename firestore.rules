@@ -1,0 +1,58 @@
+rules_version = '2';
+
+// ============================================================
+// متوازي · قواعد أمان Firestore
+// ============================================================
+// البيانات صحية وحساسة: كل ما لم يُذكر هنا مرفوضٌ افتراضيًّا.
+//
+// الاشتراك = ثلاثة حقول في وثيقة المستخدم users/{uid}:
+//   subscribed (boolean) + subEndsAt (Timestamp) + plan (string)
+// المتصفح ممنوع من كتابتها إطلاقًا — يكتبها ويب-هوك الدفع وحده
+// (Admin SDK يتجاوز القواعد). المتصفح يعرض لا يُقرّر.
+// ⚠️ subEndsAt نوعه Timestamp إلزامًا: hasActiveSub يقارنه بـrequest.time.
+// ============================================================
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===== دوال مشتركة =====
+    function signedIn() { return request.auth != null; }
+    function owns(uid)  { return signedIn() && request.auth.uid == uid; }
+
+    // الحقول التي لا يكتبها إلا الخادم
+    function subFields() { return ['subscribed', 'subEndsAt', 'plan']; }
+
+    // اشتراك فعّال = subscribed:true و subEndsAt في المستقبل.
+    // غياب أي حقل ⇒ false. مرور تاريخ الانتهاء ⇒ false تلقائيًّا.
+    // (للمحتوى المدفوع لاحقًا — الجداول ومتابعة الأخصائي.)
+    function hasActiveSub() {
+      let me = get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+      return signedIn()
+        && me.get('subscribed', false) == true
+        && me.get('subEndsAt', request.time) > request.time;
+    }
+
+    // ===== وثيقة المستخدم =====
+    match /users/{userId} {
+      allow read: if owns(userId);
+
+      // الإنشاء أول مرّة: ممنوع تمرير حقول الاشتراك
+      allow create: if owns(userId)
+        && !request.resource.data.keys().hasAny(subFields());
+
+      // التحديث: كل شيء عدا حقول الاشتراك
+      allow update: if owns(userId)
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(subFields());
+
+      allow delete: if false;
+    }
+
+    // ===== طلبات الدفع =====
+    // تُنشئها createPayment وتحدّثها moyasarWebhook (Admin SDK).
+    // المتصفّح يقرأ طلباته وحدها ولا يكتب حرفًا.
+    // استعلام القائمة لا يُقبل إلا بمرشِّح where('uid','==',uid).
+    match /orders/{orderId} {
+      allow read:  if owns(resource.data.uid);
+      allow write: if false;
+    }
+  }
+}
