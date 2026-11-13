@@ -23,6 +23,16 @@ firebase functions:secrets:set MOYASAR_WEBHOOK_TOKEN   # نصٌّ عشوائيّ
 SITE_ORIGIN=https://motawazi.com
 ```
 
+## الاستمارة الصحية — `submitIntake`
+
+المتصفح يرسل `{ answers }` فقط. الدالة: تتحقق (`nutrition.js`) ← تحسب السعرات ←
+تفرز ← تكتب `profiles/{uid}` و`weights/{uid}/entries/intake` في معاملة واحدة.
+لا تحتاج أي سرّ، فتُنشر مستقلةً عن دوال الدفع.
+
+**إعداد التغذية:** `nutrition.config.json` — كل القيم (معاملات النشاط، العجز،
+الحد الأدنى لكل جنس، نسب المغذيات، حدود مؤشر كتلة الجسم، أقل عمر، شاشة ولي الأمر،
+حدود الإدخال). إعدادٌ غير صالح يُفشل الاختبارات والنشر. ارفع `version` مع كل تعديل.
+
 ## الباقات والأسعار
 
 كلها في `plans.js` — المصدر الوحيد. كل باقة لها `days` و`amount` (بالهللات).
@@ -38,7 +48,7 @@ node test.js
 ```
 
 **⚠️ الإقليم.** `config.js` → `REGION` = `me-central2` (الدمّام). **اجعله
-إقليم Firestore نفسه**، وحدّث `REGION` في `account.html` بنفس القيمة.
+إقليم Firestore نفسه**، وحدّث `REGION` في `account.html` و`start.js` بنفس القيمة.
 
 ## 🔴 لماذا لا يُرجع الويب-هوك ‎200 قبل المعالجة — لا تنقض هذا
 
@@ -64,9 +74,11 @@ node functions/test.js
 
 ## النشر
 
+تلقائي عبر GitHub Actions — انظر `STACK.md`. ويدوياً:
+
 ```bash
-firebase deploy --only functions
-firebase deploy --only firestore        # القواعد والفهرس
+firebase deploy --only firestore,functions:submitIntake
+firebase deploy --only functions:createPayment,functions:moyasarWebhook   # بعد ضبط أسرار ميسر
 ```
 
 ## إعداد الويب-هوك في لوحة ميسر
@@ -95,4 +107,8 @@ firebase deploy --only firestore        # القواعد والفهرس
 | `createPayment.js` | الدالّة القابلة للنداء: `plan` ← رابط دفع |
 | `webhook.js` | الويب-هوك: حدث الدفع ← `subscribed` و`subEndsAt` و`plan` |
 | `verify.js` | القرارات الحسّاسة — وحدةٌ نقيّة مُختبَرة |
+| `intake.js` | الدالّة القابلة للنداء: الاستمارة ← ملف صحي + أول وزن |
+| `nutrition.js` | التحقق، Mifflin-St Jeor، الحد الأدنى، الفرز — وحدةٌ نقيّة مُختبَرة |
+| `nutrition.config.json` | إعداد التغذية — يعدّله الأخصائي |
+| `countries.json` | الدول العربية (السعودية أولاً) |
 | `test.js` | الاختبارات |

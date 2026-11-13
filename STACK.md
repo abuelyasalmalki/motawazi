@@ -9,7 +9,8 @@
 المتصفح ──► Cloudflare Pages (motawazi.com)  ← صفحات ثابتة من dist/
    │
    ├──► Firebase Auth        ← تسجيل الدخول (Google + بريد/كلمة مرور)
-   ├──► Firestore            ← users/{uid} و orders/{id} (قراءة فقط للعميل)
+   ├──► Firestore            ← قراءة فقط للعميل (ما عدا اسمه وبريده في users)
+   ├──► Cloud Functions ──► submitIntake ──► profiles/{uid} + weights/{uid}/entries
    └──► Cloud Functions ──► createPayment ──► ميسر (فاتورة) ──► صفحة الدفع
                                                          │
         moyasarWebhook ◄──────── ويب-هوك ميسر ◄──────────┘
@@ -33,17 +34,33 @@
 - مشروع جديد خاص بمتوازي، **لا يشارك أي مشروع آخر** (البيانات صحية).
 - **الخدمات:** Authentication + Firestore + Cloud Functions (تحتاج خطة **Blaze**).
   ليست الاستضافة — الاستضافة Cloudflare.
-- **الإقليم:** `me-central2` (الدمّام) — `REGION` في `functions/config.js` و `account.html`
+- **الإقليم:** `me-central2` (الدمّام) — `REGION` في `functions/config.js` و `account.html` و `start.js`
   يطابق إقليم Firestore.
 - **إعداد الويب:** `firebase-config.js`. **القواعد:** `firestore.rules`.
   **الفهرس:** `firestore.indexes.json` (orders: uid ↑، createdAt ↓).
-- **النشر:** `firebase deploy --only firestore,functions`.
+- **النشر:** تلقائي عبر GitHub Actions (القسم التالي). يدوياً: `firebase deploy --only firestore,functions:submitIntake`.
+- **المحاكي:** `firebase.json` فيه إعداد المحاكيات (Auth 9099، Firestore 8080، Functions 5001).
 
 ### بيانات Firestore الحالية
 | المسار | يكتبه | يقرؤه |
 |---|---|---|
 | `users/{uid}` | المتصفح: `name` و `email` و `updated` · الويب-هوك وحده: `subscribed` و `subEndsAt` و `plan` | صاحبه |
 | `orders/{id}` | الدوال وحدها | صاحبه |
+| `profiles/{uid}` | `submitIntake` وحدها: `answers` و `calc` و `triage` و `status` و `consent` و `guardian` | صاحبه |
+| `weights/{uid}/entries/{id}` | `submitIntake` وحدها (أول قراءة `intake`) — كتابة العميل تأتي مع سجل الوزن | صاحبه |
+
+أي مسار غير مذكور: مرفوض.
+
+## النشر التلقائي — GitHub Actions
+- **الملف:** `.github/workflows/firebase.yml`.
+- **كل push** يمسّ `functions/` أو القواعد أو `tests/` ⇒ اختبارات الدوال + اختبارات القواعد على المحاكي.
+- **النشر** (بعد نجاح الاختبارات): تلقائياً عند الدمج في `main`، أو يدوياً:
+  تبويب **Actions ← Firebase ← Run workflow** واختر الفرع (ينشر كود ذلك الفرع).
+- **ما يُنشر:** `DEPLOY_TARGETS` في الملف — حالياً `firestore,functions:submitIntake`.
+- **الإعداد في GitHub** (Settings ← Secrets and variables ← Actions):
+  - Secret: `FIREBASE_SERVICE_ACCOUNT` = محتوى ملف JSON لحساب الخدمة.
+  - Variable: `FIREBASE_PROJECT_ID` = معرّف مشروع Firebase.
+  - بدونهما: الاختبارات تشتغل، والنشر يتخطى بتحذير.
 
 ## الدفع — ميسر (Moyasar)
 - **الطريقة:** فاتورة مستضافة (`POST /v1/invoices`) — العميل يدفع في صفحة ميسر.
@@ -59,5 +76,6 @@
 - **التفاصيل:** `functions/README.md`.
 
 ## الاختبار
-- `node functions/test.js` — منطق الدفع بلا شبكة ولا مفتاح.
+- `node functions/test.js` — منطق الدفع والتغذية والفرز بلا شبكة ولا مفتاح.
+- `cd tests && npm install && npm test` — قواعد Firestore على المحاكي (تحتاج Java).
 - `bash build_site.sh` — يفشل إذا نقصت صفحة أو تسرّب ملف محظور.

@@ -25,6 +25,13 @@
       <p class="msg" id="orderMsg" role="status" aria-live="polite"></p>
     </div>
 
+    <!-- الاستمارة الصحية وحالة الطلب -->
+    <div class="card" id="intakeCard">
+      <h2>طلبك</h2>
+      <p id="intakeText" class="muted">…</p>
+      <a class="btn hidden" id="intakeBtn" href="/start"></a>
+    </div>
+
     <!-- حالة الاشتراك -->
     <div class="card">
       <h2>حالة الاشتراك</h2>
@@ -188,6 +195,35 @@
     });
   }
 
+  /* ===== الاستمارة الصحية ===== */
+  var STATUS = {
+    received: "تم استلام طلبك",
+    under_review: "جاري المراجعة من الأخصائي",
+    approved: "تم اعتماد جدولك",
+    delivered: "وصل جدولك"
+  };
+  var intakeLoaded = false;
+  function renderIntake(uid) {
+    if (intakeLoaded) return;
+    intakeLoaded = true;
+    firebase.firestore().collection("profiles").doc(uid).get().then(function (snap) {
+      var btn = $("intakeBtn");
+      if (snap.exists) {
+        $("intakeText").textContent = STATUS[snap.data().status] || "تم استلام طلبك";
+        btn.textContent = "تفاصيل طلبك";
+        btn.href = "/summary";
+        btn.className = "btn ghost";
+      } else {
+        $("intakeText").textContent = "ابدأ بالاستمارة الصحية عشان نحسب احتياجك ويبني الأخصائي جدولك.";
+        btn.textContent = "ابدأ الاستمارة";
+        btn.href = "/start";
+        btn.className = "btn";
+      }
+    }).catch(function () {
+      $("intakeText").textContent = "تعذّر تحميل حالة طلبك.";
+    });
+  }
+
   /* ===== التشغيل ===== */
   function start() {
     if (!Auth.ready) {
@@ -209,6 +245,7 @@
       renderSub();
       renderPlans();
       watchOrder(u.uid);
+      renderIntake(u.uid);
     });
   }
 

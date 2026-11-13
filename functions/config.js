@@ -28,7 +28,7 @@ const SITE_ORIGIN = defineString("SITE_ORIGIN", { default: "https://motawazi.com
    البيانات، وإلا صارت كل قراءةٍ وكتابةٍ عبورًا بين إقليمين.
    الافتراض: الدمّام (me-central2) — البيانات صحية، فإبقاؤها في السعودية أولى.
    ⚠️ وتغييره بعد النشر يُنشئ دالّةً جديدة ويترك القديمة عاملة — احذف
-   القديمة يدويًّا، وحدّث REGION في account.html بنفس القيمة. */
+   القديمة يدويًّا، وحدّث REGION في account.html و start.js بنفس القيمة. */
 const REGION = "me-central2";
 
 /* أصول متصفّح مسموح لها بنداء الدالّة (CORS):

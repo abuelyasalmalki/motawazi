@@ -19,10 +19,15 @@ PUBLIC_FILES=(
   index.html
   login.html
   account.html
+  start.html
+  summary.html
+  terms.html
+  privacy.html
   404.html
   style.css
   firebase-config.js
   auth.js
+  start.js
   robots.txt
 )
 
@@ -35,11 +40,17 @@ for f in "${PUBLIC_FILES[@]}"; do
   fi
 done
 
+# إعداد الاستمارة: نفس الملفات اللي يقرؤها الخادم — مصدر واحد للحدود
+# والدول. (عامّة عمداً: لا أسرار فيها، والخادم يعيد التحقّق من كل شيء.)
+mkdir -p "$OUT/config"
+cp "$ROOT/functions/nutrition.config.json" "$OUT/config/nutrition.json"
+cp "$ROOT/functions/countries.json"        "$OUT/config/countries.json"
+
 # أصول ثابتة عامّة (إن وُجدت لاحقًا: شعار، أيقونات…)
 [ -d "$ROOT/assets" ] && cp -R "$ROOT/assets" "$OUT/assets"
 
 # حارس أمان: لا يتسرّب إلى dist ما ليس واجهة.
-for forbidden in functions firestore.rules firebase.json .firebaserc \
+for forbidden in functions tests .github firestore.rules firebase.json .firebaserc \
                  CLAUDE.md STACK.md build_site.sh; do
   if [ -e "$OUT/$forbidden" ]; then
     echo "خطأ: تسرّب ملف محظور إلى dist/$forbidden — أُلغي البناء." >&2

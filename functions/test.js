@@ -253,6 +253,136 @@ ok("null ⇒ غير قابلة للبيع", isSellable(null) === false);
   ok("الباقة " + k + " لا تُباع قبل تحديد سعرها (placeholder)",
      PLANS[k].amount !== null || isSellable(PLANS[k]) === false));
 
+/* ============================================================
+   الاستمارة الصحية — nutrition.js
+   ============================================================ */
+const N = require("./nutrition");
+const NCFG = require("./nutrition.config.json");
+const CODES = require("./countries.json").map((c) => c.code);
+
+group("١١ · ملف إعداد التغذية");
+eq("🔴 الإعداد الحالي صالح", N.validateConfig(NCFG), []);
+ok("نسب المغذيات مجموعها ≠ 1 ⇒ مرفوض",
+   N.validateConfig(Object.assign({}, NCFG, { macros: { protein: 0.3, carbs: 0.5, fat: 0.3 } })).length > 0);
+ok("معامل نشاط ناقص ⇒ مرفوض",
+   N.validateConfig(Object.assign({}, NCFG, { activityFactors: { sedentary: 1.2 } })).length > 0);
+ok("حد أدنى مفقود ⇒ مرفوض",
+   N.validateConfig(Object.assign({}, NCFG, { minCalories: { male: 1500 } })).length > 0);
+eq("السعودية أول الدول", CODES[0], "SA");
+eq("٢٢ دولة عربية", CODES.length, 22);
+
+/* إجابات كاملة سليمة — ثم نغيّر حقلاً واحداً في كل حالة */
+const BASE = Object.freeze({
+  country: "SA", sex: "female", age: 30, heightCm: 165, weightKg: 80,
+  goal: "lose", pace: "moderate", targetKg: 68, activity: "moderate",
+  health: { diabetes: false, hypertension: false, heart: false, kidneyLiver: false,
+            pregnancy: false, surgery: false, eatingDisorder: false },
+  medications: { has: false, text: "" }, allergies: { has: false, text: "" },
+  dislikes: "", vegetarian: false, consent: { terms: true, health: true }
+});
+function withA(patch) { return Object.assign(JSON.parse(JSON.stringify(BASE)), patch); }
+function withH(patch) { const a = withA({}); Object.assign(a.health, patch); return a; }
+const val = (a) => N.validateAnswers(a, NCFG, CODES);
+
+group("١٢ · التحقّق من الإجابات");
+eq("إجابات سليمة ⇒ مقبولة", val(BASE).errors, []);
+ok("دولة غير عربية ⇒ مرفوضة", val(withA({ country: "US" })).errors.indexOf("country") >= 0);
+ok("جنس مجهول ⇒ مرفوض", val(withA({ sex: "x" })).errors.indexOf("sex") >= 0);
+ok("طول خارج الحدود ⇒ مرفوض", val(withA({ heightCm: 90 })).errors.indexOf("heightCm") >= 0);
+ok("وزن خارج الحدود ⇒ مرفوض", val(withA({ weightKg: 500 })).errors.indexOf("weightKg") >= 0);
+ok("وزن مستهدف أعلى من الحالي ⇒ مرفوض",
+   val(withA({ targetKg: 85 })).errors.indexOf("targetKg_not_lower") >= 0);
+ok("نزول بلا سرعة ⇒ مرفوض", val(withA({ pace: null })).errors.indexOf("pace") >= 0);
+eq("المحافظة ⇒ لا سرعة ولا هدف مطلوبان", val(withA({ goal: "maintain", pace: null, targetKg: null })).errors, []);
+ok("سؤال صحي بلا إجابة ⇒ مرفوض",
+   val(withH({ diabetes: undefined })).errors.indexOf("health.diabetes") >= 0);
+ok("سؤال اضطرابات الأكل إلزامي",
+   val(withH({ eatingDisorder: undefined })).errors.indexOf("health.eatingDisorder") >= 0);
+eq("سؤال الحمل لا يُطلب من الرجل", val(withA({ sex: "male", health: Object.assign({}, BASE.health, { pregnancy: undefined }) })).errors, []);
+ok("أدوية بنعم بلا اسم ⇒ مرفوض",
+   val(withA({ medications: { has: true, text: "" } })).errors.indexOf("medications.text") >= 0);
+ok("نصّ طويل جداً ⇒ مرفوض",
+   val(withA({ dislikes: "x".repeat(NCFG.limits.textMax + 1) })).errors.indexOf("dislikes") >= 0);
+ok("بلا موافقة الشروط ⇒ مرفوض",
+   val(withA({ consent: { terms: false, health: true } })).errors.indexOf("consent.terms") >= 0);
+ok("بلا موافقة البيانات الصحية ⇒ مرفوض",
+   val(withA({ consent: { terms: true, health: false } })).errors.indexOf("consent.health") >= 0);
+ok("حقل زائد يُهمَل", !("isAdmin" in val(withA({ isAdmin: true })).answers));
+ok("🔴 لا يمكن تمرير السعرات أو الحالة", !("calc" in val(withA({ calc: { kcal: 9000 }, status: "approved" })).answers));
+ok("الأرقام النصّية تُقبل", val(withA({ age: "30", heightCm: "165" })).ok === true);
+
+group("١٣ · 🔴 العمر — للبالغين فقط حالياً");
+ok("١٨ ⇒ مقبول", val(withA({ age: 18 })).ok === true);
+ok("١٧ ⇒ مرفوض بـage_not_eligible", val(withA({ age: 17 })).errors.indexOf("age_not_eligible") >= 0);
+ok("١٠ ⇒ مرفوض", val(withA({ age: 10 })).errors.indexOf("age_not_eligible") >= 0);
+eq("الأهلية: ١٧ ⇒ too_young (ولي الأمر معطّل)", N.ageEligibility(17, NCFG), "too_young");
+/* إعادة تفعيل ولي الأمر لاحقاً = تعديل الإعداد فقط */
+const GCFG = Object.assign({}, NCFG, { guardian: { enabled: true, minAge: 13 } });
+eq("ولي الأمر مفعّل: ١٥ ⇒ minor", N.ageEligibility(15, GCFG), "minor");
+eq("ولي الأمر مفعّل: ١٢ ⇒ too_young", N.ageEligibility(12, GCFG), "too_young");
+const minorV = N.validateAnswers(withA({ age: 15 }), GCFG, CODES);
+ok("قاصر بلا بيانات ولي الأمر ⇒ مرفوض", minorV.errors.indexOf("guardian.consent") >= 0);
+const minorOk = N.validateAnswers(withA({ age: 15, guardian: { name: "أحمد", relation: "أب", phone: "0500000000", consent: true } }), GCFG, CODES);
+ok("قاصر ببيانات ولي الأمر ⇒ مقبول", minorOk.ok === true);
+ok("قاصر ⇒ معلّم للأخصائي",
+   N.triage(minorOk.answers, N.computeCalc(minorOk.answers, GCFG), GCFG, minorOk.eligibility).reasons.indexOf("minor") >= 0);
+
+group("١٤ · حساب السعرات — Mifflin-St Jeor");
+const c1 = N.computeCalc(val(BASE).answers, NCFG);
+/* امرأة ٣٠، ١٦٥سم، ٨٠كجم: 800 + 1031.25 − 150 − 161 = 1520.25
+   × 1.55 = 2356.4 − 500 = 1856.4 ⇒ 1860 */
+eq("الحرق الأساسي (امرأة)", c1.bmr, 1520);
+eq("الاحتياج اليومي", c1.tdee, 2356);
+eq("السعرات بعد العجز", c1.kcal, 1860);
+eq("المغذيات بالجرام", c1.macros, { protein: 116, carbs: 209, fat: 62 });
+eq("مؤشر كتلة الجسم", c1.bmi, 29.4);
+eq("نسخة الإعداد محفوظة", c1.configVersion, NCFG.version);
+/* رجل ٤٠، ١٨٠سم، ١٠٠كجم: 1000 + 1125 − 200 + 5 = 1930 × 1.2 = 2316 − 750 = 1566 ⇒ 1570 */
+const c2 = N.computeCalc(val(withA({ sex: "male", age: 40, heightCm: 180, weightKg: 100, targetKg: 85,
+  activity: "sedentary", pace: "faster" })).answers, NCFG);
+eq("رجل خامل بعجز أسرع", [c2.bmr, c2.kcal, c2.raisedToMin], [1930, 1570, false]);
+const c3 = N.computeCalc(val(withA({ goal: "maintain", pace: null, targetKg: null })).answers, NCFG);
+eq("المحافظة ⇒ بلا عجز", [c3.deficit, c3.kcal], [0, 2360]);
+
+group("١٥ · 🔴 الحد الأدنى الآمن — لا نزول تحته أبداً");
+/* امرأة ٦٠، ١٥٥سم، ٥٥كجم، خاملة، أسرع: 1269 − 750 = 519 ⇒ يُرفع لـ1200 */
+const c4 = N.computeCalc(val(withA({ age: 60, heightCm: 155, weightKg: 55, targetKg: 50,
+  activity: "sedentary", pace: "faster" })).answers, NCFG);
+eq("يُرفع للحد الأدنى للنساء", [c4.kcal, c4.raisedToMin], [NCFG.minCalories.female, true]);
+const c5 = N.computeCalc(val(withA({ sex: "male", age: 70, heightCm: 160, weightKg: 55, targetKg: 52,
+  activity: "sedentary", pace: "faster" })).answers, NCFG);
+eq("يُرفع للحد الأدنى للرجال", c5.kcal, NCFG.minCalories.male);
+/* مسحٌ شامل: لا تركيبة تنزل تحت الحد */
+let below = 0, combos = 0;
+["male", "female"].forEach((sex) => [18, 40, 80].forEach((age) => [150, 175, 200].forEach((h) =>
+  [45, 70, 150].forEach((w) => N.ACTIVITY.forEach((act) => N.PACES.forEach((pace) => {
+    const c = N.computeCalc({ sex, age, heightCm: h, weightKg: w, targetKg: w - 1,
+      goal: "lose", pace, activity: act }, NCFG);
+    combos++;
+    if (c.kcal < NCFG.minCalories[sex]) below++;
+  }))))));
+eq("🔴 " + combos + " تركيبة: ولا وحدة تحت الحد الأدنى", below, 0);
+/* الحد يُقرأ من الإعداد لا من الكود */
+const c6 = N.computeCalc(val(withA({ age: 60, heightCm: 155, weightKg: 55, targetKg: 50,
+  activity: "sedentary", pace: "faster" })).answers,
+  Object.assign({}, NCFG, { minCalories: { female: 1300, male: 1600 } }));
+eq("تغيير الحد في الإعداد يغيّر النتيجة", c6.kcal, 1300);
+
+group("١٦ · الفرز الصحي");
+const tri = (a) => { const v = val(a); return N.triage(v.answers, N.computeCalc(v.answers, NCFG), NCFG, v.eligibility); };
+eq("بلا حالات ⇒ غير معلّم", tri(BASE), { flagged: false, reasons: [] });
+N.HEALTH_KEYS.forEach((k) => {
+  const r = tri(withH({ [k]: true }));
+  ok("نعم على " + k + " ⇒ معلّم", r.flagged && r.reasons.indexOf(k) >= 0);
+});
+ok("🔴 اضطرابات الأكل ⇒ معلّم", tri(withH({ eatingDisorder: true })).reasons.indexOf("eatingDisorder") >= 0);
+ok("أدوية ⇒ معلّم", tri(withA({ medications: { has: true, text: "دواء" } })).reasons.indexOf("medications") >= 0);
+eq("الحساسية وحدها ⇒ غير معلّم", tri(withA({ allergies: { has: true, text: "فول سوداني" } })).flagged, false);
+ok("مؤشر منخفض ⇒ معلّم", tri(withA({ weightKg: 48, targetKg: 46 })).reasons.indexOf("bmi_low") >= 0);
+ok("مؤشر عالي جداً ⇒ معلّم", tri(withA({ weightKg: 115, targetKg: 90 })).reasons.indexOf("bmi_high") >= 0);
+ok("وزن مستهدف بمؤشر منخفض ⇒ معلّم", tri(withA({ weightKg: 60, targetKg: 48 })).reasons.indexOf("target_bmi_low") >= 0);
+eq("الرجل لا يُعلَّم بالحمل", tri(withA({ sex: "male", targetKg: 70, health: Object.assign({}, BASE.health, { pregnancy: true }) })).reasons.indexOf("pregnancy"), -1);
+
 /* ============================================================ */
 console.log("\n" + "─".repeat(52));
 if (fails.length) {

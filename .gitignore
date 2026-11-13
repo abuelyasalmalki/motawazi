@@ -28,3 +28,8 @@ functions/.env.*
 .runtimeconfig.json
 firebase-debug.log
 firebase-debug.*.log
+
+# سجلات المحاكي
+firestore-debug.log
+ui-debug.log
+*.log

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>طلبك — متوازي</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main class="wrap">
+  <div class="top">
+    <a class="brand" href="/">متوازي</a>
+    <a class="small" href="/account">حسابي</a>
+  </div>
+
+  <p class="msg" id="boot" role="status">جاري التحميل…</p>
+
+  <!-- ما عنده طلب -->
+  <div id="none" class="card hidden">
+    <h1 class="step-title">ما عندك طلب للحين</h1>
+    <p>عبّ الاستمارة الصحية عشان نبدأ.</p>
+    <a class="btn" href="/start">ابدأ الاستمارة</a>
+  </div>
+
+  <div id="app" class="hidden">
+    <div class="card">
+      <h1 class="step-title" id="statusTitle"></h1>
+      <ol class="stages" id="stages"></ol>
+    </div>
+
+    <!-- ملف معلّم: الأخصائي يتولى الحالة ولا نعرض سعرات -->
+    <div id="flagged" class="card hidden">
+      <h2>الأخصائي بيراجع حالتك</h2>
+      <p>بناءً على إجاباتك، أخصائي التغذية بيراجع حالتك بنفسه ويتواصل معك قريباً، عشان يبني لك جدول يناسبك.</p>
+      <p class="muted small">ما بنعرض لك سعرات تلقائية في هالحالة، لأن الأخصائي هو اللي يحددها لك.</p>
+    </div>
+
+    <!-- ملف عادي: السعرات التقديرية -->
+    <div id="calc" class="card hidden">
+      <h2>احتياجك اليومي التقديري</h2>
+      <p class="kcal"><span id="kcal"></span> <small style="font-size:1rem;font-weight:400">سعرة</small></p>
+      <div class="macros">
+        <div><b id="mP"></b><span class="small">جم بروتين</span></div>
+        <div><b id="mC"></b><span class="small">جم كربوهيدرات</span></div>
+        <div><b id="mF"></b><span class="small">جم دهون</span></div>
+      </div>
+      <p class="muted small" style="margin-top:14px">هذا رقم تقديري محسوب من إجاباتك، والأخصائي بيراجعه قبل ما يعتمد جدولك.</p>
+    </div>
+
+    <div id="editBox" class="hidden">
+      <a class="btn ghost" href="/start?edit=1">تعديل إجاباتي</a>
+      <p class="muted small">تقدر تعدّل إجاباتك لين يبدأ الأخصائي المراجعة.</p>
+    </div>
+
+    <p class="disclaimer">النتائج تختلف من شخص لآخر حسب الالتزام.</p>
+  </div>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+<script src="/auth.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* مراحل الطلب (القرار ٥). مراحل المطبوع تُضاف مع الدفتر. */
+  var STAGES = [
+    { key: "received",     label: "تم استلام طلبك" },
+    { key: "under_review", label: "جاري المراجعة من الأخصائي" },
+    { key: "approved",     label: "تم اعتماد جدولك" },
+    { key: "delivered",    label: "وصل جدولك" }
+  ];
+
+  function render(p) {
+    var cur = 0;
+    STAGES.forEach(function (s, i) { if (s.key === p.status) cur = i; });
+    $("statusTitle").textContent = STAGES[cur].label;
+    var ol = $("stages");
+    ol.innerHTML = "";
+    STAGES.forEach(function (s, i) {
+      var li = document.createElement("li");
+      li.textContent = s.label;
+      li.className = i < cur ? "done" : i === cur ? "done now" : "";
+      ol.appendChild(li);
+    });
+
+    var flagged = !p.triage || p.triage.flagged !== false;   // غياب الفرز ⇒ نتعامل كمعلّم (الأحوط)
+    $("flagged").classList.toggle("hidden", !flagged);
+    $("calc").classList.toggle("hidden", flagged || !p.calc);
+    if (!flagged && p.calc) {
+      $("kcal").textContent = p.calc.kcal;
+      $("mP").textContent = p.calc.macros.protein;
+      $("mC").textContent = p.calc.macros.carbs;
+      $("mF").textContent = p.calc.macros.fat;
+    }
+    $("editBox").classList.toggle("hidden", p.status !== "received");
+    $("app").classList.remove("hidden");
+  }
+
+  window.addEventListener("load", function () {
+    if (!window.Auth || !Auth.ready) {
+      $("boot").className = "msg err";
+      $("boot").textContent = "الخدمة غير متاحة حالياً.";
+      return;
+    }
+    var done = false;
+    Auth.onChange(function (u) {
+      if (!u) { location.replace("/login?next=/summary"); return; }
+      if (done) return;
+      done = true;
+      firebase.firestore().collection("profiles").doc(u.uid).get().then(function (snap) {
+        $("boot").classList.add("hidden");
+        if (!snap.exists) { $("none").classList.remove("hidden"); return; }
+        render(snap.data());
+      }).catch(function () {
+        $("boot").className = "msg err";
+        $("boot").textContent = "تعذّر التحميل، حدّث الصفحة.";
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
