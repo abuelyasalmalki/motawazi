@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>حسابي — متوازي</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main class="wrap">
+  <div class="top">
+    <a class="brand" href="/">متوازي</a>
+    <button class="link-btn hidden" id="signout" type="button">تسجيل الخروج</button>
+  </div>
+
+  <p class="msg" id="boot" role="status">جاري التحميل…</p>
+
+  <div id="app" class="hidden">
+    <h1>أهلاً <span id="uname"></span></h1>
+    <p class="muted small" id="uemail" dir="ltr" style="text-align:right"></p>
+
+    <!-- حالة الطلب بعد العودة من الدفع -->
+    <div class="card hidden" id="orderBox">
+      <p class="msg" id="orderMsg" role="status" aria-live="polite"></p>
+    </div>
+
+    <!-- الاستمارة الصحية وحالة الطلب -->
+    <div class="card" id="intakeCard">
+      <h2>طلبك</h2>
+      <p id="intakeText" class="muted">…</p>
+      <a class="btn hidden" id="intakeBtn" href="/start"></a>
+    </div>
+
+    <!-- حالة الاشتراك -->
+    <div class="card">
+      <h2>حالة الاشتراك</h2>
+      <p><span class="badge" id="subBadge"></span></p>
+      <p id="subPlan" class="hidden"></p>
+      <p id="subEnds" class="muted small hidden"></p>
+    </div>
+
+    <!-- الباقات -->
+    <section id="plans">
+      <h2>الباقات</h2>
+      <p class="muted small">كل الباقات فيها جدول غذائي وجدول رياضي يمشون مع بعض، يراجعهم أخصائي تغذية ومدرب لياقة.</p>
+      <div id="planList"></div>
+      <p class="msg" id="payMsg" role="status" aria-live="polite"></p>
+    </section>
+
+    <p class="disclaimer">النتائج تختلف من شخص لآخر حسب الالتزام.</p>
+  </div>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-functions-compat.js"></script>
+<script src="/firebase-config.js"></script>
+<script src="/auth.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* إقليم الدوال — نفس REGION في functions/config.js */
+  var REGION = "me-central2";
+
+  /* ⚠️ للعرض فقط. المصدر الوحيد للسعر والمدّة: functions/plans.js —
+     المتصفح يرسل مفتاح الباقة وحده، والخادم يشتقّ الباقي.
+     price بالريال للعرض؛ null ⇒ «السعر يُحدَّد قريباً» والزرّ معطّل. */
+  var PLANS = [
+    { key: "basic",     label: "الأساسية", desc: "جدول غذائي ورياضي ومتابعة شهرية",          price: null, period: "شهرياً" },
+    { key: "followup",  label: "المتابعة", desc: "جدول غذائي ورياضي ومتابعة أسبوعية",        price: null, period: "شهرياً", featured: true },
+    { key: "intensive", label: "المكثّفة", desc: "متابعة أسبوعية وتواصل مباشر مع الأخصائي",   price: null, period: "شهرياً" }
+  ];
+  function planLabel(key) {
+    for (var i = 0; i < PLANS.length; i++) if (PLANS[i].key === key) return PLANS[i].label;
+    return null;
+  }
+
+  function fmtDate(ms) {
+    try {
+      return new Date(ms).toLocaleDateString("ar-SA-u-ca-gregory-nu-latn",
+        { year: "numeric", month: "long", day: "numeric" });
+    } catch (e) { return new Date(ms).toISOString().slice(0, 10); }
+  }
+
+  /* ===== الباقات ===== */
+  var paying = false;
+  function renderPlans() {
+    var box = $("planList");
+    box.innerHTML = "";
+    PLANS.forEach(function (p) {
+      var c = document.createElement("div");
+      c.className = "card plan" + (p.featured ? " featured" : "");
+      if (p.featured) {
+        var t = document.createElement("span");
+        t.className = "tag"; t.textContent = "الأبرز";
+        c.appendChild(t);
+      }
+      var h = document.createElement("h2"); h.textContent = p.label; c.appendChild(h);
+      var d = document.createElement("p"); d.className = "muted"; d.style.margin = "0";
+      d.textContent = p.desc; c.appendChild(d);
+      var pr = document.createElement("p"); pr.className = "price";
+      pr.textContent = p.price == null ? "السعر يُحدَّد قريباً" : (p.price + " ريال " + p.period);
+      c.appendChild(pr);
+      var b = document.createElement("button");
+      b.className = "btn"; b.type = "button";
+      b.textContent = p.price == null ? "قريباً" : (Auth.isSubscribed ? "جدّد بهذي الباقة" : "اشترك");
+      b.disabled = p.price == null;
+      b.addEventListener("click", function () { pay(p.key, b); });
+      c.appendChild(b);
+      box.appendChild(c);
+    });
+  }
+
+  function pay(key, btn) {
+    if (paying) return;
+    paying = true;
+    btn.disabled = true;
+    $("payMsg").className = "msg";
+    $("payMsg").textContent = "جاري فتح صفحة الدفع…";
+    firebase.app().functions(REGION).httpsCallable("createPayment")({ plan: key })
+      .then(function (r) {
+        var url = r && r.data && r.data.url;
+        if (!url || !/^https:\/\//.test(url)) throw new Error("no url");
+        location.href = url;
+      })
+      .catch(function (e) {
+        paying = false;
+        btn.disabled = false;
+        $("payMsg").className = "msg err";
+        $("payMsg").textContent = (e && e.message && e.code && e.code !== "internal")
+          ? e.message : "تعذّر فتح صفحة الدفع، حاول بعد قليل.";
+      });
+  }
+
+  /* ===== حالة الاشتراك ===== */
+  function renderSub() {
+    var on = Auth.isSubscribed;
+    var badge = $("subBadge");
+    badge.textContent = on ? "مشترك" : "غير مشترك";
+    badge.className = "badge " + (on ? "on" : "off");
+
+    var lbl = on && planLabel(Auth.plan);
+    $("subPlan").classList.toggle("hidden", !lbl);
+    if (lbl) $("subPlan").textContent = "الباقة: " + lbl;
+
+    $("subEnds").classList.toggle("hidden", !Auth.subEndsAt);
+    if (Auth.subEndsAt) {
+      $("subEnds").textContent = on
+        ? "ينتهي اشتراكك في " + fmtDate(Auth.subEndsAt) + " (باقي " + Auth.subDaysLeft() + " يوم)"
+        : "انتهى اشتراكك في " + fmtDate(Auth.subEndsAt);
+    }
+  }
+
+  /* ===== العودة من الدفع: ?order=<id> =====
+     الويب-هوك هو من يفعّل الاشتراك — قد يتأخر ثواني. نتابع وثيقة الطلب
+     (القواعد تسمح للعميل بقراءة طلباته) حتى تصير paid أو failed. */
+  var watching = false;
+  function watchOrder(uid) {
+    var id = new URLSearchParams(location.search).get("order");
+    if (!id || watching || !/^[A-Za-z0-9\-]{8,64}$/.test(id)) return;
+    watching = true;
+    var box = $("orderBox"), msg = $("orderMsg");
+    box.classList.remove("hidden");
+    msg.className = "msg";
+    msg.textContent = "جاري تأكيد الدفع…";
+
+    var stop = function () {};
+    var timer = setTimeout(function () {
+      stop();
+      msg.textContent = "ما وصلنا تأكيد الدفع للحين. إذا انخصم المبلغ بيتفعّل اشتراكك خلال دقائق — حدّث الصفحة بعد شوي.";
+    }, 90000);
+
+    stop = firebase.firestore().collection("orders").doc(id).onSnapshot(function (snap) {
+      var o = snap.exists ? snap.data() : null;
+      if (!o || o.uid !== uid) return;
+      if (o.status === "paid") {
+        clearTimeout(timer); stop();
+        msg.className = "msg ok";
+        msg.textContent = "تم الدفع وتفعيل اشتراكك.";
+        Auth.refresh();
+        history.replaceState(null, "", "/account");
+      } else if (o.status === "failed") {
+        clearTimeout(timer); stop();
+        msg.className = "msg err";
+        msg.textContent = "ما تمّت عملية الدفع. تقدر تحاول مرة ثانية من الباقات تحت.";
+        history.replaceState(null, "", "/account#plans");
+      }
+    }, function () {
+      clearTimeout(timer);
+      msg.textContent = "تعذّر التحقق من حالة الطلب — حدّث الصفحة بعد شوي.";
+    });
+  }
+
+  /* ===== الاستمارة الصحية ===== */
+  var STATUS = {
+    received: "تم استلام طلبك",
+    under_review: "جاري المراجعة من الأخصائي",
+    approved: "تم اعتماد جدولك",
+    delivered: "وصل جدولك"
+  };
+  var intakeLoaded = false;
+  function renderIntake(uid) {
+    if (intakeLoaded) return;
+    intakeLoaded = true;
+    firebase.firestore().collection("profiles").doc(uid).get().then(function (snap) {
+      var btn = $("intakeBtn");
+      if (snap.exists) {
+        $("intakeText").textContent = STATUS[snap.data().status] || "تم استلام طلبك";
+        btn.textContent = "تفاصيل طلبك";
+        btn.href = "/summary";
+        btn.className = "btn ghost";
+      } else {
+        $("intakeText").textContent = "ابدأ بالاستمارة الصحية عشان نحسب احتياجك ويبني الأخصائي جدولك.";
+        btn.textContent = "ابدأ الاستمارة";
+        btn.href = "/start";
+        btn.className = "btn";
+      }
+    }).catch(function () {
+      $("intakeText").textContent = "تعذّر تحميل حالة طلبك.";
+    });
+  }
+
+  /* ===== التشغيل ===== */
+  function start() {
+    if (!Auth.ready) {
+      $("boot").className = "msg err";
+      $("boot").textContent = "الخدمة غير متاحة حالياً.";
+      return;
+    }
+    Auth.onChange(function (u) {
+      if (!u) {
+        if (leaving) return;
+        location.replace("/login?next=" + encodeURIComponent("/account" + location.search));
+        return;
+      }
+      $("boot").classList.add("hidden");
+      $("app").classList.remove("hidden");
+      $("signout").classList.remove("hidden");
+      $("uname").textContent = Auth.displayName();
+      $("uemail").textContent = u.email || "";
+      renderSub();
+      renderPlans();
+      watchOrder(u.uid);
+      renderIntake(u.uid);
+    });
+  }
+
+  var leaving = false;
+  $("signout").addEventListener("click", function () {
+    leaving = true;
+    Auth.signOut().then(function () { location.replace("/"); });
+  });
+
+  window.addEventListener("load", start);
+})();
+</script>
+</body>
+</html>

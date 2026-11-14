@@ -1,0 +1,60 @@
+{
+  "_readme": "إعداد التغذية — يعدّله الأخصائي. لا رقم من هذي الأرقام مكتوب داخل الكود. بعد أي تعديل: ارفع version، وشغّل node functions/test.js، والنشر يتم تلقائياً بعد الدمج.",
+  "version": "draft-1",
+  "approvedBySpecialist": false,
+
+  "activityFactors": {
+    "sedentary": 1.2,
+    "light": 1.375,
+    "moderate": 1.55,
+    "high": 1.725
+  },
+
+  "_paceDeficits": "العجز اليومي بالسعرات حسب سرعة النزول المختارة",
+  "paceDeficits": {
+    "slow": 250,
+    "moderate": 500,
+    "faster": 750
+  },
+  "maintainDeficit": 0,
+
+  "_minCalories": "الحد الأدنى الآمن — السعرات لا تنزل تحته أبداً",
+  "minCalories": {
+    "female": 1200,
+    "male": 1500
+  },
+
+  "_macros": "نسب من إجمالي السعرات — مجموعها لازم = 1",
+  "macros": {
+    "protein": 0.25,
+    "carbs": 0.45,
+    "fat": 0.30
+  },
+  "kcalPerGram": {
+    "protein": 4,
+    "carbs": 4,
+    "fat": 9
+  },
+  "roundKcalTo": 10,
+
+  "_bmi": "حدود الفرز: خارجها يحتاج الملف مراجعة الأخصائي",
+  "bmi": {
+    "reviewBelow": 18.5,
+    "reviewAtOrAbove": 40,
+    "targetBelow": 18.5
+  },
+
+  "_age": "minAge: أقل عمر مقبول. guardian.enabled=true يعيد قبول القاصرين من guardian.minAge بموافقة ولي الأمر ومراجعة الأخصائي",
+  "minAge": 18,
+  "guardian": {
+    "enabled": false,
+    "minAge": 13
+  },
+
+  "limits": {
+    "age": [13, 100],
+    "heightCm": [120, 230],
+    "weightKg": [30, 300],
+    "textMax": 300
+  }
+}
