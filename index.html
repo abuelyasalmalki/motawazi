@@ -1,19 +1,177 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>متوازي — قريباً</title>
-<meta name="description" content="ابدأ جدولك الغذائي والرياضي مع أخصائيين… بشكل متوازي. كل يوم تعرف وش تاكل ووش تتمرن، وأخصائي يتابعك لين توصل.">
-<link rel="canonical" href="https://motawazi.com/">
-<link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="متوازي — منصة عربية لنزول الوزن: جدول غذائي وجدول رياضي يمشون مع بعض، بمراجعة أخصائي تغذية ومدرب لياقة. اشتراك شهري بسعر رمزي.">
+  <title>متوازي — نزول وزن بجدول غذائي ورياضي متوازي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="wrap soon">
-  <p class="muted small">قريباً</p>
-  <h1>ابدأ جدولك الغذائي والرياضي مع أخصائيين… بشكل متوازي</h1>
-  <p class="lead">كل يوم تعرف وش تاكل ووش تتمرن، وأخصائي يتابعك لين توصل.</p>
-  <p class="disclaimer">النتائج تختلف من شخص لآخر حسب الالتزام.</p>
-</main>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="/" class="logo" aria-label="متوازي - الرئيسية">
+        <svg class="logo__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M16 2L4 10v12l12 8 12-8V10L16 2zm0 2.5L25.5 10H6.5L16 4.5z" stroke="currentColor" stroke-width="2"/>
+          <path d="M16 14v8M12 18h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span class="logo__text">متوازي</span>
+      </a>
+      <nav class="nav" aria-label="التنقل الرئيسي">
+        <a href="/login.html" class="btn btn--ghost">تسجيل الدخول</a>
+        <a href="/start.html" class="btn btn--primary">ابدأ الآن</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <h1 id="hero-title" class="hero__title">
+            نزول وزن <span class="hero__highlight">بجدول غذائي ورياضي</span><br>
+            <span class="hero__highlight">يمشون مع بعض</span>
+          </h1>
+          <p class="hero__subtitle">
+            منصة عربية موثوقة: أخصائي تغذية يراجع جدولك، ومدرب لياقة يصمم تمارينك.<br>
+            اشتراك شهري بسعر رمزي، مصمم للسعودية والخليج.
+          </p>
+          <div class="hero__actions">
+            <a href="/start.html" class="btn btn--primary btn--lg">ابدأ رحلتك الآن</a>
+            <a href="#how-it-works" class="btn btn--outline btn--lg">كيف يعمل</a>
+          </div>
+          <p class="hero__trust">لا بطاقة ائتمان مطلوبة للبدء · إلغاء أي وقت</p>
+        </div>
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__card hero__card--nutrition">
+            <span class="hero__card-icon">🍽️</span>
+            <h3>جدول غذائي</h3>
+            <p>سعرات محسوبة لك، أكلات بلدك، بدائل بضغطة زر</p>
+          </div>
+          <div class="hero__card hero__card--fitness">
+            <span class="hero__card-icon">🏋️</span>
+            <h3>جدول رياضي</h3>
+            <p>تمارين تناسب مستواك، في المنزل أو الجيم</p>
+          </div>
+          <div class="hero__card hero__card--review">
+            <span class="hero__card-icon">✅</span>
+            <h3>مراجعة خبير</h3>
+            <p>أخصائي يعتمد الجدول قبل ما يصل لك</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works" class="section section--how" aria-labelledby="how-title">
+      <div class="container">
+        <header class="section__header">
+          <h2 id="how-title" class="section__title">كيف يعمل متوازي</h2>
+          <p class="section__subtitle">أربع خطوات بسيطة لبداية رحلتك</p>
+        </header>
+        <ol class="steps" aria-label="خطوات العمل">
+          <li class="step">
+            <span class="step__number">1</span>
+            <h3 class="step__title">سجل دخول واملأ الاستمارة</h3>
+            <p class="step__desc">وزن، طول، عمر، هدف، أمراض، أدوية — كل شي يسوي الفرق</p>
+          </li>
+          <li class="step">
+            <span class="step__number">2</span>
+            <h3 class="step__title">النظام يحسب ويبني</h3>
+            <p class="step__desc">سعراتك، مغذياتك، جدول 7 أيام، تمارين تناسبك</p>
+          </li>
+          <li class="step">
+            <span class="step__number">3</span>
+            <h3 class="step__title">أخصائي يراجع ويعتمد</h3>
+            <p class="step__desc">ما في جدول يوصل لك بدون مراجعة بشرية مختصة</p>
+          </li>
+          <li class="step">
+            <span class="step__number">4</span>
+            <h3 class="step__title">تتابع وتحقيق نتائج</h3>
+            <p class="step__desc">سجل وزنك، شوف المنحنى، بدّل وجباتك، احتفل بإنجازاتك</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section section--features" aria-labelledby="features-title">
+      <div class="container">
+        <header class="section__header">
+          <h2 id="features-title" class="section__title">ليش متوازي مختلف</h2>
+        </header>
+        <ul class="features" aria-label="المميزات">
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">🇸🇦</span>
+            <h3>أكلات بلدك</h3>
+            <p>كبسة، مرقوق، جريش، سلطة — بحصص وسعرات محسوبة (كوب، كف، حبة)</p>
+          </li>
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">🔄</span>
+            <h3>زر «بدّل»</h3>
+            <p>ما تعجبك وجبة؟ اضغط بدّل — يعطيك بديل بنفس السعرات</p>
+          </li>
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">👨‍⚕️</span>
+            <h3>فريق مختص</h3>
+            <p>أخصائي تغذية مرخص + مدرب لياقة معتمد — لكل حالة اهتمامها</p>
+          </li>
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">📊</span>
+            <h3>تتبع حقيقي</h3>
+            <p>سجل وزن، منحنى نزول، قياسات، تنبيهات ذكية يحددها أخصائيك</p>
+          </li>
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">📱</span>
+            <h3>جوال أولاً</h3>
+            <p>عربي، RTL، يعمل على أي متصفح — لا تطبيق مطلوب</p>
+          </li>
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">🔒</span>
+            <h3>بياناتك آمنة</h3>
+            <p>مشروع Firebase مستقل، إقليم الدمام، تشفير كامل، لا مشاركة</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section section--cta" aria-labelledby="cta-title">
+      <div class="container">
+        <div class="cta">
+          <h2 id="cta-title" class="cta__title">جاهز تبدأ؟</h2>
+          <p class="cta__desc">الاستمارة تستغرق 5 دقائق. أخصائيك بيراجع خلال 24 ساعة.</p>
+          <a href="/start.html" class="btn btn--primary btn--lg">ابدأ الآن مجاناً</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="/" class="logo" aria-label="متوازي - الرئيسية">
+          <svg class="logo__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M16 2L4 10v12l12 8 12-8V10L16 2zm0 2.5L25.5 10H6.5L16 4.5z" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 14v8M12 18h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span class="logo__text">متوازي</span>
+        </a>
+        <p>جدول غذائي + رياضي يمشون مع بعض — بمراجعة خبراء</p>
+      </div>
+      <nav class="footer__nav" aria-label="روابط مفيدة">
+        <a href="/terms.html">الشروط</a>
+        <a href="/privacy.html">الخصوصية</a>
+        <a href="/login.html">تسجيل الدخول</a>
+      </nav>
+      <p class="footer__copyright">© 2024 متوازي. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
 </body>
 </html>
