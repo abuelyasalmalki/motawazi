@@ -4,14 +4,122 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="متوازي — منصة عربية لنزول الوزن: جدول غذائي وجدول رياضي يمشون مع بعض، بمراجعة أخصائي تغذية ومدرب لياقة. اشتراك شهري بسعر رمزي.">
-  <title>متوازي — نزول وزن بجدول غذائي ورياضي متوازي</title>
+  <title>متوازي — نزول وزن بجدول غذائي وsporty متوازي</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --primary: #16a34a;
+      --primary-dark: #15803d;
+      --primary-soft: #dcfce7;
+      --accent: #f59e0b;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --radius: 16px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 12px 24px; border-radius: 999px;
+      font-family: inherit; font-size: 1rem; font-weight: 600;
+      text-decoration: none; border: 2px solid transparent; cursor: pointer;
+      transition: all .2s ease; white-space: nowrap;
+    }
+    .btn--primary { background: var(--primary); color: #fff; }
+    .btn--primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+    .btn--ghost { background: transparent; color: var(--text); border-color: var(--border); }
+    .btn--ghost:hover { background: var(--surface); border-color: var(--text-muted); }
+    .btn--outline { background: transparent; color: var(--text); border-color: var(--border); }
+    .btn--outline:hover { background: var(--primary-soft); border-color: var(--primary); }
+    .btn--lg { padding: 16px 32px; font-size: 1.1rem; }
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header__inner { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+    .logo__mark { width: 36px; height: 36px; color: var(--primary); }
+    .logo__text { font-size: 1.4rem; font-weight: 800; }
+    .nav { display: flex; gap: 12px; align-items: center; }
+    .nav .btn { padding: 8px 18px; font-size: .9rem; }
+    .hero { padding: 80px 0; background: linear-gradient(160deg, var(--primary-soft) 0%, var(--bg) 40%); }
+    .hero__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .hero__title { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.25; margin-bottom: 20px; }
+    .hero__highlight { color: var(--primary); }
+    .hero__subtitle { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 32px; max-width: 500px; }
+    .hero__actions { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+    .hero__trust { color: var(--text-muted); font-size: .9rem; }
+    .hero__visual { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .hero__card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); text-align: center;
+    }
+    .hero__card-icon { font-size: 2.5rem; display: block; margin-bottom: 12px; }
+    .hero__card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+    .hero__card p { font-size: .85rem; color: var(--text-muted); }
+    .section { padding: 80px 0; }
+    .section__header { text-align: center; margin-bottom: 50px; }
+    .section__title { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; margin-bottom: 12px; }
+    .section__subtitle { color: var(--text-muted); font-size: 1.1rem; }
+    .section--how { background: var(--surface); }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; list-style: none; }
+    .step { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 24px; }
+    .step__number {
+      width: 44px; height: 44px; background: var(--primary); color: #fff;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.2rem; margin-bottom: 16px;
+    }
+    .step__title { font-size: 1.15rem; margin-bottom: 8px; }
+    .step__desc { color: var(--text-muted); font-size: .95rem; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; list-style: none; }
+    .feature {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px 24px; text-align: center;
+      transition: box-shadow .2s ease;
+    }
+    .feature:hover { box-shadow: var(--shadow-lg); }
+    .feature__icon { font-size: 2.5rem; display: block; margin-bottom: 16px; }
+    .feature h3 { font-size: 1.2rem; margin-bottom: 10px; }
+    .feature p { color: var(--text-muted); font-size: .95rem; }
+    .section--cta { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: #fff; text-align: center; }
+    .cta__title { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 12px; }
+    .cta__desc { font-size: 1.15rem; margin-bottom: 32px; opacity: .9; }
+    .section--cta .btn--primary { background: #fff; color: var(--primary); }
+    .section--cta .btn--primary:hover { background: var(--primary-soft); }
+    .footer { background: #0f172a; color: #cbd5e1; padding: 50px 0 30px; }
+    .footer__inner { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: start; }
+    .footer__brand .logo { margin-bottom: 12px; }
+    .footer__brand .logo__mark { color: var(--primary); }
+    .footer__brand p { color: #94a3b8; max-width: 300px; margin-bottom: 16px; }
+    .footer__nav { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer__nav a { color: #cbd5e1; text-decoration: none; transition: color .2s; }
+    .footer__nav a:hover { color: #fff; }
+    .footer__copyright { grid-column: 1 / -1; border-top: 1px solid #1e293b; margin-top: 30px; padding-top: 20px; font-size: .85rem; color: #64748b; }
+    @media (max-width: 768px) {
+      .nav { display: none; }
+      .hero__inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero__visual { display: none; }
+      .footer__inner { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <!-- Header -->
   <header class="header">
     <div class="container header__inner">
       <a href="/" class="logo" aria-label="متوازي - الرئيسية">
@@ -28,13 +136,12 @@
     </div>
   </header>
 
-  <!-- Hero -->
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero__inner">
         <div class="hero__content">
           <h1 id="hero-title" class="hero__title">
-            نزول وزن <span class="hero__highlight">بجدول غذائي ورياضي</span><br>
+            نزول وزن <span class="hero__highlight">بجدول غذائي و sporty</span><br>
             <span class="hero__highlight">يمشون مع بعض</span>
           </h1>
           <p class="hero__subtitle">
@@ -43,15 +150,15 @@
           </p>
           <div class="hero__actions">
             <a href="/start.html" class="btn btn--primary btn--lg">ابدأ رحلتك الآن</a>
-            <a href="#how-it-works" class="btn btn--outline btn--lg">كيف يعمل</a>
+            <a href="#how-it-works" class="btn btn--outline btn--lg">كيف تعمل</a>
           </div>
-          <p class="hero__trust">لا بطاقة ائتمان مطلوبة للبدء · إلغاء أي وقت</p>
+          <p class="hero__trust">لا بطاقة ائتمان مطلوبة للبدأ · إلغاء أي وقت</p>
         </div>
         <div class="hero__visual" aria-hidden="true">
           <div class="hero__card hero__card--nutrition">
             <span class="hero__card-icon">🍽️</span>
             <h3>جدول غذائي</h3>
-            <p>سعرات محسوبة لك، أكلات بلدك، بدائل بضغطة زر</p>
+            <p>سعرات محسوبة لك، أكلات countryك، بدائل بضغط زر</p>
           </div>
           <div class="hero__card hero__card--fitness">
             <span class="hero__card-icon">🏋️</span>
@@ -60,19 +167,18 @@
           </div>
           <div class="hero__card hero__card--review">
             <span class="hero__card-icon">✅</span>
-            <h3>مراجعة خبير</h3>
+            <h3>review خبير</h3>
             <p>أخصائي يعتمد الجدول قبل ما يصل لك</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- How it works -->
     <section id="how-it-works" class="section section--how" aria-labelledby="how-title">
       <div class="container">
         <header class="section__header">
-          <h2 id="how-title" class="section__title">كيف يعمل متوازي</h2>
-          <p class="section__subtitle">أربع خطوات بسيطة لبداية رحلتك</p>
+          <h2 id="how-title" class="section__title">كيف عمل متوازي</h2>
+          <p class="section__subtitle">ثلاث خطوات بسيطة لبداية رحلتك</p>
         </header>
         <ol class="steps" aria-label="خطوات العمل">
           <li class="step">
@@ -83,23 +189,22 @@
           <li class="step">
             <span class="step__number">2</span>
             <h3 class="step__title">النظام يحسب ويبني</h3>
-            <p class="step__desc">سعراتك، مغذياتك، جدول 7 أيام، تمارين تناسبك</p>
+            <p class="step__desc">سعراتك، م الغذائيات، جدول 7 أيام، تمارين تناسبك</p>
           </li>
           <li class="step">
             <span class="step__number">3</span>
-            <h3 class="step__title">أخصائي يراجع ويعتمد</h3>
-            <p class="step__desc">ما في جدول يوصل لك بدون مراجعة بشرية مختصة</p>
+            <h3 class="step__title">أخصائي يراجعة ويعتمد</h3>
+            <p class="step__desc">ما في جدول يوصل لك بدون review بشرية مختصة</p>
           </li>
           <li class="step">
             <span class="step__number">4</span>
-            <h3 class="step__title">تتابع وتحقيق نتائج</h3>
+            <h3 class="step__title">تتابعة وتحقيق نتائج</h3>
             <p class="step__desc">سجل وزنك، شوف المنحنى، بدّل وجباتك، احتفل بإنجازاتك</p>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- Features -->
     <section class="section section--features" aria-labelledby="features-title">
       <div class="container">
         <header class="section__header">
@@ -108,7 +213,7 @@
         <ul class="features" aria-label="المميزات">
           <li class="feature">
             <span class="feature__icon" aria-hidden="true">🇸🇦</span>
-            <h3>أكلات بلدك</h3>
+            <h3>أكلات countryك</h3>
             <p>كبسة، مرقوق، جريش، سلطة — بحصص وسعرات محسوبة (كوب، كف، حبة)</p>
           </li>
           <li class="feature">
@@ -118,12 +223,12 @@
           </li>
           <li class="feature">
             <span class="feature__icon" aria-hidden="true">👨‍⚕️</span>
-            <h3>فريق مختص</h3>
+            <h3>فريق مختصر</h3>
             <p>أخصائي تغذية مرخص + مدرب لياقة معتمد — لكل حالة اهتمامها</p>
           </li>
           <li class="feature">
             <span class="feature__icon" aria-hidden="true">📊</span>
-            <h3>تتبع حقيقي</h3>
+            <h3>تتبع الحقيقي</h3>
             <p>سجل وزن، منحنى نزول، قياسات، تنبيهات ذكية يحددها أخصائيك</p>
           </li>
           <li class="feature">
@@ -140,19 +245,17 @@
       </div>
     </section>
 
-    <!-- CTA -->
     <section class="section section--cta" aria-labelledby="cta-title">
       <div class="container">
         <div class="cta">
           <h2 id="cta-title" class="cta__title">جاهز تبدأ؟</h2>
-          <p class="cta__desc">الاستمارة تستغرق 5 دقائق. أخصائيك بيراجع خلال 24 ساعة.</p>
+          <p class="cta__desc">الاستمارة تستغرق 5 دقيقة. أخصائيك بيراجع خلال 24 ساعة.</p>
           <a href="/start.html" class="btn btn--primary btn--lg">ابدأ الآن مجاناً</a>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="footer" role="contentinfo">
     <div class="container footer__inner">
       <div class="footer__brand">
@@ -166,7 +269,7 @@
         <p>جدول غذائي + رياضي يمشون مع بعض — بمراجعة خبراء</p>
       </div>
       <nav class="footer__nav" aria-label="روابط مفيدة">
-        <a href="/terms.html">الشروط</a>
+        <a href="/terms.html">ال.Shuruط</a>
         <a href="/privacy.html">الخصوصية</a>
         <a href="/login.html">تسجيل الدخول</a>
       </nav>
