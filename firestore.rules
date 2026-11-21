@@ -53,6 +53,12 @@ service cloud.firestore {
       allow create, update: if owns(userId);
     }
 
+    // ===== سجل الالتزام اليومي =====
+    match /profiles/{userId}/tracking/{date} {
+      allow read:  if owns(userId);
+      allow create, update: if owns(userId);
+    }
+
     // ===== سجل الوزن =====
     match /weights/{userId}/entries/{entryId} {
       allow read:  if owns(userId);

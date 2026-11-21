@@ -529,15 +529,224 @@
     transform: none;
   }
 
+  /* بطاقة متابعة الالتزام اليومي وسلسلة الأيام (Daily Habit & Streak Tracker) */
+  .tracker-card {
+    background: #ffffff;
+    border: 1.5px solid #ccfbf1;
+    border-radius: var(--radius-lg);
+    padding: 20px 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(15, 118, 110, 0.06);
+    position: relative;
+    overflow: hidden;
+  }
+  .tracker-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+  }
+  .tracker-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .tracker-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .tracker-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  .tracker-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .streak-badge {
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #ffedd5;
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.84rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 1px 3px rgba(234, 88, 12, 0.1);
+  }
+  .tracker-progress-wrap {
+    margin-bottom: 16px;
+  }
+  .tracker-progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .tracker-progress-bar-bg {
+    width: 100%;
+    height: 9px;
+    background: #e2e8f0;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+  .tracker-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: var(--radius-full);
+    transition: width 0.35s ease;
+  }
+  .tracker-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .tracker-check-btn {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .tracker-check-btn:hover {
+    border-color: #cbd5e1;
+    background: #f1f5f9;
+  }
+  .tracker-check-btn.checked {
+    background: #f0fdfa;
+    border-color: var(--primary);
+    color: var(--primary-dark);
+  }
+  .tracker-check-box {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 900;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .tracker-check-btn.checked .tracker-check-box {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+  .tracker-congrats {
+    display: none;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    margin-top: 14px;
+    color: #065f46;
+    font-size: 0.88rem;
+    font-weight: 700;
+    align-items: center;
+    gap: 8px;
+    animation: fadeIn 0.3s ease;
+  }
+  .tracker-congrats.show {
+    display: flex;
+  }
+
+  /* خيارات الطباعة وتصدير PDF (Print Choices Modal) */
+  .print-options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 20px 22px;
+  }
+  .print-option-card {
+    border: 1.5px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    background: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+    text-align: right;
+  }
+  .print-option-card:hover {
+    border-color: var(--primary);
+    background: #f0fdfa;
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.08);
+  }
+  .print-option-info h4 {
+    margin: 0 0 4px;
+    font-size: 1.02rem;
+    color: var(--text-dark);
+    font-weight: 800;
+  }
+  .print-option-info p {
+    margin: 0;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+  }
+  .print-option-btn {
+    background: #f1f5f9;
+    color: var(--text-dark);
+    font-size: 0.82rem;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    border: none;
+    pointer-events: none;
+    transition: all 0.2s;
+  }
+  .print-option-card:hover .print-option-btn {
+    background: var(--primary);
+    color: #ffffff;
+  }
+
+  /* منطقة مخصصة للطباعة الكاملة (أسبوع أو شهر) */
+  #printOutputContainer {
+    display: none;
+  }
+
   /* إعدادات الطباعة وتحميل PDF */
   @media print {
     body { background: #ffffff !important; }
-    .app-header, .app-footer, .days-nav, .btn-print, .btn-swap, .btn-prep, .modal-overlay { display: none !important; }
+    .app-header, .app-footer, .days-nav, .btn-print, .btn-swap, .btn-prep, .modal-overlay, .tracker-card, .plan-actions { display: none !important; }
     .wrap { max-width: 100% !important; padding: 0 !important; }
     .card { border: none !important; box-shadow: none !important; padding: 0 !important; }
-    .meal-slot { break-inside: avoid; border: 1px solid #ccc !important; }
-    .workout-card { break-inside: avoid; border: 1px solid #ccc !important; }
-    .print-only-title { display: block !important; margin-bottom: 20px; }
+    .meal-slot { break-inside: avoid; border: 1px solid #e2e8f0 !important; page-break-inside: avoid; }
+    .workout-card { break-inside: avoid; border: 1px solid #e2e8f0 !important; page-break-inside: avoid; }
+    .print-sheet { page-break-after: always; break-after: page; }
+    .print-sheet:last-child { page-break-after: auto; break-after: auto; }
+    body.printing-custom #planContent { display: none !important; }
+    body.printing-custom #printOutputContainer { display: block !important; }
+  }
   }
   .print-only-title { display: none; }
 </style>
@@ -584,6 +793,66 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
           <span>تحميل / طباعة PDF</span>
         </button>
+      </div>
+    </div>
+
+    <!-- كارت متابعة الالتزام اليومي وسلسلة الأيام (Daily Habit & Streak Tracker) -->
+    <div class="tracker-card" id="dailyTrackerCard">
+      <div class="tracker-head">
+        <div class="tracker-title-wrap">
+          <span style="font-size:1.4rem;">🎯</span>
+          <div>
+            <h3 class="tracker-title">متابعة التزام اليوم</h3>
+            <span class="tracker-date" id="trackerDateText">اليوم</span>
+          </div>
+        </div>
+        <div class="streak-badge" id="streakBadge" title="عدد الأيام المتتالية المكتملة">
+          <span>🔥</span>
+          <span id="streakCount">0</span>
+          <span>أيام التزام متتالية</span>
+        </div>
+      </div>
+
+      <div class="tracker-progress-wrap">
+        <div class="tracker-progress-meta">
+          <span id="trackerProgressLabel">إنجاز اليوم: 0 من 6 مهام</span>
+          <span id="trackerProgressPercent">0%</span>
+        </div>
+        <div class="tracker-progress-bar-bg">
+          <div class="tracker-progress-bar-fill" id="trackerProgressBar" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <div class="tracker-items-grid" id="trackerItemsGrid">
+        <button type="button" class="tracker-check-btn" data-key="breakfast">
+          <span>🍳 الفطور</span>
+          <div class="tracker-check-box">✓</div>
+        </button>
+        <button type="button" class="tracker-check-btn" data-key="lunch">
+          <span>🍲 الغداء</span>
+          <div class="tracker-check-box">✓</div>
+        </button>
+        <button type="button" class="tracker-check-btn" data-key="dinner">
+          <span>🥗 العشاء</span>
+          <div class="tracker-check-box">✓</div>
+        </button>
+        <button type="button" class="tracker-check-btn" data-key="snack">
+          <span>☕ السناك</span>
+          <div class="tracker-check-box">✓</div>
+        </button>
+        <button type="button" class="tracker-check-btn" data-key="workout">
+          <span>🏃‍♂️ تمرين اليوم</span>
+          <div class="tracker-check-box">✓</div>
+        </button>
+        <button type="button" class="tracker-check-btn" data-key="water">
+          <span>💧 شرب الماء (2-3L)</span>
+          <div class="tracker-check-box">✓</div>
+        </button>
+      </div>
+
+      <div class="tracker-congrats" id="trackerCongrats">
+        <span style="font-size:1.3rem;">🎉</span>
+        <span><strong>كفو يا بطل!</strong> أغلقت احتياج والتزام اليوم 100% — استمر بهذه العزيمة!</span>
       </div>
     </div>
 
@@ -676,6 +945,48 @@
       </div>
     </div>
   </div>
+
+  <!-- نافذة خيارات الطباعة وتصدير PDF -->
+  <div id="printChoiceModal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="printModalTitle">
+    <div class="modal-card" style="max-width: 540px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="printModalTitle">خيارات الطباعة وتصدير PDF 🖨️</h3>
+          <p class="modal-subtitle">اختر نوع الجدول الذي ترغب بطباعته أو حفظه</p>
+        </div>
+        <button type="button" class="btn-close-modal" id="btnClosePrintModal" aria-label="إغلاق">✕</button>
+      </div>
+
+      <div class="print-options-grid">
+        <div class="print-option-card" id="btnOptPrintToday">
+          <div class="print-option-info">
+            <h4>📄 جدول اليوم الحالي فقط</h4>
+            <p>ورقة A4 واحدة سريعة وموجزة تناسب التعليق على الثلاجة أو الحفظ اليومي.</p>
+          </div>
+          <span class="print-option-btn">طباعة ←</span>
+        </div>
+
+        <div class="print-option-card" id="btnOptPrintWeek">
+          <div class="print-option-info">
+            <h4>📑 جدول الأسبوع كامل (7 أيام)</h4>
+            <p>جميع أيام الأسبوع الـ 7 مع وجباتها وتمارينها وسعراتها، مثالي للتسوق والتجهيز المسبق.</p>
+          </div>
+          <span class="print-option-btn">طباعة ←</span>
+        </div>
+
+        <div class="print-option-card" id="btnOptPrintMonth">
+          <div class="print-option-info">
+            <h4>🗓️ مخطط الشهر (4 أسابيع)</h4>
+            <p>تقويم وجداول الالتزام الشهري مع إرشادات الأخصائي ومواعيد قياس الوزن الأسبوعية.</p>
+          </div>
+          <span class="print-option-btn">طباعة ←</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- حاوية إخراج مخصصة للطباعة الكاملة (الأسبوع والشهر) -->
+  <div id="printOutputContainer"></div>
 </main>
 
 <footer class="app-footer">
@@ -1056,10 +1367,404 @@
     });
   });
 
-  // زر طباعة / حفظ PDF
-  $("btnPrintPdf").addEventListener("click", function() {
-    window.print();
-  });
+  // ============================================================
+  // متابعة الالتزام اليومي وسلسلة الأيام المتتالية (Daily Tracker)
+  // ============================================================
+  var currentUserId = null;
+  var currentProfileData = null;
+  var todayKey = (function() {
+    var d = new Date();
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, "0");
+    var day = String(d.getDate()).padStart(2, "0");
+    return y + "-" + m + "-" + day;
+  })();
+
+  var yesterdayKey = (function() {
+    var d = new Date();
+    d.setDate(d.getDate() - 1);
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, "0");
+    var day = String(d.getDate()).padStart(2, "0");
+    return y + "-" + m + "-" + day;
+  })();
+
+  var todayTracking = {
+    breakfast: false,
+    lunch: false,
+    dinner: false,
+    snack: false,
+    workout: false,
+    water: false
+  };
+
+  function getArabicDateText() {
+    var d = new Date();
+    var days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+    var months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+    return days[d.getDay()] + "، " + d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear();
+  }
+
+  function updateTrackerUI() {
+    var keys = ["breakfast", "lunch", "dinner", "snack", "workout", "water"];
+    var completed = 0;
+
+    keys.forEach(function(k) {
+      var isDone = !!todayTracking[k];
+      if (isDone) completed++;
+      var btn = document.querySelector('.tracker-check-btn[data-key="' + k + '"]');
+      if (btn) {
+        btn.classList.toggle("checked", isDone);
+      }
+    });
+
+    var percent = Math.round((completed / keys.length) * 100);
+    var progressFill = $("trackerProgressBar");
+    if (progressFill) progressFill.style.width = percent + "%";
+
+    var label = $("trackerProgressLabel");
+    if (label) label.textContent = "إنجاز اليوم: " + completed + " من " + keys.length + " مهام";
+
+    var pText = $("trackerProgressPercent");
+    if (pText) pText.textContent = percent + "%";
+
+    var congrats = $("trackerCongrats");
+    if (congrats) {
+      congrats.classList.toggle("show", completed === keys.length);
+    }
+  }
+
+  function toggleTrackerItem(key) {
+    if (!currentUserId) return;
+    todayTracking[key] = !todayTracking[key];
+    todayTracking.updatedAt = new Date().toISOString();
+
+    // حفظ محلي فوري
+    try {
+      localStorage.setItem("motawazi_trk_" + currentUserId + "_" + todayKey, JSON.stringify(todayTracking));
+    } catch(e) {}
+
+    updateTrackerUI();
+
+    // فحص سلسلة الالتزام (Streak)
+    var keys = ["breakfast", "lunch", "dinner", "snack", "workout", "water"];
+    var allDone = keys.every(function(k) { return !!todayTracking[k]; });
+
+    var streak = (currentProfileData && currentProfileData.streak) || { count: 0, lastDate: "" };
+
+    if (allDone) {
+      if (streak.lastDate !== todayKey) {
+        if (streak.lastDate === yesterdayKey) {
+          streak.count = (streak.count || 0) + 1;
+        } else {
+          streak.count = 1;
+        }
+        streak.lastDate = todayKey;
+        if (currentProfileData) currentProfileData.streak = streak;
+
+        // تحديث شارة السلسلة
+        var streakEl = $("streakCount");
+        if (streakEl) streakEl.textContent = streak.count;
+
+        // حفظ السلسلة في فايربيس
+        firebase.firestore().collection("profiles").doc(currentUserId).set({
+          streak: streak
+        }, { merge: true }).catch(function(err) {
+          console.warn("[متوازي] تعذر تحديث السلسلة:", err);
+        });
+      }
+    }
+
+    // حفظ في Firestore
+    firebase.firestore().collection("profiles").doc(currentUserId)
+      .collection("tracking").doc(todayKey).set(todayTracking, { merge: true })
+      .catch(function(err) {
+        console.warn("[متوازي] تعذر حفظ تتبع اليوم في فايربيس:", err);
+      });
+  }
+
+  function initTracker(uid, profile) {
+    currentUserId = uid;
+    currentProfileData = profile;
+
+    var dateLabel = $("trackerDateText");
+    if (dateLabel) dateLabel.textContent = getArabicDateText();
+
+    // استرجاع السلسلة
+    var streak = profile.streak || { count: 0, lastDate: "" };
+    if (streak.lastDate && streak.lastDate !== todayKey && streak.lastDate !== yesterdayKey) {
+      // انقطعت السلسلة
+      streak.count = 0;
+    }
+    var streakEl = $("streakCount");
+    if (streakEl) streakEl.textContent = streak.count || 0;
+
+    // استرجاع بيانات اليوم من LocalStorage أولاً لسرعة العرض
+    try {
+      var cached = localStorage.getItem("motawazi_trk_" + uid + "_" + todayKey);
+      if (cached) {
+        var parsed = JSON.parse(cached);
+        Object.assign(todayTracking, parsed);
+        updateTrackerUI();
+      }
+    } catch(e) {}
+
+    // استرجاع من فايربيس لتحديث أي تغييرات
+    firebase.firestore().collection("profiles").doc(uid)
+      .collection("tracking").doc(todayKey).get().then(function(docSnap) {
+        if (docSnap.exists) {
+          var remoteData = docSnap.data();
+          Object.assign(todayTracking, remoteData);
+          updateTrackerUI();
+          try {
+            localStorage.setItem("motawazi_trk_" + uid + "_" + todayKey, JSON.stringify(todayTracking));
+          } catch(e) {}
+        }
+      }).catch(function(e) {
+        console.warn("[متوازي] قراءة تتبع اليوم من فايربيس:", e);
+      });
+
+    // ربط نقر الأزرار
+    var btns = document.querySelectorAll(".tracker-check-btn");
+    btns.forEach(function(b) {
+      b.addEventListener("click", function() {
+        var k = b.getAttribute("data-key");
+        if (k) toggleTrackerItem(k);
+      });
+    });
+  }
+
+  // ============================================================
+  // نافذة خيارات الطباعة وتصدير PDF (اليوم · الأسبوع · الشهر)
+  // ============================================================
+  var printModal = $("printChoiceModal");
+
+  function openPrintModal() {
+    if (printModal) {
+      printModal.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function closePrintModal() {
+    if (printModal) {
+      printModal.style.display = "none";
+      document.body.style.overflow = "";
+    }
+  }
+
+  $("btnPrintPdf").addEventListener("click", openPrintModal);
+
+  var btnClosePrint = $("btnClosePrintModal");
+  if (btnClosePrint) btnClosePrint.addEventListener("click", closePrintModal);
+
+  if (printModal) {
+    printModal.addEventListener("click", function(e) {
+      if (e.target === printModal) closePrintModal();
+    });
+  }
+
+  // خيار 1: طباعة اليوم المحدد فقط
+  var btnOptToday = $("btnOptPrintToday");
+  if (btnOptToday) {
+    btnOptToday.addEventListener("click", function() {
+      closePrintModal();
+      document.body.classList.remove("printing-custom");
+      window.print();
+    });
+  }
+
+  // خيار 2: طباعة الأسبوع كامل (7 أيام)
+  var btnOptWeek = $("btnOptPrintWeek");
+  if (btnOptWeek) {
+    btnOptWeek.addEventListener("click", function() {
+      closePrintModal();
+      generateWeekPrint();
+    });
+  }
+
+  // خيار 3: طباعة مخطط الشهر (4 أسابيع)
+  var btnOptMonth = $("btnOptPrintMonth");
+  if (btnOptMonth) {
+    btnOptMonth.addEventListener("click", function() {
+      closePrintModal();
+      generateMonthPrint();
+    });
+  }
+
+  var DAY_LABELS = [
+    "اليوم 1 (السبت)", "اليوم 2 (الأحد)", "اليوم 3 (الاثنين)",
+    "اليوم 4 (الثلاثاء)", "اليوم 5 (الأربعاء)", "اليوم 6 (الخميس)", "اليوم 7 (الجمعة)"
+  ];
+
+  function generateWeekPrint() {
+    if (!MEALS_DATA) return;
+    var printBox = $("printOutputContainer");
+    if (!printBox) return;
+
+    var html =
+      '<div style="padding: 10px 0 20px; border-bottom: 2.5px solid var(--primary); margin-bottom: 24px;">' +
+        '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+          '<div>' +
+            '<h1 style="color:var(--primary); margin:0 0 4px; font-size:1.7rem; font-weight:800;">خطة التغذية والتمارين الأسبوعية (7 أيام) — متوازي</h1>' +
+            '<p style="color:#64748b; margin:0; font-size:0.95rem;">خطة مخصصة موزونة على <strong>' + userTargetKcal + ' سعرة حرارية</strong> يومياً بمراجعة الأخصائي</p>' +
+          '</div>' +
+          '<div style="text-align:left; font-size:0.85rem; color:#64748b;">motawazi.com</div>' +
+        '</div>' +
+      '</div>';
+
+    var slots = ["breakfast", "lunch", "dinner", "snack"];
+
+    for (var d = 0; d < 7; d++) {
+      if (!dayPlansCache[d]) dayPlansCache[d] = {};
+      var dayPlan = dayPlansCache[d];
+      var totalKcal = 0, totalP = 0, totalC = 0, totalF = 0;
+
+      slots.forEach(function(slotKey) {
+        var pool = MEALS_DATA[slotKey] || [];
+        var targetSlotKcal = Math.round(userTargetKcal * SLOT_NAMES[slotKey].ratio);
+        if (!dayPlan[slotKey] && pool.length) {
+          dayPlan[slotKey] = scaleMeal(pool[d % pool.length], targetSlotKcal);
+        }
+        var m = dayPlan[slotKey];
+        if (m) {
+          totalKcal += m.calories;
+          totalP += m.macros.protein;
+          totalC += m.macros.carbs;
+          totalF += m.macros.fat;
+        }
+      });
+
+      var w = WORKOUTS[d % WORKOUTS.length];
+
+      html +=
+        '<div class="print-sheet" style="margin-bottom: 30px; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px 20px; background: #ffffff;">' +
+          '<div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1.5px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 14px;">' +
+            '<h2 style="margin:0; font-size:1.2rem; color:var(--text-dark); font-weight:800;">' + DAY_LABELS[d] + '</h2>' +
+            '<div style="display:flex; gap:8px; font-size:0.84rem; font-weight:700;">' +
+              '<span class="macro-tag kcal" style="background:#f0fdfa; color:var(--primary);">🔥 ' + totalKcal + ' سعرة</span>' +
+              '<span class="macro-tag" style="background:#f8fafc;">🥩 ' + totalP + 'g بروتين</span>' +
+              '<span class="macro-tag" style="background:#f8fafc;">🌾 ' + totalC + 'g كارب</span>' +
+              '<span class="macro-tag" style="background:#f8fafc;">🥑 ' + totalF + 'g دهون</span>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">';
+
+      slots.forEach(function(slotKey) {
+        var sInfo = SLOT_NAMES[slotKey];
+        var meal = dayPlan[slotKey];
+        if (!meal) return;
+
+        html +=
+          '<div style="border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; background:#fafafa;">' +
+            '<div style="font-weight:800; font-size:0.88rem; color:var(--primary); margin-bottom:3px;">' + sInfo.icon + ' ' + sInfo.ar + '</div>' +
+            '<div style="font-weight:800; font-size:0.95rem; color:var(--text-dark); margin-bottom:2px;">' + meal.name + '</div>' +
+            '<div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:6px;">' + meal.portion + '</div>' +
+            '<div style="font-size:0.78rem; color:#475569; font-weight:700;">🔥 ' + meal.calories + ' سعرة | 🥩 ' + meal.macros.protein + 'g | 🌾 ' + meal.macros.carbs + 'g | 🥑 ' + meal.macros.fat + 'g</div>' +
+          '</div>';
+      });
+
+      html +=
+          '</div>' +
+          '<div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:10px 14px;">' +
+            '<strong style="color:#c2410c; font-size:0.88rem;">🏃‍♂️ تمرين اليوم:</strong> ' +
+            '<span style="font-size:0.88rem; font-weight:700; color:var(--text-dark);">' + w.title + '</span>' +
+            '<div style="font-size:0.8rem; color:#7c2d12; margin-top:3px;">' + w.desc + '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    printBox.innerHTML = html;
+    document.body.classList.add("printing-custom");
+
+    setTimeout(function() {
+      window.print();
+      setTimeout(function() {
+        document.body.classList.remove("printing-custom");
+        printBox.innerHTML = "";
+      }, 500);
+    }, 100);
+  }
+
+  function generateMonthPrint() {
+    var printBox = $("printOutputContainer");
+    if (!printBox) return;
+
+    var html =
+      '<div style="padding: 10px 0 20px; border-bottom: 2.5px solid var(--primary); margin-bottom: 24px;">' +
+        '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+          '<div>' +
+            '<h1 style="color:var(--primary); margin:0 0 4px; font-size:1.7rem; font-weight:800;">مخطط الالتزام الشهري (4 أسابيع) — متوازي</h1>' +
+            '<p style="color:#64748b; margin:0; font-size:0.95rem;">دليل الالتزام ومتابعة الوزن والنتائج | الاحتياج اليومي المستهدف: <strong>' + userTargetKcal + ' سعرة</strong></p>' +
+          '</div>' +
+          '<div style="text-align:left; font-size:0.85rem; color:#64748b;">motawazi.com</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<!-- محطات الشهر الأربعة -->' +
+      '<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px;">' +
+        '<div style="border:1.5px solid #ccfbf1; background:#f0fdfa; border-radius:8px; padding:12px; text-align:center;">' +
+          '<h3 style="margin:0 0 4px; font-size:0.95rem; color:var(--primary-dark);">الأسبوع 1 · التكيف</h3>' +
+          '<p style="margin:0; font-size:0.8rem; color:#64748b;">التعود على كميات الوجبات وتنشيط الحرق بالتمارين الخفيفة.</p>' +
+        '</div>' +
+        '<div style="border:1.5px solid #e2e8f0; background:#ffffff; border-radius:8px; padding:12px; text-align:center;">' +
+          '<h3 style="margin:0 0 4px; font-size:0.95rem; color:var(--text-dark);">الأسبوع 2 · الموازنة</h3>' +
+          '<p style="margin:0; font-size:0.8rem; color:#64748b;">تثبيت كميات البروتين + <strong>قياس الوزن الأول ⚖️</strong>.</p>' +
+        '</div>' +
+        '<div style="border:1.5px solid #e2e8f0; background:#ffffff; border-radius:8px; padding:12px; text-align:center;">' +
+          '<h3 style="margin:0 0 4px; font-size:0.95rem; color:var(--text-dark);">الأسبوع 3 · التسارع</h3>' +
+          '<p style="margin:0; font-size:0.8rem; color:#64748b;">ملاحظة تغير مقاسات الملابس وارتفاع طاقة الجسم اليومية.</p>' +
+        '</div>' +
+        '<div style="border:1.5px solid #ffedd5; background:#fff7ed; border-radius:8px; padding:12px; text-align:center;">' +
+          '<h3 style="margin:0 0 4px; font-size:0.95rem; color:#c2410c;">الأسبوع 4 · الحصاد</h3>' +
+          '<p style="margin:0; font-size:0.8rem; color:#64748b;">قياس الوزن والنتائج ومراجعة التطور مع الأخصائي.</p>' +
+        '</div>' +
+      '</div>' +
+
+      '<!-- جدول متابعة الأيام والالتزام اليومي (30 يوماً) -->' +
+      '<div style="margin-bottom: 24px;">' +
+        '<h3 style="font-size:1.1rem; color:var(--text-dark); margin:0 0 10px; font-weight:800;">سجل تقفيل الالتزام اليومي (علّم صح ✓ أمام كل يوم):</h3>' +
+        '<div style="display:grid; grid-template-columns: repeat(7, 1fr); gap: 6px;">';
+
+    for (var dayNum = 1; dayNum <= 28; dayNum++) {
+      html +=
+        '<div style="border:1px solid #cbd5e1; border-radius:6px; padding:8px 6px; text-align:center; background:#ffffff;">' +
+          '<div style="font-weight:800; font-size:0.85rem; color:var(--primary); margin-bottom:4px;">يوم ' + dayNum + '</div>' +
+          '<div style="font-size:0.7rem; color:#64748b; line-height:1.4;">' +
+            '<div>وجبات [  ]</div>' +
+            '<div>تمرين [  ]</div>' +
+            '<div>ماء [  ]</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    html +=
+        '</div>' +
+      '</div>' +
+
+      '<!-- جدول مواعيد قياس الوزن الأسبوعي -->' +
+      '<div style="border:1.5px solid #e2e8f0; border-radius:10px; padding:14px 18px; background:#f8fafc;">' +
+        '<h4 style="margin:0 0 8px; font-size:0.98rem; color:var(--text-dark);">⚖️ جدول تسجيل الأوزان الأسبوعية (صباحاً على الريق):</h4>' +
+        '<div style="display:flex; justify-content:space-between; gap:10px; font-size:0.86rem; color:#475569;">' +
+          '<div>• وزن البداية: _______ كجم</div>' +
+          '<div>• نهاية أسبوع 1: _______ كجم</div>' +
+          '<div>• نهاية أسبوع 2: _______ كجم</div>' +
+          '<div>• نهاية أسبوع 3: _______ كجم</div>' +
+          '<div>• وزن الحصاد (أسبوع 4): _______ كجم</div>' +
+        '</div>' +
+      '</div>';
+
+    printBox.innerHTML = html;
+    document.body.classList.add("printing-custom");
+
+    setTimeout(function() {
+      window.print();
+      setTimeout(function() {
+        document.body.classList.remove("printing-custom");
+        printBox.innerHTML = "";
+      }, 500);
+    }, 100);
+  }
 
   // أحداث نافذة اختيار الوجبة (Meal Picker Modal)
   var searchInput = $("pickerSearchInput");
@@ -1111,8 +1816,9 @@
   }
 
   document.addEventListener("keydown", function(e) {
-    if (e.key === "Escape" && modalOverlay && modalOverlay.style.display !== "none") {
-      closeMealPicker();
+    if (e.key === "Escape") {
+      if (modalOverlay && modalOverlay.style.display !== "none") closeMealPicker();
+      if (printModal && printModal.style.display !== "none") closePrintModal();
     }
   });
 
@@ -1153,6 +1859,7 @@
           $("boot").classList.add("hidden");
           $("planContent").classList.remove("hidden");
           renderDayPlan(0);
+          initTracker(u.uid, p);
         });
       }).catch(function() {
         $("boot").className = "msg err";
