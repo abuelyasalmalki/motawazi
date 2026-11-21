@@ -1,10 +1,6 @@
 /* ============================================================
    متوازي · تهيئة Firebase (compat)
    ============================================================
-   🔴 القيم فارغة عمدًا حتى يُنشأ مشروع Firebase الخاص بمتوازي.
-   من أين تأتي: Firebase Console ← ⚙️ Project settings ← General ←
-   Your apps ← (تطبيق ويب) ← SDK setup and configuration ← Config.
-
    مفتاح الويب عامٌّ وآمن في كود المتصفح — الحماية عبر قواعد
    Firestore و Auth (انظر firestore.rules).
    يُحمَّل بعد سكربتات firebase-*-compat.js وقبل auth.js.
@@ -16,12 +12,12 @@
     return;
   }
   var firebaseConfig = {
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
+    apiKey: "AIzaSyD6S5hK-I4p1tUZyWGYsCzlhzu-73ak0U4",
+    authDomain: "motawazi-prod.firebaseapp.com",
+    projectId: "motawazi-prod",
+    storageBucket: "motawazi-prod.firebasestorage.app",
+    messagingSenderId: "848125765310",
+    appId: "1:848125765310:web:15c8a4e7d3e045e68960ef"
   };
   if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
     console.warn("[متوازي] إعداد Firebase فارغ — املأ firebase-config.js.");
