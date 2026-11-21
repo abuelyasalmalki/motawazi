@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0f766e">
+<title>متابعتي — متوازي</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<style>
+  .track-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  /* كارت الموعد القادم مع الأخصائي */
+  .appt-card {
+    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);
+    border: 2px solid var(--primary-border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    box-shadow: var(--shadow-sm);
+  }
+  .appt-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .appt-title {
+    font-size: 1.18rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+  }
+  .appt-date-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    margin-bottom: 14px;
+  }
+  .appt-date-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+  }
+  .appt-date-text b {
+    display: block;
+    font-size: 1.05rem;
+    color: var(--text-dark);
+  }
+  .appt-date-text span {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* إحصائيات الوزن السريعة */
+  .weight-stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+    text-align: center;
+  }
+  .weight-stat-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px 8px;
+  }
+  .weight-stat-box b {
+    display: block;
+    font-size: 1.25rem;
+    color: var(--text-dark);
+  }
+  .weight-stat-box span {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .weight-stat-box.highlight {
+    background: var(--primary-soft);
+    border-color: var(--primary-border);
+  }
+  .weight-stat-box.highlight b {
+    color: var(--primary-dark);
+  }
+
+  /* نموذج إدخال الوزن الجديد */
+  .log-weight-form {
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .log-weight-inputs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .log-weight-inputs input {
+    margin: 0;
+  }
+
+  /* جدول سجل الأوزان السابقة */
+  .weight-history {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .weight-history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .weight-history-item:last-child {
+    border-bottom: none;
+  }
+  .weight-history-date {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+  .weight-history-val {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+
+  /* كارت الاستمارة الدائم */
+  .intake-summary-card {
+    border-left: 4px solid var(--accent);
+  }
+</style>
+</head>
+<body class="app">
+<header class="app-header">
+  <div class="app-header__inner">
+    <a href="/" class="logo" aria-label="متوازي — الرئيسية">
+      <span class="logo__symbol" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none"><path d="M7 23C7 15.268 13.268 9 21 9" stroke="#0F766E" stroke-width="3.5" stroke-linecap="round"/><path d="M11 27C11 19.268 17.268 13 25 13" stroke="#F97316" stroke-width="3.5" stroke-linecap="round"/><circle cx="21" cy="9" r="2.5" fill="#0F766E"/><circle cx="25" cy="13" r="2.5" fill="#F97316"/></svg>
+      </span>
+      <span class="logo__text">متوازي</span>
+    </a>
+    <nav class="app-header__actions" aria-label="روابط">
+      <a href="/account">حسابي</a>
+      <a href="/plan">جدولي</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="msg" id="boot" role="status">جاري تحميل بيانات المتابعة…</p>
+
+  <div id="trackApp" class="hidden track-grid">
+    <!-- كارت الموعد القادم مع الأخصائي -->
+    <div class="appt-card">
+      <div class="appt-head">
+        <h2 class="appt-title">
+          <span>🩺</span>
+          <span>متابعتك القادمة مع الأخصائي</span>
+        </h2>
+        <span class="badge on">مجدولة</span>
+      </div>
+      <p class="muted small" style="margin-bottom:14px">
+        يتابع أخصائي التغذية ومدرب اللياقة تطور وزنك أسبوعياً لتعديل الجداول والسعرات وضمان استمرار نزولك.
+      </p>
+
+      <div class="appt-date-box">
+        <div class="appt-date-icon">🗓️</div>
+        <div class="appt-date-text">
+          <b id="nextApptDate">الأحد القادم — مراجعة أسبوعية</b>
+          <span>موعد تدقيق قراءات وزنك واعتماد تحديثات الأسبوع القادم</span>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a href="https://wa.me/" target="_blank" class="btn btn--outline" id="btnContactDoc" style="margin-top:0; width:auto; flex:1;">
+          <span>💬 تواصل مع الأخصائي</span>
+        </a>
+        <a href="/plan" class="btn btn--primary" style="margin-top:0; width:auto; flex:1;">
+          <span>🍽️ استعراض جدول اليوم</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- كارت متابعة وتحديث الوزن -->
+    <div class="card">
+      <div class="card__head">
+        <span class="card__icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+        </span>
+        <h2>سجل الوزن ومسار النزول</h2>
+      </div>
+
+      <!-- مؤشرات الوزن السريعة -->
+      <div class="weight-stats-bar">
+        <div class="weight-stat-box">
+          <b id="startWeight">—</b>
+          <span>الوزن الأول</span>
+        </div>
+        <div class="weight-stat-box highlight">
+          <b id="currentWeight">—</b>
+          <span>الوزن الحالي</span>
+        </div>
+        <div class="weight-stat-box">
+          <b id="targetWeight">—</b>
+          <span>الهدف</span>
+        </div>
+      </div>
+
+      <!-- خانة تسجيل وزن جديد -->
+      <div class="log-weight-form">
+        <h3 style="font-size:0.95rem; font-weight:800; margin-bottom:10px; color:var(--text-dark);">
+          + سجّل وزنك لهذا الأسبوع
+        </h3>
+        <form id="weightForm">
+          <div class="log-weight-inputs">
+            <input type="number" id="inWeight" step="0.1" min="30" max="300" placeholder="الوزن بالكيلو (مثال: 78.5)" required dir="ltr">
+            <button type="submit" class="btn" style="width:auto; margin:0; padding:10px 20px;">حفظ</button>
+          </div>
+          <p class="msg" id="weightMsg" style="margin:0;"></p>
+        </form>
+      </div>
+
+      <!-- سجل القراءات المسجلة -->
+      <h3 style="font-size:0.95rem; font-weight:800; margin-bottom:10px; color:var(--text-dark);">
+        سجل القراءات السابقة
+      </h3>
+      <div style="background:#ffffff; border:1px solid var(--border); border-radius:var(--radius-md);">
+        <ul class="weight-history" id="weightHistoryList">
+          <li class="weight-history-item">
+            <span class="weight-history-date">جاري التحميل…</span>
+            <span class="weight-history-val">—</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- كارت الاستمارة الصحية وتعديل الإجابات -->
+    <div class="card intake-summary-card">
+      <div class="card__head">
+        <span class="card__icon card__icon--accent" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        </span>
+        <h2>بياناتك واستمارتك الصحية</h2>
+      </div>
+      <p class="muted small" style="margin-bottom:16px">
+        إجاباتك الصحية مسجلة في ملفك. إذا طرأ أي تغيير على وضعك الصحي (مثل بدء دواء جديد، أو تغير النشاط، أو حدوث حمل)، تقدر تعدّل استمارتك ليُعاد تدقيق خطتك.
+      </p>
+
+      <div style="display:flex; gap:10px;">
+        <a href="/start?edit=1" class="btn ghost" style="margin-top:0; flex:1;">
+          <span>✎ استعراض وتعديل الاستمارة</span>
+        </a>
+        <a href="/summary" class="btn btn--outline" style="margin-top:0; flex:1;">
+          <span>تفاصيل السعرات والماكروز</span>
+        </a>
+      </div>
+    </div>
+
+    <p class="disclaimer">النتائج تختلف من شخص لآخر حسب الالتزام.</p>
+  </div>
+</main>
+
+<footer class="app-footer">
+  <div class="app-footer__inner">
+    <span>© 2026 متوازي (motawazi.com)</span>
+    <nav aria-label="روابط قانونية"><a href="/terms">الشروط والأحكام</a><a href="/privacy">سياسة الخصوصية</a></nav>
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+<script src="/auth.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  var userWeights = [];
+  var currentUid = null;
+
+  function fmtDate(dateObj) {
+    return dateObj.toLocaleDateString("ar-SA-u-ca-gregory-nu-latn", {
+      year: "numeric", month: "long", day: "numeric"
+    });
+  }
+
+  function getStoredWeightsKey(uid) {
+    return "mtz_weights_" + uid;
+  }
+
+  function loadWeights(uid, initialWeight, targetWeight) {
+    currentUid = uid;
+    var localKey = getStoredWeightsKey(uid);
+    var saved = [];
+    try {
+      saved = JSON.parse(localStorage.getItem(localKey) || "[]");
+    } catch(e) {}
+
+    // إذا لم يكن لديه سجلات، نضع وزن البداية من الاستمارة
+    if (!saved.length && initialWeight) {
+      saved.push({
+        weight: Number(initialWeight),
+        date: fmtDate(new Date()),
+        timestamp: Date.now(),
+        isStart: true
+      });
+      localStorage.setItem(localKey, JSON.stringify(saved));
+    }
+    userWeights = saved;
+    renderWeightsUI(initialWeight, targetWeight);
+  }
+
+  function renderWeightsUI(startW, targetW) {
+    var listEl = $("weightHistoryList");
+    listEl.innerHTML = "";
+
+    if (!userWeights.length) {
+      listEl.innerHTML = '<li class="weight-history-item"><span class="weight-history-date">لا توجد قراءات مسجلة بعد</span></li>';
+      return;
+    }
+
+    // عرض القراءات من الأحدث للأقدم
+    var sorted = userWeights.slice().reverse();
+    sorted.forEach(function(item) {
+      var li = document.createElement("li");
+      li.className = "weight-history-item";
+      li.innerHTML =
+        '<span class="weight-history-date">' + item.date + (item.isStart ? ' (وزن البداية)' : '') + '</span>' +
+        '<span class="weight-history-val">' + item.weight + ' كجم</span>';
+      listEl.appendChild(li);
+    });
+
+    var latest = userWeights[userWeights.length - 1];
+    var first = userWeights[0];
+
+    $("startWeight").textContent = (first ? first.weight : (startW || "—")) + " كجم";
+    $("currentWeight").textContent = (latest ? latest.weight : "—") + " كجم";
+    $("targetWeight").textContent = (targetW ? targetW : "—") + " كجم";
+  }
+
+  // إضافة وزن جديد
+  $("weightForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    var val = parseFloat($("inWeight").value);
+    if (isNaN(val) || val < 30 || val > 300) {
+      $("weightMsg").className = "msg err";
+      $("weightMsg").textContent = "اكتب وزناً صحيحاً بالكيلو.";
+      return;
+    }
+
+    var newEntry = {
+      weight: val,
+      date: fmtDate(new Date()),
+      timestamp: Date.now()
+    };
+    userWeights.push(newEntry);
+    if (currentUid) {
+      localStorage.setItem(getStoredWeightsKey(currentUid), JSON.stringify(userWeights));
+    }
+
+    $("inWeight").value = "";
+    $("weightMsg").className = "msg ok";
+    $("weightMsg").textContent = "تم تسجيل وزنك الجديد بنجاح!";
+    renderWeightsUI();
+
+    setTimeout(function() {
+      $("weightMsg").textContent = "";
+    }, 4000);
+  });
+
+  function start() {
+    if (!Auth.ready) {
+      $("boot").className = "msg err";
+      $("boot").textContent = "الخدمة غير متاحة حالياً.";
+      return;
+    }
+    Auth.onChange(function(u) {
+      if (!u) {
+        location.replace("/login?next=/track");
+        return;
+      }
+      firebase.firestore().collection("profiles").doc(u.uid).get().then(function(snap) {
+        $("boot").classList.add("hidden");
+        $("trackApp").classList.remove("hidden");
+
+        var startW = null, targetW = null;
+        if (snap.exists) {
+          var p = snap.data();
+          if (p.answers) {
+            startW = p.answers.weightKg;
+            targetW = p.answers.targetKg;
+          }
+        }
+        loadWeights(u.uid, startW, targetW);
+      }).catch(function() {
+        $("boot").classList.add("hidden");
+        $("trackApp").classList.remove("hidden");
+        loadWeights(u.uid, null, null);
+      });
+    });
+  }
+
+  window.addEventListener("load", start);
+})();
+</script>
+</body>
+</html>
