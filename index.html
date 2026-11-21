@@ -3,278 +3,683 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="متوازي — منصة عربية لنزول الوزن: جدول غذائي وجدول رياضي يمشون مع بعض، بمراجعة أخصائي تغذية ومدرب لياقة. اشتراك شهري بسعر رمزي.">
-  <title>متوازي — نزول وزن بجدول غذائي وsporty متوازي</title>
+  <meta name="description" content="متوازي — أول منصة عربية تجمع بين جدولك الغذائي وجدولك الرياضي بمراجعة واعتماد أخصائي تغذية ومدرب لياقة مرخصين. اشتراك شهري بسعر رمزي.">
+  <title>متوازي — نزول وزن صحي بجدول غذائي ورياضي متوازيين</title>
+  
+  <!-- خط تجوال العربي -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #16a34a;
-      --primary-dark: #15803d;
-      --primary-soft: #dcfce7;
-      --accent: #f59e0b;
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --text: #0f172a;
-      --text-muted: #475569;
-      --border: #e2e8f0;
-      --radius: 16px;
-      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
-      --shadow-lg: 0 10px 25px rgba(0,0,0,.1);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      gap: 8px; padding: 12px 24px; border-radius: 999px;
-      font-family: inherit; font-size: 1rem; font-weight: 600;
-      text-decoration: none; border: 2px solid transparent; cursor: pointer;
-      transition: all .2s ease; white-space: nowrap;
-    }
-    .btn--primary { background: var(--primary); color: #fff; }
-    .btn--primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
-    .btn--ghost { background: transparent; color: var(--text); border-color: var(--border); }
-    .btn--ghost:hover { background: var(--surface); border-color: var(--text-muted); }
-    .btn--outline { background: transparent; color: var(--text); border-color: var(--border); }
-    .btn--outline:hover { background: var(--primary-soft); border-color: var(--primary); }
-    .btn--lg { padding: 16px 32px; font-size: 1.1rem; }
-    .header {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(255,255,255,.85); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .header__inner { display: flex; align-items: center; justify-content: space-between; height: 70px; }
-    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
-    .logo__mark { width: 36px; height: 36px; color: var(--primary); }
-    .logo__text { font-size: 1.4rem; font-weight: 800; }
-    .nav { display: flex; gap: 12px; align-items: center; }
-    .nav .btn { padding: 8px 18px; font-size: .9rem; }
-    .hero { padding: 80px 0; background: linear-gradient(160deg, var(--primary-soft) 0%, var(--bg) 40%); }
-    .hero__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-    .hero__title { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.25; margin-bottom: 20px; }
-    .hero__highlight { color: var(--primary); }
-    .hero__subtitle { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 32px; max-width: 500px; }
-    .hero__actions { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
-    .hero__trust { color: var(--text-muted); font-size: .9rem; }
-    .hero__visual { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .hero__card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); text-align: center;
-    }
-    .hero__card-icon { font-size: 2.5rem; display: block; margin-bottom: 12px; }
-    .hero__card h3 { font-size: 1.05rem; margin-bottom: 6px; }
-    .hero__card p { font-size: .85rem; color: var(--text-muted); }
-    .section { padding: 80px 0; }
-    .section__header { text-align: center; margin-bottom: 50px; }
-    .section__title { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; margin-bottom: 12px; }
-    .section__subtitle { color: var(--text-muted); font-size: 1.1rem; }
-    .section--how { background: var(--surface); }
-    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; list-style: none; }
-    .step { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 24px; }
-    .step__number {
-      width: 44px; height: 44px; background: var(--primary); color: #fff;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1.2rem; margin-bottom: 16px;
-    }
-    .step__title { font-size: 1.15rem; margin-bottom: 8px; }
-    .step__desc { color: var(--text-muted); font-size: .95rem; }
-    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; list-style: none; }
-    .feature {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 32px 24px; text-align: center;
-      transition: box-shadow .2s ease;
-    }
-    .feature:hover { box-shadow: var(--shadow-lg); }
-    .feature__icon { font-size: 2.5rem; display: block; margin-bottom: 16px; }
-    .feature h3 { font-size: 1.2rem; margin-bottom: 10px; }
-    .feature p { color: var(--text-muted); font-size: .95rem; }
-    .section--cta { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: #fff; text-align: center; }
-    .cta__title { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 12px; }
-    .cta__desc { font-size: 1.15rem; margin-bottom: 32px; opacity: .9; }
-    .section--cta .btn--primary { background: #fff; color: var(--primary); }
-    .section--cta .btn--primary:hover { background: var(--primary-soft); }
-    .footer { background: #0f172a; color: #cbd5e1; padding: 50px 0 30px; }
-    .footer__inner { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: start; }
-    .footer__brand .logo { margin-bottom: 12px; }
-    .footer__brand .logo__mark { color: var(--primary); }
-    .footer__brand p { color: #94a3b8; max-width: 300px; margin-bottom: 16px; }
-    .footer__nav { display: flex; gap: 24px; flex-wrap: wrap; }
-    .footer__nav a { color: #cbd5e1; text-decoration: none; transition: color .2s; }
-    .footer__nav a:hover { color: #fff; }
-    .footer__copyright { grid-column: 1 / -1; border-top: 1px solid #1e293b; margin-top: 30px; padding-top: 20px; font-size: .85rem; color: #64748b; }
-    @media (max-width: 768px) {
-      .nav { display: none; }
-      .hero__inner { grid-template-columns: 1fr; gap: 40px; }
-      .hero__visual { display: none; }
-      .footer__inner { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <header class="header">
+
+  <!-- الترويسة الرئيسية -->
+  <header class="header" role="banner">
     <div class="container header__inner">
-      <a href="/" class="logo" aria-label="متوازي - الرئيسية">
-        <svg class="logo__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-          <path d="M16 2L4 10v12l12 8 12-8V10L16 2zm0 2.5L25.5 10H6.5L16 4.5z" stroke="currentColor" stroke-width="2"/>
-          <path d="M16 14v8M12 18h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <span class="logo__text">متوازي</span>
+      <a href="/" class="logo" aria-label="متوازي — الرئيسية">
+        <div class="logo__symbol" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+            <!-- مسار التغذية (أخضر زمردي) -->
+            <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#0F766E" stroke-width="3.5" stroke-linecap="round"/>
+            <!-- مسار الرياضة واللياقة (برتقالي حيوي متوازي) -->
+            <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#F97316" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="21" cy="9" r="2.5" fill="#0F766E"/>
+            <circle cx="25" cy="13" r="2.5" fill="#F97316"/>
+          </svg>
+        </div>
+        <div class="logo__brand">
+          <span class="logo__text">متوازي</span>
+          <span class="logo__tagline">تغذية ولياقة بتوازي</span>
+        </div>
       </a>
+
       <nav class="nav" aria-label="التنقل الرئيسي">
-        <a href="/login.html" class="btn btn--ghost">تسجيل الدخول</a>
-        <a href="/start.html" class="btn btn--primary">ابدأ الآن</a>
+        <ul class="nav__links">
+          <li><a href="#philosophy" class="nav__link">ليش متوازي؟</a></li>
+          <li><a href="#how-it-works" class="nav__link">طريقة العمل</a></li>
+          <li><a href="#features" class="nav__link">المميزات</a></li>
+          <li><a href="#plans" class="nav__link">الباقات</a></li>
+          <li><a href="#faq" class="nav__link">الأسئلة الشائعة</a></li>
+        </ul>
+        <div class="nav__actions">
+          <a href="/login" class="btn btn--ghost">تسجيل الدخول</a>
+          <a href="/start" class="btn btn--primary">ابدأ الآن</a>
+        </div>
       </nav>
     </div>
   </header>
 
   <main>
+    <!-- القسم الترحيبي (Hero Section) -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero__inner">
         <div class="hero__content">
+          <div class="hero__badge">
+            <span class="hero__badge-pulse" aria-hidden="true"></span>
+            <span>أول منصة تجمع مسار الغذاء والرياضة باعتماد خبراء</span>
+          </div>
+
           <h1 id="hero-title" class="hero__title">
-            نزول وزن <span class="hero__highlight">بجدول غذائي و sporty</span><br>
-            <span class="hero__highlight">يمشون مع بعض</span>
+            نزول وزن صحي ومستدام<br>
+            <span class="hero__title-gradient">بجدولين يمشون مع بعض.. بتوازي</span>
           </h1>
+
           <p class="hero__subtitle">
-            منصة عربية موثوقة: أخصائي تغذية يراجع جدولك، ومدرب لياقة يصمم تمارينك.<br>
-            اشتراك شهري بسعر رمزي، مصمم للسعودية والخليج.
+            بدون حرمان من أكلات ديرتك المحبوبة، وبدون تمارين قاسية تعجزك. نظام ذكي يبني خطتك بحصص موزونة، ويراجعها أخصائي تغذية ومدرب لياقة معتمد قبل ما تبدأ.
           </p>
+
           <div class="hero__actions">
-            <a href="/start.html" class="btn btn--primary btn--lg">ابدأ رحلتك الآن</a>
-            <a href="#how-it-works" class="btn btn--outline btn--lg">كيف تعمل</a>
+            <a href="/start" class="btn btn--primary btn--lg">
+              <span>ابدأ رحلتك الآن</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </a>
+            <a href="#how-it-works" class="btn btn--outline btn--lg">شاهد كيف نعمل</a>
           </div>
-          <p class="hero__trust">لا بطاقة ائتمان مطلوبة للبدأ · إلغاء أي وقت</p>
+
+          <div class="hero__trust" aria-label="مزايا الثقة">
+            <div class="hero__trust-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>بدون بطاقة ائتمان للبدء</span>
+            </div>
+            <div class="hero__trust-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>أخصائيون مرخصون</span>
+            </div>
+            <div class="hero__trust-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>بدون حرمان من أكلاتك</span>
+            </div>
+          </div>
         </div>
-        <div class="hero__visual" aria-hidden="true">
-          <div class="hero__card hero__card--nutrition">
-            <span class="hero__card-icon">🍽️</span>
-            <h3>جدول غذائي</h3>
-            <p>سعرات محسوبة لك، أكلات countryك، بدائل بضغط زر</p>
-          </div>
-          <div class="hero__card hero__card--fitness">
-            <span class="hero__card-icon">🏋️</span>
-            <h3>جدول رياضي</h3>
-            <p>تمارين تناسب مستواك، في المنزل أو الجيم</p>
-          </div>
-          <div class="hero__card hero__card--review">
-            <span class="hero__card-icon">✅</span>
-            <h3>review خبير</h3>
-            <p>أخصائي يعتمد الجدول قبل ما يصل لك</p>
+
+        <!-- المعاينة البصرية للمسار المتوازي -->
+        <div class="hero__visual" aria-label="معاينة خطة متوازي اليومية">
+          <div class="mockup-card">
+            <div class="mockup-header">
+              <span class="mockup-day">🗓️ خطتك اليومية المتوازية</span>
+              <span class="mockup-status">نشطة ومعتمدة</span>
+            </div>
+
+            <div class="parallel-tracks">
+              <!-- المسار الأول: الغذائي -->
+              <div class="track-card track-card--nutrition" id="nutritionCard">
+                <div class="track-card__head">
+                  <span class="track-card__label">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                    المسار الغذائي · وجبة الغداء
+                  </span>
+                  <button type="button" class="btn-swap-demo" id="btnSwapDemo" title="اضغط لتجربة ميزة التبديل">
+                    <span>بدّل الوجبة</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                  </button>
+                </div>
+                <h4 class="track-card__title" id="mealTitle">كبسة لحم مع خضار مشوية</h4>
+                <p class="track-card__desc" id="mealDesc">150 جم رز بسمتي حبة طويلة + 120 جم لحم طازج + سلطة خضراء طازجة</p>
+                <div class="track-card__footer">
+                  <div class="track-card__metrics">
+                    <span class="metric-pill" id="mealKcal">🔥 520 سعرة</span>
+                    <span class="metric-pill" id="mealProtein">🥩 38 جم بروتين</span>
+                    <span class="metric-pill" id="mealCarbs">🌾 48 جم كارب</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- المسار الثاني: الرياضي -->
+              <div class="track-card track-card--fitness">
+                <div class="track-card__head">
+                  <span class="track-card__label">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"></path></svg>
+                    المسار الرياضي · تمرين اليوم
+                  </span>
+                  <span class="metric-pill" style="background:#ffffff; color:var(--accent);">منزلي خفيف</span>
+                </div>
+                <h4 class="track-card__title">تمارين مقاومة خفيفة + مشي 20 دقيقة</h4>
+                <p class="track-card__desc">تمارين تنشيط لكامل الجسم بدون أجهزة معقدة، متدرجة ومناسبة لمستوى لياقتك الحالي.</p>
+                <div class="track-card__footer">
+                  <div class="track-card__metrics">
+                    <span class="metric-pill">⏱️ 30 دقيقة</span>
+                    <span class="metric-pill">⚡ ~230 سعرة محروقة</span>
+                    <span class="metric-pill">💪 مستوى مبتدئ</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ختم الاعتماد البشري -->
+            <div class="mockup-approval">
+              <div class="mockup-approval__avatar" aria-hidden="true">✓</div>
+              <div class="mockup-approval__text">
+                تم التدقيق والاعتماد بواسطة <strong>أخصائي التغذية ومدرب اللياقة</strong>
+              </div>
+            </div>
+
+            <!-- البطاقة العائمة لتتبع الهدف -->
+            <div class="floating-chip" aria-hidden="true">
+              <div class="floating-chip__icon">🎯</div>
+              <div>
+                <div class="floating-chip__label">الهدف المخطط له</div>
+                <div class="floating-chip__val">نزول 8 كجم بثبات</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="how-it-works" class="section section--how" aria-labelledby="how-title">
+    <!-- شريط الأرقام والمؤشرات -->
+    <section class="stats-strip" aria-label="حقائق عن متوازي">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-item__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <div>
+              <h3 class="stat-item__title">100% مخصص لك</h3>
+              <p class="stat-item__desc">محسوب حسب وزنك، طولك، ونشاطك الفعلي وتاريخك الصحي.</p>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-item__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path><path d="M12 6v6l4 2"></path></svg>
+            </div>
+            <div>
+              <h3 class="stat-item__title">أكلات ديرتك المحبوبة</h3>
+              <p class="stat-item__desc">كبسة، مرقوق، جريش، سلطات — بحصص وسعرات مفهومة وبدون حرمان.</p>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-item__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <div>
+              <h3 class="stat-item__title">اعتماد بشري مرخص</h3>
+              <p class="stat-item__desc">أخصائي تغذية مرخص ومدرب معتمد يراجعان كل جدول قبل أن يوصلك.</p>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-item__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            </div>
+            <div>
+              <h3 class="stat-item__title">مرونة زر «بدّل»</h3>
+              <p class="stat-item__desc">ما ناسبتك الوجبة؟ بضغطة زر واحدة تختار بديلاً بنفس السعرات فوراً.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- قسم فلسفة "متوازي" -->
+    <section id="philosophy" class="section section--alt" aria-labelledby="philosophy-title">
       <div class="container">
         <header class="section__header">
-          <h2 id="how-title" class="section__title">كيف عمل متوازي</h2>
-          <p class="section__subtitle">ثلاث خطوات بسيطة لبداية رحلتك</p>
+          <span class="section__badge">فلسفة متوازي</span>
+          <h2 id="philosophy-title" class="section__title">ليش الجمع بين الأكل والتمرين هو الحل الوحيد؟</h2>
+          <p class="section__subtitle">أغلب التجارب السابقة تفشل لأنها تركز على جانب واحد وتهمل الآخر. في متوازي، المساران يكملان بعضهما.</p>
         </header>
-        <ol class="steps" aria-label="خطوات العمل">
-          <li class="step">
-            <span class="step__number">1</span>
-            <h3 class="step__title">سجل دخول واملأ الاستمارة</h3>
-            <p class="step__desc">وزن، طول، عمر، هدف، أمراض، أدوية — كل شي يسوي الفرق</p>
-          </li>
-          <li class="step">
-            <span class="step__number">2</span>
-            <h3 class="step__title">النظام يحسب ويبني</h3>
-            <p class="step__desc">سعراتك، م الغذائيات، جدول 7 أيام، تمارين تناسبك</p>
-          </li>
-          <li class="step">
-            <span class="step__number">3</span>
-            <h3 class="step__title">أخصائي يراجعة ويعتمد</h3>
-            <p class="step__desc">ما في جدول يوصل لك بدون review بشرية مختصة</p>
-          </li>
-          <li class="step">
-            <span class="step__number">4</span>
-            <h3 class="step__title">تتابعة وتحقيق نتائج</h3>
-            <p class="step__desc">سجل وزنك، شوف المنحنى، بدّل وجباتك، احتفل بإنجازاتك</p>
-          </li>
-        </ol>
+
+        <div class="comparison-grid">
+          <div class="comp-card comp-card--diet">
+            <div class="comp-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+            </div>
+            <h3>الحمية لوحدها</h3>
+            <p>تقليل الأكل فقط بدون حركة مناسبة يسبب مشاكل متكررة:</p>
+            <ul>
+              <li>⚠️ بطء شديد في معدل الأيض والحرق</li>
+              <li>⚠️ خسارة في الكتلة العضلية وترهل الجسم</li>
+              <li>⚠️ جوع وحرمان مستمر يصعب التعايش معه</li>
+              <li>⚠️ استرجاع سريع لكل الوزن المفقود بعد التوقف</li>
+            </ul>
+          </div>
+
+          <div class="comp-card comp-card--gym">
+            <div class="comp-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+            </div>
+            <h3>الرياضة لوحدها</h3>
+            <p>الجهد البدني العالي بدون حساب السعرات لا يعطي نتيجة:</p>
+            <ul>
+              <li>⚠️ تعب وإرهاق بدون أي نزول حقيقي في الميزان</li>
+              <li>⚠️ زيادة الشهية بشكل غير مدروس يعوض ما حرقته</li>
+              <li>⚠️ صعوبة الاستمرار بسبب الإجهاد الزائد</li>
+              <li>⚠️ إحباط وشعور بأن الجسم لا يستجيب للتمرين</li>
+            </ul>
+          </div>
+
+          <div class="comp-card comp-card--featured">
+            <span class="comp-card__tag">الحل المتوازن</span>
+            <div class="comp-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h3>نظام «متوازي»</h3>
+            <p>تكامل ذكي ومدروس بين التغذية والرياضة:</p>
+            <ul>
+              <li>✅ نزول دهون مع المحافظة التامة على نشاطك وعضلاتك</li>
+              <li>✅ أكل مشبع من وجبات بيتك بدون حرمان أو مسميات غريبة</li>
+              <li>✅ تمارين متدرجة ومريحة تبني لياقتك خطوة بخطوة</li>
+              <li>✅ نمط حياة مستدام وصحي تقدر تستمر عليه طول عمرك</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section section--features" aria-labelledby="features-title">
+    <!-- قسم كيف يعمل متوازي -->
+    <section id="how-it-works" class="section" aria-labelledby="how-title">
       <div class="container">
         <header class="section__header">
-          <h2 id="features-title" class="section__title">ليش متوازي مختلف</h2>
+          <span class="section__badge">سهل وبسيط</span>
+          <h2 id="how-title" class="section__title">كيف تبدأ رحلتك في متوازي؟</h2>
+          <p class="section__subtitle">أربع خطوات ذكية تضمن لك جدولاً دقيقاً ومناسباً لظروفك الصحية والحياتية.</p>
         </header>
-        <ul class="features" aria-label="المميزات">
-          <li class="feature">
-            <span class="feature__icon" aria-hidden="true">🇸🇦</span>
-            <h3>أكلات countryك</h3>
-            <p>كبسة، مرقوق، جريش، سلطة — بحصص وسعرات محسوبة (كوب، كف، حبة)</p>
-          </li>
-          <li class="feature">
-            <span class="feature__icon" aria-hidden="true">🔄</span>
-            <h3>زر «بدّل»</h3>
-            <p>ما تعجبك وجبة؟ اضغط بدّل — يعطيك بديل بنفس السعرات</p>
-          </li>
-          <li class="feature">
-            <span class="feature__icon" aria-hidden="true">👨‍⚕️</span>
-            <h3>فريق مختصر</h3>
-            <p>أخصائي تغذية مرخص + مدرب لياقة معتمد — لكل حالة اهتمامها</p>
-          </li>
-          <li class="feature">
-            <span class="feature__icon" aria-hidden="true">📊</span>
-            <h3>تتبع الحقيقي</h3>
-            <p>سجل وزن، منحنى نزول، قياسات، تنبيهات ذكية يحددها أخصائيك</p>
-          </li>
-          <li class="feature">
-            <span class="feature__icon" aria-hidden="true">📱</span>
-            <h3>جوال أولاً</h3>
-            <p>عربي، RTL، يعمل على أي متصفح — لا تطبيق مطلوب</p>
-          </li>
-          <li class="feature">
-            <span class="feature__icon" aria-hidden="true">🔒</span>
-            <h3>بياناتك آمنة</h3>
-            <p>مشروع Firebase مستقل، إقليم الدمام، تشفير كامل، لا مشاركة</p>
-          </li>
-        </ul>
+
+        <div class="steps-container">
+          <div class="step-card">
+            <div class="step-card__num">1</div>
+            <h3 class="step-card__title">املأ الاستمارة الصحية</h3>
+            <p class="step-card__desc">تستغرق 5 دقائق فقط: طولك، وزنك الحالي، نشاطك، تاريخك الصحي، وأكلاتك المفضلة.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-card__num">2</div>
+            <h3 class="step-card__title">حساب السعرات والماكروز</h3>
+            <p class="step-card__desc">النظام يحسب احتياجك الفعلي بمعادلات علمية معتمدة ويبني مسودة جدولك الغذائي والرياضي.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-card__num">3</div>
+            <h3 class="step-card__title">مراجعة واعتماد الخبراء</h3>
+            <p class="step-card__desc">أخصائي تغذية مرخص ومدرب معتمد يدققون كل وجبة وتمرين لضمان أمانها وفعاليتها لك.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-card__num">4</div>
+            <h3 class="step-card__title">متابعة ومرونة كاملة</h3>
+            <p class="step-card__desc">جدولك على جوالك، تقدر تبدل أي وجبة بضغطة زر، وتسجل وزنك لتشاهد منحنى نزولك بثبات.</p>
+          </div>
+        </div>
       </div>
     </section>
 
+    <!-- قسم المميزات -->
+    <section id="features" class="section section--alt" aria-labelledby="features-title">
+      <div class="container">
+        <header class="section__header">
+          <span class="section__badge">مزايا حصرية</span>
+          <h2 id="features-title" class="section__title">ما الذي يجعل متوازي مختلفاً عن أي برنامج آخر؟</h2>
+          <p class="section__subtitle">صممنا متوازي ليتناسب مع واقعنا وثقافتنا اليومية، بدون تعقيدات أو اشتراطات غير واقعية.</p>
+        </header>
+
+        <div class="features-grid">
+          <div class="feature-box">
+            <div class="feature-box__icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path><path d="M12 6v6l4 2"></path></svg>
+            </div>
+            <h3>أكلات بلدك بحصص مفهومة</h3>
+            <p>كبسة، مطبق، جريش، سليق، مسخن.. أكلاتنا الشعبية متوفرة بحصص واضحة بمقاييس بسيطة (كوب، كف، ملعقة) بدون ما تحتاج ميزان في كل عزيمة.</p>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-box__icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            </div>
+            <h3>زر «بدّل» السحري</h3>
+            <p>ما ناسبتك وجبة معينة اليوم؟ اضغط «بدّل» وتلقائياً يظهر لك بديل متطابق في السعرات والماكروز لتأكل اللي تحبه وتبقى ضمن خطتك.</p>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-box__icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <h3>أخصائي مرخص ومدرب معتمد</h3>
+            <p>لا نتركك لنتائج برمجية صماء؛ كل جدول يمر على خبير بشري مرخص يعتمده، وأي حالة صحية خاصة يتولاها الأخصائي بعناية شخصية.</p>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-box__icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"></path></svg>
+            </div>
+            <h3>تمارين تناسب مكانك ووقتك</h3>
+            <p>سواءً كنت تفضل التمرن في البيت بدون أدوات، أو عندك اشتراك نادي، نحدد لك التمارين المناسبة لمستواك الحقيقي بدون إجهاد.</p>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-box__icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+            </div>
+            <h3>سجل وزن ومنحنى تقدم ذكي</h3>
+            <p>سجل وزنك وشاهد المنحنى يتناقص، مع تنبيهات ذكية من الأخصائي عند ثبات الوزن أو عند تحقيقك لإنجازات كيلو و5 و10 كيلو.</p>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-box__icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            </div>
+            <h3>جوال أولاً وتجربة فورية</h3>
+            <p>منصة سريعة وخفيفة تعمل مباشرة من متصفح هاتفك بدون الحاجة لتثبيت تطبيقات ثقيلة، مع خصوصية وتشفير كامل لبياناتك الصحية.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- قسم الباقات -->
+    <section id="plans" class="section" aria-labelledby="plans-title">
+      <div class="container">
+        <header class="section__header">
+          <span class="section__badge">اشتراكات مرنة</span>
+          <h2 id="plans-title" class="section__title">باقات شفافة تناسب احتياجك</h2>
+          <p class="section__subtitle">اشتراك شهري بسعر رمزي، يمكنك إلغاؤه في أي وقت بكل سهولة.</p>
+        </header>
+
+        <div class="plans-grid">
+          <!-- باقة أساسية -->
+          <div class="plan-card">
+            <h3 class="plan-card__name">الباقة الأساسية</h3>
+            <p class="plan-card__desc">خيار ممتاز لمن يريد خطة واضحة وموثوقة يبدأ بها رحلته بثقة.</p>
+            <div class="plan-card__price-box">
+              <span class="plan-card__cycle">اشتراك شهري مرن</span>
+            </div>
+            <ul class="plan-card__features">
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>جدول غذائي مخصص بأكلات بلدك</span>
+              </li>
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>جدول رياضي متدرج لمستواك الحالي</span>
+              </li>
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>مراجعة واعتماد أخصائي التغذية والمدرب</span>
+              </li>
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>ميزة زر «بدّل» للوجبات</span>
+              </li>
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>سجل تتبع الوزن والمنحنى البياني</span>
+              </li>
+            </ul>
+            <a href="/start" class="btn btn--outline">اختر الأساسية</a>
+          </div>
+
+          <!-- باقة المتابعة (الأبرز) -->
+          <div class="plan-card plan-card--featured">
+            <span class="plan-card__badge">الأكثر طلباً ⭐</span>
+            <h3 class="plan-card__name">باقة المتابعة</h3>
+            <p class="plan-card__desc">الباقة الأبرز: مراجعة وتحديث مستمر كل أسبوع لمواكبة نزولك وتطور لياقتك.</p>
+            <div class="plan-card__price-box">
+              <span class="plan-card__cycle">متابعة وتحديث أسبوعي</span>
+            </div>
+            <ul class="plan-card__features">
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>كل مميزات الباقة الأساسية</strong></span>
+              </li>
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>تحديث ومراجعة أسبوعية</strong> للجداول</span>
+              </li>
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>تعديل السعرات والتمارين حسب تجاوب جسمك</span>
+              </li>
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>تنبيهات فورية من الأخصائي عند ثبات الوزن</span>
+              </li>
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>أولوية في اعتماد وتدقيق الجداول</span>
+              </li>
+            </ul>
+            <a href="/start" class="btn btn--primary">ابدأ بالمتابعة</a>
+          </div>
+
+          <!-- باقة مكثفة -->
+          <div class="plan-card">
+            <h3 class="plan-card__name">الباقة المكثفة</h3>
+            <p class="plan-card__desc">تواصل وإشراف وثيق لمن يحتاج مساعدة خاصة وتوجيهاً يومياً مستمراً.</p>
+            <div class="plan-card__price-box">
+              <span class="plan-card__cycle">إشراف وتواصل مكثف</span>
+            </div>
+            <ul class="plan-card__features">
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>كل مميزات باقة المتابعة الأسبوعية</span>
+              </li>
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>تواصل ومراسلة مباشرة مع أخصائي التغذية</span>
+              </li>
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>إرشاد تدريبي شخصي من مدرب اللياقة</span>
+              </li>
+              <li class="plan-card__feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>عناية خاصة لحالات ثبات الوزن أو المناسبات</span>
+              </li>
+            </ul>
+            <a href="/start" class="btn btn--outline">اختر المكثفة</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- قسم الأسئلة الشائعة -->
+    <section id="faq" class="section section--alt" aria-labelledby="faq-title">
+      <div class="container">
+        <header class="section__header">
+          <span class="section__badge">إجابات واضحة</span>
+          <h2 id="faq-title" class="section__title">الأسئلة الشائعة</h2>
+          <p class="section__subtitle">كل ما تود معرفته عن طريقة عمل متوازي والاشتراك.</p>
+        </header>
+
+        <div class="faq-wrap">
+          <details class="faq-item" open>
+            <summary class="faq-question">
+              <span>هل البرنامج فيه حرمان من الأكل أو وجبات صعبة؟</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </summary>
+            <div class="faq-answer">
+              لا إطلاقاً. فلسفة متوازي قائمة على الأكل المتوازن من أكلات بيتك وديرتك (كبسة، جريش، مرقوق، سلطات..). لا نجبرك على أكلات غير مألوفة، والحصص موزونة ومحسوبة بمقاييس بسيطة (كوب، كف، ملعقة)، ومعك زر «بدّل» لتغيير أي وجبة فوراً.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>هل أحتاج الذهاب إلى نادي رياضي (جيم) للتمرين؟</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </summary>
+            <div class="faq-answer">
+              ليس بالضرورة. في الاستمارة الصحية نحدد رغبتك؛ فإذا كنت تفضل التمارين المنزلية بدون أي أدوات نوفر لك جدولاً رياضياً منزلياً متدرجاً يناسب وقتك، وإذا كان لديك اشتراك في النادي نحدد لك تمارين تناسب أجهزة النادي.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>ما الذي يفرق متوازي عن تطبيقات الحمية والذكاء الاصطناعي الأخرى؟</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </summary>
+            <div class="faq-answer">
+              الفرق الجوهري هو <strong>«التوازي والإشراف البشري المرخص»</strong>. التطبيقات الأخرى تقدم جداول آلية عشوائية لا تراعي خصوصيتك، وتفصل الرياضة عن التغذية. في متوازي، المساران يمشون معاً، وكل جدول يراجعه ويعتمده أخصائي تغذية مرخص ومدرب لياقة قبل أن يوصلك.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>عندي حالة صحية خاصة أو أتناول أدوية معينة، هل أستطيع الاشتراك؟</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </summary>
+            <div class="faq-answer">
+              سلامتك هي أولويتنا القصوى. الاستمارة الصحية تحتوي على فحص دقيق؛ وأي مشترك لديه حالة صحية خاصة (كالسكري، الضغط، الكلى، الحمل والرضاعة، أو عمليات سابقة) يتم تحويل ملفه فوراً للأخصائي ليتولى حالته بنفسه ويبني له جدولاً آمناً يتوافق مع وضعه الصحي.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>هل أستطيع إلغاء اشتراكي في أي وقت؟</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </summary>
+            <div class="faq-answer">
+              نعم بكل سهولة. الاشتراك شهري مرن، وبإمكانك إيقافه أو إلغاؤه في أي وقت بضغطة زر من صفحة حسابك دون أي رسوم خفية أو قيود.
+            </div>
+          </details>
+        </div>
+
+        <!-- تنويه الأمانة الطبية -->
+        <div class="transparency-banner">
+          <div class="transparency-banner__icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <div class="transparency-banner__text">
+            <h4>التزامنا بالأمانة والشفافية الطبية</h4>
+            <p>نلتزم بعدم تقديم أي ادعاءات صحية مضللة أو وعود بنزول غير واقعي يضر بصحتك. هدفنا نزول صحي تدريجي يدوم، والنتائج تختلف من شخص لآخر حسب الالتزام وطبيعة الجسم.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- قسم الحث على اتخاذ قرار (CTA Banner) -->
     <section class="section section--cta" aria-labelledby="cta-title">
       <div class="container">
-        <div class="cta">
-          <h2 id="cta-title" class="cta__title">جاهز تبدأ؟</h2>
-          <p class="cta__desc">الاستمارة تستغرق 5 دقيقة. أخصائيك بيراجع خلال 24 ساعة.</p>
-          <a href="/start.html" class="btn btn--primary btn--lg">ابدأ الآن مجاناً</a>
+        <div class="cta__content">
+          <span class="cta__badge">ابدأ اليوم</span>
+          <h2 id="cta-title" class="cta__title">جاهز تبدأ رحلتك الصحية المتوازية؟</h2>
+          <p class="cta__desc">
+            تعبئة الاستمارة الصحية تستغرق أقل من 5 دقائق. أخصائي التغذية والمدرب سيبدأون بمراجعة بياناتك وبناء جدولك فوراً.
+          </p>
+          <div class="cta__actions">
+            <a href="/start" class="btn btn--primary btn--lg">ابدأ الآن مجاناً</a>
+            <a href="/login" class="btn btn--ghost" style="color:#ffffff; border-color:rgba(255,255,255,0.4);">تسجيل الدخول</a>
+          </div>
+          <p class="cta__disclaimer">النتائج تختلف من شخص لآخر حسب الالتزام.</p>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- التذييل (Footer) -->
   <footer class="footer" role="contentinfo">
     <div class="container footer__inner">
       <div class="footer__brand">
-        <a href="/" class="logo" aria-label="متوازي - الرئيسية">
-          <svg class="logo__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-            <path d="M16 2L4 10v12l12 8 12-8V10L16 2zm0 2.5L25.5 10H6.5L16 4.5z" stroke="currentColor" stroke-width="2"/>
-            <path d="M16 14v8M12 18h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <span class="logo__text">متوازي</span>
+        <a href="/" class="logo" aria-label="متوازي — الرئيسية">
+          <div class="logo__symbol" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#0F766E" stroke-width="3.5" stroke-linecap="round"/>
+              <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#F97316" stroke-width="3.5" stroke-linecap="round"/>
+              <circle cx="21" cy="9" r="2.5" fill="#0F766E"/>
+              <circle cx="25" cy="13" r="2.5" fill="#F97316"/>
+            </svg>
+          </div>
+          <div class="logo__brand">
+            <span class="logo__text">متوازي</span>
+            <span class="logo__tagline">تغذية ولياقة بتوازي</span>
+          </div>
         </a>
-        <p>جدول غذائي + رياضي يمشون مع بعض — بمراجعة خبراء</p>
+        <p>منصة عربية لنزول الوزن: جدول غذائي بأكلات ديرتك وجدول رياضي يمشون مع بعض بتوازي، بمراجعة أخصائي تغذية ومدرب لياقة مرخصين.</p>
       </div>
-      <nav class="footer__nav" aria-label="روابط مفيدة">
-        <a href="/terms.html">ال.Shuruط</a>
-        <a href="/privacy.html">الخصوصية</a>
-        <a href="/login.html">تسجيل الدخول</a>
-      </nav>
-      <p class="footer__copyright">© 2024 متوازي. جميع الحقوق محفوظة.</p>
+
+      <div class="footer__links-grid">
+        <div class="footer__col">
+          <h5>روابط سريعة</h5>
+          <ul>
+            <li><a href="/start">ابدأ الاستمارة الصحية</a></li>
+            <li><a href="/login">تسجيل الدخول</a></li>
+            <li><a href="/account">حسابي</a></li>
+            <li><a href="#how-it-works">كيف يعمل متوازي</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h5>الصفحات والمعلومات</h5>
+          <ul>
+            <li><a href="/terms">الشروط والأحكام</a></li>
+            <li><a href="/privacy">سياسة الخصوصية</a></li>
+            <li><a href="#plans">باقات الاشتراك</a></li>
+            <li><a href="#faq">الأسئلة الشائعة</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p>© 2026 متوازي (motawazi.com). جميع الحقوق محفوظة.</p>
+        <p>مصمم بعناية للجوال أولاً · المملكة العربية السعودية والخليج العربي</p>
+      </div>
     </div>
   </footer>
+
+  <!-- سكربت تجربة ميزة "بدّل" التفاعلية -->
+  <script>
+    (function () {
+      "use strict";
+      var demoMeals = [
+        {
+          title: "كبسة لحم مع خضار مشوية",
+          desc: "150 جم رز بسمتي حبة طويلة + 120 جم لحم طازج + سلطة خضراء طازجة",
+          kcal: "🔥 520 سعرة",
+          protein: "🥩 38 جم بروتين",
+          carbs: "🌾 48 جم كارب"
+        },
+        {
+          title: "دجاج شواية مع رز بخاري وسلطة",
+          desc: "140 جم صدر دجاج مشوي + 150 جم رز بخاري ببهارات خفيفة + سلطة حارة",
+          kcal: "🔥 515 سعرة",
+          protein: "🥩 42 جم بروتين",
+          carbs: "🌾 46 جم كارب"
+        },
+        {
+          title: "مطبق لحم خفيف بالفرن مع سلطة",
+          desc: "مطبق بيتي محضر بالفرن مع حشوة لحم مفروم قليل الدهن + خضار ورقية",
+          kcal: "🔥 510 سعرة",
+          protein: "🥩 36 جم بروتين",
+          carbs: "🌾 50 جم كارب"
+        }
+      ];
+
+      var currentIdx = 0;
+      var btnSwap = document.getElementById("btnSwapDemo");
+      var titleEl = document.getElementById("mealTitle");
+      var descEl = document.getElementById("mealDesc");
+      var kcalEl = document.getElementById("mealKcal");
+      var proteinEl = document.getElementById("mealProtein");
+      var carbsEl = document.getElementById("mealCarbs");
+      var nutritionCard = document.getElementById("nutritionCard");
+
+      if (btnSwap && titleEl && descEl) {
+        btnSwap.addEventListener("click", function () {
+          currentIdx = (currentIdx + 1) % demoMeals.length;
+          var meal = demoMeals[currentIdx];
+
+          // تأثير بصري خفيف للتبديل
+          nutritionCard.style.opacity = "0.4";
+          nutritionCard.style.transform = "scale(0.98)";
+
+          setTimeout(function () {
+            titleEl.textContent = meal.title;
+            descEl.textContent = meal.desc;
+            kcalEl.textContent = meal.kcal;
+            proteinEl.textContent = meal.protein;
+            carbsEl.textContent = meal.carbs;
+
+            nutritionCard.style.opacity = "1";
+            nutritionCard.style.transform = "scale(1)";
+          }, 150);
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
