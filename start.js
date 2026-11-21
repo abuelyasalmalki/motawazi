@@ -707,10 +707,18 @@
   }
 
   function startForm(prefill) {
-    var i = restore();
-    if (prefill && i === 0) { A = merge(blank(), prefill); A.consent = { terms: false, health: false }; }
-    if (!visible(i)) i = 0;
-    idx = i;
+    var edit = new URLSearchParams(location.search).get("edit") === "1";
+    if (edit && prefill) {
+      try { sessionStorage.removeItem(storeKey()); } catch (e) {}
+      A = merge(blank(), prefill);
+      A.consent = { terms: false, health: false };
+      idx = 0;
+    } else {
+      var i = restore();
+      if (prefill && i === 0) { A = merge(blank(), prefill); A.consent = { terms: false, health: false }; }
+      if (!visible(i)) i = 0;
+      idx = i;
+    }
     history.replaceState({ step: idx }, "");
     $("boot").classList.add("hidden");
     $("form").classList.remove("hidden");
@@ -733,8 +741,14 @@
         var snap = res[1];
         if (snap.exists) {
           var p = snap.data();
-          /* عنده طلب: يروح للملخص، إلا إذا طلب التعديل والطلب ما بدأت مراجعته */
-          if (!edit || p.status !== "received") { location.replace("/summary"); return; }
+          /* إذا لم يطلب التعديل صراحة نوجهه للملخص */
+          if (!edit) { location.replace("/summary"); return; }
+          /* إظهار شريط التنبيه بأن التعديل سيعيد الاستمارة للأخصائي */
+          var notice = $("editNotice");
+          if (notice) {
+            notice.classList.remove("hidden");
+            notice.style.display = "block";
+          }
           startForm(p.answers || null);
         } else {
           startForm(null);

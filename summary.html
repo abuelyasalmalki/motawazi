@@ -77,9 +77,9 @@
       <p class="muted small" style="margin-top:14px">هذا رقم تقديري محسوب من إجاباتك، والأخصائي بيراجعه قبل ما يعتمد جدولك.</p>
     </div>
 
-    <div id="editBox" class="hidden">
-      <a class="btn ghost" href="/start?edit=1">تعديل إجاباتي</a>
-      <p class="muted small" style="margin-top:8px">تقدر تعدّل إجاباتك لين يبدأ الأخصائي المراجعة.</p>
+    <div id="editBox">
+      <a class="btn ghost" href="/start?edit=1">تعديل بيانات الاستمارة</a>
+      <p class="muted small" style="margin-top:8px" id="editNoticeDesc">تقدر تعدّل إجاباتك، وتحديثها سيعيد إرسالها للأخصائي للمراجعة.</p>
     </div>
 
     <p class="disclaimer">النتائج تختلف من شخص لآخر حسب الالتزام.</p>
@@ -133,7 +133,12 @@
       $("mC").textContent = p.calc.macros.carbs;
       $("mF").textContent = p.calc.macros.fat;
     }
-    $("editBox").classList.toggle("hidden", p.status !== "received");
+    $("editBox").classList.remove("hidden");
+    if (p.status === "approved" || p.status === "delivered") {
+      $("editNoticeDesc").textContent = "ملاحظة: تعديل الاستمارة سيعيد إرسالها للأخصائي لتحديث خطتك بناءً على بياناتك الجديدة.";
+    } else {
+      $("editNoticeDesc").textContent = "تقدر تعدّل إجاباتك، وتحديثها سيعيد إرسالها للأخصائي للمراجعة.";
+    }
     $("app").classList.remove("hidden");
   }
 
