@@ -183,6 +183,67 @@
     background: var(--accent);
     color: #ffffff;
   }
+  .btn-prep {
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    color: var(--text-dark);
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+  }
+  .btn-prep:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: var(--primary);
+  }
+  .btn-prep.active {
+    background: var(--primary-soft);
+    border-color: var(--primary);
+    color: var(--primary-dark);
+  }
+  .prep-accordion {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: var(--radius-md);
+    animation: fadeIn 0.2s ease-in-out;
+  }
+  .prep-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 10px;
+    background: #ffffff;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    border: 1px solid #e2e8f0;
+  }
+  .prep-badge strong {
+    color: var(--primary-dark);
+  }
+  .prep-steps-list {
+    margin: 0;
+    padding-right: 20px;
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .prep-steps-list li {
+    margin-bottom: 6px;
+  }
+  .prep-steps-list li:last-child {
+    margin-bottom: 0;
+  }
 
   /* المسار الرياضي الموازي */
   .workout-card {
@@ -258,7 +319,20 @@
 </header>
 
 <main class="wrap">
-  <p class="msg" id="boot" role="status">جاري تحميل جدولك المعتمد…</p>
+  <p class="msg" id="boot" role="status">جاري التحقق من حالة الجدول…</p>
+
+  <!-- كارت يظهر إذا لم يتم اعتماد الجدول بعد من الأخصائي في فايربيس -->
+  <div id="lockedPlanState" class="card hidden" style="text-align:center; padding:36px 20px;">
+    <div style="font-size:3rem; margin-bottom:12px;">⏳</div>
+    <h1 class="step-title" style="margin-bottom:8px;">جدولك قيد المراجعة والاعتماد</h1>
+    <p class="muted" style="max-width:440px; margin:0 auto 20px; line-height:1.6;">
+      أخصائي التغذية ومدرب اللياقة يراجعان إجاباتك الصحية لإعداد خطتك المتوازية. فور اعتماد الجدول، ستفتح لك هذه الصفحة تلقائياً لتصفح وجباتك وتمارينك.
+    </p>
+    <div style="display:flex; justify-content:center; gap:10px;">
+      <a href="/account" class="btn ghost" style="width:auto; margin:0; padding:10px 24px;">الرجوع لحسابي</a>
+      <a href="/summary" class="btn btn--outline" style="width:auto; margin:0; padding:10px 24px;">متابعة حالة الطلب</a>
+    </div>
+  </div>
 
   <div id="planContent" class="hidden">
     <div class="plan-page-head">
@@ -385,6 +459,8 @@
       category: meal.category,
       description: meal.description,
       portion: meal.portion,
+      prepTimeMinutes: meal.prepTimeMinutes || 15,
+      preparationSteps: meal.preparationSteps || [],
       calories: Math.round(meal.baseCalories * clamped),
       macros: {
         protein: Math.round(meal.macros.protein * clamped),
@@ -433,6 +509,17 @@
       totalC += meal.macros.carbs;
       totalF += meal.macros.fat;
 
+      var stepsHtml = '';
+      if (meal.preparationSteps && meal.preparationSteps.length > 0) {
+        stepsHtml =
+          '<div class="prep-accordion" id="prep_' + slotKey + '" style="display:none;">' +
+            '<div class="prep-badge">⏱️ مدة التحضير والطهي: <strong>' + (meal.prepTimeMinutes || 15) + ' دقيقة</strong></div>' +
+            '<ol class="prep-steps-list">' +
+              meal.preparationSteps.map(function(s) { return '<li>' + s + '</li>'; }).join('') +
+            '</ol>' +
+          '</div>';
+      }
+
       var slotEl = document.createElement("div");
       slotEl.className = "meal-slot";
       slotEl.id = "slot_" + slotKey;
@@ -442,9 +529,13 @@
           '<span class="meal-slot__title ' + (slotInfo.isLunch ? 'lunch' : '') + '">' +
             slotInfo.icon + ' ' + slotInfo.ar +
           '</span>' +
-          '<button type="button" class="btn-swap ' + (slotInfo.isLunch ? 'lunch' : '') + '" data-slot="' + slotKey + '">' +
-            '<span>بدّل الوجبة</span> 🔄' +
-          '</button>' +
+          '<div style="display:flex; gap:6px; align-items:center;">' +
+            (meal.preparationSteps && meal.preparationSteps.length > 0 ?
+              '<button type="button" class="btn-prep" data-slot="' + slotKey + '"><span>👨‍🍳 طريقة التحضير</span></button>' : '') +
+            '<button type="button" class="btn-swap ' + (slotInfo.isLunch ? 'lunch' : '') + '" data-slot="' + slotKey + '">' +
+              '<span>بدّل</span> 🔄' +
+            '</button>' +
+          '</div>' +
         '</div>' +
         '<div class="meal-slot__name">' + meal.name + '</div>' +
         '<div class="meal-slot__portion">' + meal.portion + ' — ' + meal.description + '</div>' +
@@ -455,7 +546,8 @@
             '<span class="macro-tag">🌾 ' + meal.macros.carbs + ' جم كارب</span>' +
             '<span class="macro-tag">🥑 ' + meal.macros.fat + ' جم دهون</span>' +
           '</div>' +
-        '</div>';
+        '</div>' +
+        stepsHtml;
 
       container.appendChild(slotEl);
     });
@@ -469,6 +561,21 @@
     var w = WORKOUTS[dayIdx % WORKOUTS.length];
     $("workoutTitle").textContent = w.title;
     $("workoutDesc").textContent = w.desc;
+
+    // أزرار طريقة التحضير
+    var prepBtns = container.querySelectorAll(".btn-prep");
+    prepBtns.forEach(function(b) {
+      b.addEventListener("click", function() {
+        var sKey = b.getAttribute("data-slot");
+        var panel = $("prep_" + sKey);
+        if (!panel) return;
+        var isOpen = (panel.style.display !== "none");
+        panel.style.display = isOpen ? "none" : "block";
+        b.classList.toggle("active", !isOpen);
+        var spanEl = b.querySelector("span");
+        if (spanEl) spanEl.textContent = isOpen ? "👨‍🍳 طريقة التحضير" : "إخفاء الخطوات ✕";
+      });
+    });
 
     // أزرار التبديل
     var swapBtns = container.querySelectorAll(".btn-swap");
@@ -528,23 +635,35 @@
         return;
       }
       firebase.firestore().collection("profiles").doc(u.uid).get().then(function(snap) {
-        if (snap.exists) {
-          var p = snap.data();
-          if (p.calc && p.calc.kcal) {
-            userTargetKcal = p.calc.kcal;
-          }
+        if (!snap.exists) {
+          // لم يعبئ الاستمارة أصلاً ➔ نوجهه للاستمارة
+          location.replace("/start");
+          return;
         }
+
+        var p = snap.data();
+        var status = p.status || "received";
+        var isApproved = (status === "approved" || status === "delivered");
+
+        // حارس الأمان: إذا لم يكن الجدول معتمداً في فايربيس نظهر شاشة الانتظار
+        if (!isApproved) {
+          $("boot").classList.add("hidden");
+          $("lockedPlanState").classList.remove("hidden");
+          return;
+        }
+
+        if (p.calc && p.calc.kcal) {
+          userTargetKcal = p.calc.kcal;
+        }
+
         loadMealsDB().then(function() {
           $("boot").classList.add("hidden");
           $("planContent").classList.remove("hidden");
           renderDayPlan(0);
         });
       }).catch(function() {
-        loadMealsDB().then(function() {
-          $("boot").classList.add("hidden");
-          $("planContent").classList.remove("hidden");
-          renderDayPlan(0);
-        });
+        $("boot").className = "msg err";
+        $("boot").textContent = "تعذّر التحقق من حالة الجدول، حدّث الصفحة.";
       });
     });
   }

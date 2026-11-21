@@ -112,17 +112,17 @@
       </div>
     </div>
 
-    <!-- كارت فتح الجدول اليومي المستقل -->
-    <div class="plan-banner-card" id="planBannerCard">
+    <!-- كارت فتح الجدول اليومي المستقل (يظهر فقط إذا تم الاعتماد من الأخصائي في فايربيس) -->
+    <div class="plan-banner-card hidden" id="planBannerCard">
       <div class="plan-banner-head">
         <h2 class="plan-banner-title">
           <span>🗓️</span>
           <span>جدولك الغذائي والرياضي اليومي</span>
         </h2>
-        <span class="badge on">معتمد</span>
+        <span class="badge on" id="planApprovedBadge">معتمد ✓</span>
       </div>
       <p class="plan-banner-desc">
-        وجبات أكلات بلدك محسوبة السعرات مع زر «بدّل»، وجدول التمارين الموازي، مع إمكانية تصفح باقي أيام الشهر وتحميل الجدول بصيغة PDF.
+        تم اعتماد وتدقيق خطتك من قِبل أخصائي التغذية ومدرب اللياقة. وجبات أكلات بلدك محسوبة السعرات مع ميزة زر «بدّل»، وجدول التمارين الموازي، مع إمكانية تصفح باقي أيام الشهر وتحميل الجدول بصيغة PDF.
       </p>
       <div class="plan-banner-meta">
         <span class="plan-banner-pill" id="bannerKcal">🔥 السعرات: 1800 سعرة</span>
@@ -137,6 +137,21 @@
         <a href="/track" class="btn btn--outline" style="flex:1; margin-top:0; border-radius:var(--radius-full); font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
           <span>📈 متابعة وزني والمواعيد</span>
         </a>
+      </div>
+    </div>
+
+    <!-- كارت يظهر إذا كان الطلب قيد المراجعة ولم يُعتمد بعد -->
+    <div class="card hidden" id="underReviewBanner">
+      <div class="card__head">
+        <span class="card__icon" style="background:#fffbeb; color:#d97706;" aria-hidden="true">⏳</span>
+        <h2>جدولك قيد المراجعة والتدقيق</h2>
+      </div>
+      <p class="muted" style="margin-bottom:14px">
+        أخصائي التغذية ومدرب اللياقة يراجعان إجاباتك الصحية لبناء جدولك الرياضي والغذائي المتوازي. بمجرد اعتماد الجدول ستتمكن من فتحه وتصفحه فوراً من هنا.
+      </p>
+      <div style="display:flex; gap:10px;">
+        <a href="/summary" class="btn ghost" style="margin-top:0; flex:1;">متابعة مراحل الطلب</a>
+        <a href="/track" class="btn btn--outline" style="margin-top:0; flex:1;">سجل الوزن والمواعيد</a>
       </div>
     </div>
 
@@ -267,9 +282,13 @@
   function renderIntake(uid) {
     firebase.firestore().collection("profiles").doc(uid).get().then(function (snap) {
       var btn = $("intakeBtn");
+      var planBanner = $("planBannerCard");
+      var reviewBanner = $("underReviewBanner");
+
       if (snap.exists) {
         var data = snap.data();
-        $("intakeText").textContent = STATUS[data.status] || "تم استلام استمارتك";
+        var status = data.status || "received";
+        $("intakeText").textContent = STATUS[status] || "تم استلام استمارتك";
         btn.textContent = "تفاصيل طلبك وسعراتك";
         btn.href = "/summary";
         btn.className = "btn ghost";
@@ -278,12 +297,25 @@
         if (data.calc && data.calc.kcal) {
           $("bannerKcal").textContent = "🔥 احتياجك: " + data.calc.kcal + " سعرة";
         }
+
+        // قفل الجدول الشرطي: لا يفتح إلا إذا كانت الحالة معتمدة من الأخصائي في فايربيس
+        var isApproved = (status === "approved" || status === "delivered");
+        if (isApproved) {
+          planBanner.classList.remove("hidden");
+          reviewBanner.classList.add("hidden");
+        } else {
+          planBanner.classList.add("hidden");
+          reviewBanner.classList.remove("hidden");
+        }
       } else {
-        $("intakeText").textContent = "لم تقم بتعبئة الاستمارة الصحية بعد. عبّ الاستمارة عشان نحسب احتياجك الفعلي بدقة.";
+        $("intakeText").textContent = "لم تقم بتعبئة الاستمارة الصحية بعد. عبّ الاستمارة عشان نحسب احتياجك الفعلي ويبني الأخصائي خطتك.";
         btn.textContent = "ابدأ الاستمارة الآن";
         btn.href = "/start";
         btn.className = "btn";
         btn.classList.remove("hidden");
+
+        planBanner.classList.add("hidden");
+        reviewBanner.classList.add("hidden");
       }
     }).catch(function () {
       $("intakeText").textContent = "تعذّر تحميل حالة طلبك.";
