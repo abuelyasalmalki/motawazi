@@ -707,15 +707,13 @@
   }
 
   function startForm(prefill) {
-    var edit = new URLSearchParams(location.search).get("edit") === "1";
-    if (edit && prefill) {
+    if (prefill) {
       try { sessionStorage.removeItem(storeKey()); } catch (e) {}
       A = merge(blank(), prefill);
       A.consent = { terms: false, health: false };
       idx = 0;
     } else {
       var i = restore();
-      if (prefill && i === 0) { A = merge(blank(), prefill); A.consent = { terms: false, health: false }; }
       if (!visible(i)) i = 0;
       idx = i;
     }
@@ -733,7 +731,6 @@
       if (begun) return;
       begun = true;
       UID = u.uid;
-      var edit = new URLSearchParams(location.search).get("edit") === "1";
       Promise.all([
         loadConfig(),
         firebase.firestore().collection("profiles").doc(u.uid).get()
@@ -741,9 +738,7 @@
         var snap = res[1];
         if (snap.exists) {
           var p = snap.data();
-          /* إذا لم يطلب التعديل صراحة نوجهه للملخص */
-          if (!edit) { location.replace("/summary"); return; }
-          /* إظهار شريط التنبيه بأن التعديل سيعيد الاستمارة للأخصائي */
+          /* المستخدم عنده ملف سابق ➔ نفتح له الاستمارة للتعديل مع إظهار شريط التنبيه */
           var notice = $("editNotice");
           if (notice) {
             notice.classList.remove("hidden");
@@ -753,7 +748,10 @@
         } else {
           startForm(null);
         }
-      }).catch(function () { fail("تعذّر التحميل، حدّث الصفحة."); });
+      }).catch(function (err) {
+        console.error("[متوازي] فشل تحميل الملف الشخصي:", err);
+        fail("تعذّر التحميل، حدّث الصفحة.");
+      });
     });
   }
 
