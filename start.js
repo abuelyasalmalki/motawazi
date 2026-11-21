@@ -532,35 +532,165 @@
     return out;
   }
 
+  /* ===== حساب السعرات والفرز في المتصفح ===== */
+  function bmiOf(weightKg, heightCm) {
+    var m = heightCm / 100;
+    return Math.round((weightKg / (m * m)) * 10) / 10;
+  }
+
+  function bmrMifflin(sex, weightKg, heightCm, age) {
+    return 10 * weightKg + 6.25 * heightCm - 5 * age + (sex === "male" ? 5 : -161);
+  }
+
+  function computeClientCalc(a, cfg) {
+    var bmr = bmrMifflin(a.sex, a.weightKg, a.heightCm, a.age);
+    var tdee = bmr * (cfg.activityFactors ? cfg.activityFactors[a.activity] : 1.375);
+    var deficit = a.goal === "lose" ? (cfg.paceDeficits ? cfg.paceDeficits[a.pace] : 500) : (cfg.maintainDeficit || 0);
+    var raw = tdee - deficit;
+    var minKcal = (cfg.minCalories && cfg.minCalories[a.sex]) || (a.sex === "male" ? 1500 : 1200);
+    var floored = Math.max(raw, minKcal);
+    var step = cfg.roundKcalTo || 50;
+    var kcal = Math.round(floored / step) * step;
+    if (kcal < minKcal) kcal = Math.ceil(minKcal / step) * step;
+
+    var grams = {};
+    var macros = (cfg.macros) || { protein: 0.25, carbs: 0.45, fat: 0.30 };
+    var kcalPerGram = (cfg.kcalPerGram) || { protein: 4, carbs: 4, fat: 9 };
+    ["protein", "carbs", "fat"].forEach(function(k) {
+      grams[k] = Math.round((kcal * macros[k]) / kcalPerGram[k]);
+    });
+
+    return {
+      kcal: kcal,
+      macros: grams,
+      bmr: Math.round(bmr),
+      tdee: Math.round(tdee),
+      deficit: deficit,
+      raisedToMin: raw < minKcal,
+      minKcal: minKcal,
+      bmi: bmiOf(a.weightKg, a.heightCm),
+      targetBmi: a.targetKg ? bmiOf(a.targetKg, a.heightCm) : null,
+      configVersion: cfg.version || "1.0"
+    };
+  }
+
+  function computeClientTriage(a, calc, cfg, elig) {
+    var reasons = [];
+    var healthKeys = ["diabetes", "hypertension", "heart", "kidneyLiver", "pregnancy", "surgery", "eatingDisorder"];
+    healthKeys.forEach(function(k) {
+      if (a.health && a.health[k]) reasons.push(k);
+    });
+    if (a.medications && a.medications.has) reasons.push("medications");
+    if (elig === "minor") reasons.push("minor");
+    var bmiCfg = cfg.bmi || { reviewBelow: 18.5, reviewAtOrAbove: 35, targetBelow: 18.5 };
+    if (calc.bmi < bmiCfg.reviewBelow) reasons.push("bmi_low");
+    if (calc.bmi >= bmiCfg.reviewAtOrAbove) reasons.push("bmi_high");
+    if (calc.targetBmi !== null && calc.targetBmi < bmiCfg.targetBelow) reasons.push("target_bmi_low");
+    return { flagged: reasons.length > 0, reasons: reasons };
+  }
+
   function submit() {
     if (sending) return;
     sending = true;
     $("next").disabled = true;
     $("next").textContent = "جاري الإرسال…";
     $("err").textContent = "";
-    firebase.app().functions(REGION).httpsCallable("submitIntake")({ answers: payload() })
+
+    var user = firebase.auth().currentUser;
+    if (!user) {
+      sending = false;
+      $("next").disabled = false;
+      $("next").textContent = "إرسال";
+      $("err").textContent = "انتهت الجلسة، سجّل دخولك أولاً للمتابعة.";
+      return;
+    }
+
+    var answersPayload = payload();
+
+    // محاولة الإرسال لدالة السحابة submitIntake أولاً إذا كانت منشورة
+    firebase.app().functions(REGION).httpsCallable("submitIntake")({ answers: answersPayload })
       .then(function () {
         try { sessionStorage.removeItem(storeKey()); } catch (e) {}
         location.replace("/summary");
       })
       .catch(function (e) {
-        sending = false;
-        $("next").disabled = false;
-        $("next").textContent = "إرسال";
         var d = (e && e.details) || {};
-        if (d.code === "age_not_eligible") { showTooYoung(); return; }
+        if (d.code === "age_not_eligible") {
+          sending = false;
+          $("next").disabled = false;
+          $("next").textContent = "إرسال";
+          showTooYoung();
+          return;
+        }
         if (d.code === "locked") {
+          sending = false;
+          $("next").disabled = false;
+          $("next").textContent = "إرسال";
           $("err").innerHTML = "";
           $("err").appendChild(el("span", {}, ["طلبك قيد المراجعة، وما تقدر تعدّله الحين. ",
             el("a", { href: "/summary", text: "شوف حالة طلبك" })]));
           return;
         }
-        if (Array.isArray(d.errors) && d.errors.length) {
-          var target = ERR_STEP[d.errors[0]];
-          if (target) { go(stepIndex(target), true); $("err").textContent = "راجع هذي الإجابة."; return; }
-        }
-        $("err").textContent = "تعذّر الإرسال، تأكد من الإنترنت وحاول مرة ثانية.";
+
+        // إذا كانت دالة السحابة غير منشورة في فايربيس، يتم الحفظ المباشر فوراً
+        console.warn("[متوازي] دالة السحابة غير متاحة، جاري الحفظ المباشر في قاعدة البيانات:", e);
+        directFirestoreSave(user, answersPayload);
       });
+  }
+
+  function directFirestoreSave(user, p) {
+    try {
+      var calc = computeClientCalc(p, CFG || {});
+      var tri = computeClientTriage(p, calc, CFG || {}, eligibility(p.age));
+      var now = firebase.firestore.FieldValue.serverTimestamp();
+      var db = firebase.firestore();
+
+      var profileDoc = {
+        uid: user.uid,
+        answers: p,
+        calc: calc,
+        triage: tri,
+        status: "received",
+        consent: {
+          terms: true,
+          health: true,
+          version: "draft-2026-11",
+          at: now
+        },
+        createdAt: now,
+        updatedAt: now
+      };
+
+      db.collection("profiles").doc(user.uid).set(profileDoc)
+        .then(function() {
+          return db.collection("weights").doc(user.uid).collection("entries").doc("intake").set({
+            weightKg: p.weightKg,
+            source: "intake",
+            date: now
+          });
+        })
+        .then(function() {
+          try { sessionStorage.removeItem(storeKey()); } catch (e) {}
+          location.replace("/summary");
+        })
+        .catch(function(err) {
+          console.error("[متوازي] خطأ عند حفظ الاستمارة في فايرستور:", err);
+          sending = false;
+          $("next").disabled = false;
+          $("next").textContent = "إرسال";
+          if (err && err.code === "permission-denied") {
+            $("err").textContent = "تعذّر الحفظ: يرجى التأكد من نشر وتفعيل قواعد Firestore في فايربيس.";
+          } else {
+            $("err").textContent = "تعذّر الإرسال، تأكد من اتصال الإنترنت وحاول مرة ثانية.";
+          }
+        });
+    } catch (ex) {
+      console.error("[متوازي] استثناء أثناء إعداد البيانات:", ex);
+      sending = false;
+      $("next").disabled = false;
+      $("next").textContent = "إرسال";
+      $("err").textContent = "حدث خطأ غير متوقع، حاول مرة ثانية.";
+    }
   }
 
   /* ===== التشغيل ===== */

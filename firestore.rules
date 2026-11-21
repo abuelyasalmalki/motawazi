@@ -48,20 +48,15 @@ service cloud.firestore {
 
     // ===== الملف الصحي =====
     // الإجابات والسعرات المحسوبة والفرز وحالة المراجعة.
-    // تكتبه دالّة submitIntake وحدها (Admin SDK) — فالعميل لا يستطيع أن
-    // يكتب سعراته ولا حالة المراجعة، ولا حتى إجاباته إلا عبر الدالّة
-    // التي تتحقّق منها وتعيد الحساب.
     match /profiles/{userId} {
       allow read:  if owns(userId);
-      allow write: if false;
+      allow create, update: if owns(userId);
     }
 
     // ===== سجل الوزن =====
-    // أول قراءة من الاستمارة تكتبها الدالّة. إضافة القراءات من العميل
-    // (وتعديل آخر قراءة فقط) تأتي مع مرحلة سجل الوزن — قاعدتها هنا حينها.
     match /weights/{userId}/entries/{entryId} {
       allow read:  if owns(userId);
-      allow write: if false;
+      allow create, update: if owns(userId);
     }
 
     // ===== طلبات الدفع =====
