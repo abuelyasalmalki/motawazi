@@ -41,11 +41,11 @@ for f in "${PUBLIC_FILES[@]}"; do
   fi
 done
 
-# إعداد الاستمارة: نفس الملفات اللي يقرؤها الخادم — مصدر واحد للحدود
-# والدول. (عامّة عمداً: لا أسرار فيها، والخادم يعيد التحقّق من كل شيء.)
+# إعداد الاستمارة والوجبات: نفس الملفات اللي يقرؤها الخادم
 mkdir -p "$OUT/config"
 cp "$ROOT/functions/nutrition.config.json" "$OUT/config/nutrition.json"
 cp "$ROOT/functions/countries.json"        "$OUT/config/countries.json"
+cp "$ROOT/functions/meals.sa.json"         "$OUT/config/meals.json"
 
 # أصول ثابتة عامّة (إن وُجدت لاحقًا: شعار، أيقونات…)
 [ -d "$ROOT/assets" ] && cp -R "$ROOT/assets" "$OUT/assets"
