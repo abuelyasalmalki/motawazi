@@ -12,121 +12,74 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
 <style>
-  /* تنسيقات عرض جدول اليوم في لوحة العميل */
-  .today-plan {
-    margin-top: 10px;
-  }
-  .meal-slot {
-    background: #ffffff;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 16px 18px;
-    margin-bottom: 12px;
-    transition: all 0.2s ease;
-  }
-  .meal-slot:hover {
-    border-color: var(--primary-light);
+  /* كارت الجدول اليومي البارز في صفحة الحساب */
+  .plan-banner-card {
+    background: linear-gradient(135deg, var(--primary-soft) 0%, #ffffff 100%);
+    border: 2px solid var(--primary-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
     box-shadow: var(--shadow-sm);
   }
-  .meal-slot__header {
+  .plan-banner-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
-  .meal-slot__title {
+  .plan-banner-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--primary-dark);
+    margin: 0;
     display: flex;
     align-items: center;
     gap: 8px;
-    font-weight: 800;
-    font-size: 0.92rem;
-    color: var(--primary);
   }
-  .meal-slot__title.lunch { color: var(--accent); }
-  .meal-slot__name {
-    font-size: 1.08rem;
-    font-weight: 800;
-    color: var(--text-dark);
-    margin-bottom: 4px;
-  }
-  .meal-slot__portion {
-    font-size: 0.88rem;
+  .plan-banner-desc {
     color: var(--text-muted);
-    line-height: 1.5;
-    margin-bottom: 10px;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    margin-bottom: 18px;
   }
-  .meal-slot__footer {
+  .plan-banner-meta {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    gap: 10px;
     flex-wrap: wrap;
-    gap: 8px;
-    padding-top: 10px;
-    border-top: 1px dashed var(--border);
+    margin-bottom: 18px;
   }
-  .meal-slot__metrics {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  .macro-tag {
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 6px;
-    background: var(--bg);
-    color: var(--text);
-  }
-  .macro-tag.kcal {
-    background: var(--primary-soft);
-    color: var(--primary);
-  }
-  .btn-swap {
+  .plan-banner-pill {
     background: #ffffff;
-    border: 1.5px solid var(--primary);
-    color: var(--primary);
-    padding: 5px 14px;
+    border: 1px solid var(--border);
+    padding: 4px 12px;
     border-radius: var(--radius-full);
     font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+  .btn-open-plan {
+    background: var(--gradient-primary);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
+    font-size: 1rem;
     font-weight: 800;
-    cursor: pointer;
+    text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
     transition: all 0.2s ease;
+    width: 100%;
   }
-  .btn-swap:hover {
-    background: var(--primary);
+  .btn-open-plan:hover {
+    background: var(--primary-hover);
     color: #ffffff;
-    transform: translateY(-1px);
-  }
-  .btn-swap.lunch {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .btn-swap.lunch:hover {
-    background: var(--accent);
-    color: #ffffff;
-  }
-  .plan-summary-bar {
-    display: flex;
-    justify-content: space-around;
-    background: var(--primary-soft);
-    border: 1px solid var(--primary-border);
-    border-radius: var(--radius-md);
-    padding: 12px;
-    margin-bottom: 16px;
-    text-align: center;
-  }
-  .plan-summary-item b {
-    display: block;
-    font-size: 1.15rem;
-    color: var(--primary-dark);
-  }
-  .plan-summary-item span {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    font-weight: 700;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
   }
 </style>
 </head>
@@ -157,37 +110,27 @@
       </div>
     </div>
 
-    <!-- كارت جدول اليوم التفاعلي (يظهر عندما يكون هناك حساب سعرات أو طلب) -->
-    <div class="card" id="dailyPlanCard">
-      <div class="card__head">
-        <span class="card__icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
-        </span>
-        <h2>جدول اليوم المخصص (أكلات سعودية)</h2>
+    <!-- كارت فتح الجدول اليومي المستقل -->
+    <div class="plan-banner-card" id="planBannerCard">
+      <div class="plan-banner-head">
+        <h2 class="plan-banner-title">
+          <span>🗓️</span>
+          <span>جدولك الغذائي والرياضي اليومي</span>
+        </h2>
+        <span class="badge on">معتمد</span>
       </div>
-
-      <div class="plan-summary-bar">
-        <div class="plan-summary-item">
-          <b id="summaryKcal">1800</b>
-          <span>سعرة اليوم</span>
-        </div>
-        <div class="plan-summary-item">
-          <b id="summaryProtein">110 جم</b>
-          <span>بروتين</span>
-        </div>
-        <div class="plan-summary-item">
-          <b id="summaryCarbs">185 جم</b>
-          <span>كارب</span>
-        </div>
-        <div class="plan-summary-item">
-          <b id="summaryFat">65 جم</b>
-          <span>دهون</span>
-        </div>
+      <p class="plan-banner-desc">
+        وجبات أكلات بلدك محسوبة السعرات مع زر «بدّل»، وجدول التمارين الموازي، مع إمكانية تصفح باقي أيام الشهر وتحميل الجدول بصيغة PDF.
+      </p>
+      <div class="plan-banner-meta">
+        <span class="plan-banner-pill" id="bannerKcal">🔥 السعرات: 1800 سعرة</span>
+        <span class="plan-banner-pill">🔄 ميزة زر «بدّل» متاحة</span>
+        <span class="plan-banner-pill">🏋️ تمارين موازية</span>
       </div>
-
-      <div class="today-plan" id="mealSlotsContainer">
-        <!-- يتم ملء فتحات الوجبات الأربع آلياً من الجافاسكريبت -->
-      </div>
+      <a href="/plan" class="btn-open-plan">
+        <span>افتح وتصفّح جدولي الآن</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      </a>
     </div>
 
     <!-- حالة الطلب بعد العودة من الدفع -->
@@ -201,7 +144,7 @@
         <span class="card__icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg>
         </span>
-        <h2>حالة طلبك الصحي</h2>
+        <h2>حالة استمارتك الصحية</h2>
       </div>
       <p id="intakeText" class="muted">…</p>
       <a class="btn hidden" id="intakeBtn" href="/start"></a>
@@ -222,7 +165,7 @@
 
     <!-- الباقات -->
     <section id="plans">
-      <h2 class="section-title">الباقات المتاحة</h2>
+      <h2 class="section-title">باقات الاشتراك</h2>
       <p class="muted small" style="margin-bottom:18px">كل الباقات فيها جدول غذائي وجدول رياضي يمشون مع بعض، يراجعهم أخصائي تغذية ومدرب لياقة.</p>
       <div id="planList"></div>
       <p class="msg" id="payMsg" role="status" aria-live="polite"></p>
@@ -234,7 +177,7 @@
 
 <footer class="app-footer">
   <div class="app-footer__inner">
-    <span>© 2026 متوازي</span>
+    <span>© 2026 متوازي (motawazi.com)</span>
     <nav aria-label="روابط قانونية"><a href="/terms">الشروط والأحكام</a><a href="/privacy">سياسة الخصوصية</a></nav>
   </div>
 </footer>
@@ -249,146 +192,7 @@
 (function () {
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
-  var REGION = "me-central2";
 
-  var MEALS_DATA = null;
-  var userTargetKcal = 1800; // الافتراضي إذا لم يكن لديه حساب بعد
-  var currentPlan = {};
-
-  var SLOT_NAMES = {
-    breakfast: { ar: "الفطور", icon: "🍳", ratio: 0.25 },
-    lunch:     { ar: "الغداء",  icon: "🍲", ratio: 0.40, isLunch: true },
-    dinner:    { ar: "العشاء",  icon: "🥗", ratio: 0.25 },
-    snack:     { ar: "سناك / خفايف", icon: "☕", ratio: 0.10 }
-  };
-
-  /* تحميل بنك الوجبات السعودية */
-  function loadMealsDB() {
-    return fetch("/config/meals.json")
-      .catch(function() { return fetch("/meals.json"); })
-      .then(function(res) { return res.json(); })
-      .then(function(data) { MEALS_DATA = data.meals; })
-      .catch(function(e) { console.warn("[متوازي] تعذر جلب ملف الوجبات:", e); });
-  }
-
-  function scaleMeal(meal, targetKcal) {
-    var factor = targetKcal / meal.baseCalories;
-    var clamped = Math.min(Math.max(factor, 0.75), 1.35);
-    return {
-      id: meal.id,
-      name: meal.name,
-      category: meal.category,
-      description: meal.description,
-      portion: meal.portion,
-      calories: Math.round(meal.baseCalories * clamped),
-      macros: {
-        protein: Math.round(meal.macros.protein * clamped),
-        carbs: Math.round(meal.macros.carbs * clamped),
-        fat: Math.round(meal.macros.fat * clamped)
-      }
-    };
-  }
-
-  function renderDailyPlan(kcal) {
-    if (!MEALS_DATA) return;
-    userTargetKcal = kcal || userTargetKcal;
-
-    var container = $("mealSlotsContainer");
-    container.innerHTML = "";
-
-    var totalKcal = 0, totalP = 0, totalC = 0, totalF = 0;
-    var slots = ["breakfast", "lunch", "dinner", "snack"];
-
-    slots.forEach(function(slotKey) {
-      var slotInfo = SLOT_NAMES[slotKey];
-      var targetSlotKcal = Math.round(userTargetKcal * slotInfo.ratio);
-      var pool = MEALS_DATA[slotKey] || [];
-      if (!pool.length) return;
-
-      // اختيار أول وجبة إذا لم تكن محددة مسبقاً
-      if (!currentPlan[slotKey]) {
-        currentPlan[slotKey] = scaleMeal(pool[0], targetSlotKcal);
-      }
-      var meal = currentPlan[slotKey];
-
-      totalKcal += meal.calories;
-      totalP += meal.macros.protein;
-      totalC += meal.macros.carbs;
-      totalF += meal.macros.fat;
-
-      // إنشاء بطاقة الوجبة
-      var slotEl = document.createElement("div");
-      slotEl.className = "meal-slot";
-      slotEl.id = "slot_" + slotKey;
-
-      slotEl.innerHTML =
-        '<div class="meal-slot__header">' +
-          '<span class="meal-slot__title ' + (slotInfo.isLunch ? 'lunch' : '') + '">' +
-            slotInfo.icon + ' ' + slotInfo.ar +
-          '</span>' +
-          '<button type="button" class="btn-swap ' + (slotInfo.isLunch ? 'lunch' : '') + '" data-slot="' + slotKey + '">' +
-            '<span>بدّل الوجبة</span> 🔄' +
-          '</button>' +
-        '</div>' +
-        '<div class="meal-slot__name" id="' + slotKey + '_name">' + meal.name + '</div>' +
-        '<div class="meal-slot__portion" id="' + slotKey + '_desc">' + meal.portion + ' — ' + meal.description + '</div>' +
-        '<div class="meal-slot__footer">' +
-          '<div class="meal-slot__metrics">' +
-            '<span class="macro-tag kcal" id="' + slotKey + '_kcal">🔥 ' + meal.calories + ' سعرة</span>' +
-            '<span class="macro-tag" id="' + slotKey + '_protein">🥩 ' + meal.macros.protein + ' جم بروتين</span>' +
-            '<span class="macro-tag" id="' + slotKey + '_carbs">🌾 ' + meal.macros.carbs + ' جم كارب</span>' +
-            '<span class="macro-tag" id="' + slotKey + '_fat">🥑 ' + meal.macros.fat + ' جم دهون</span>' +
-          '</div>' +
-        '</div>';
-
-      container.appendChild(slotEl);
-    });
-
-    // تحديث شريط الإجمالي العلوي
-    $("summaryKcal").textContent = totalKcal;
-    $("summaryProtein").textContent = totalP + " جم";
-    $("summaryCarbs").textContent = totalC + " جم";
-    $("summaryFat").textContent = totalF + " جم";
-
-    // تفعيل أزرار "بدّل"
-    var swapBtns = container.querySelectorAll(".btn-swap");
-    swapBtns.forEach(function(btn) {
-      btn.addEventListener("click", function() {
-        var sKey = btn.getAttribute("data-slot");
-        handleSwap(sKey);
-      });
-    });
-  }
-
-  /* ميزة زر "بدّل" */
-  function handleSwap(slotKey) {
-    var pool = MEALS_DATA[slotKey];
-    if (!pool || pool.length <= 1) return;
-
-    var curMeal = currentPlan[slotKey];
-    var alternatives = pool.filter(function(m) { return m.id !== (curMeal ? curMeal.id : ""); });
-    var nextItem = alternatives[Math.floor(Math.random() * alternatives.length)];
-
-    var targetSlotKcal = Math.round(userTargetKcal * SLOT_NAMES[slotKey].ratio);
-    currentPlan[slotKey] = scaleMeal(nextItem, targetSlotKcal);
-
-    // تأثير حركة لطيف
-    var cardEl = $("slot_" + slotKey);
-    if (cardEl) {
-      cardEl.style.opacity = "0.3";
-      cardEl.style.transform = "scale(0.98)";
-      setTimeout(function() {
-        renderDailyPlan(userTargetKcal);
-        var updated = $("slot_" + slotKey);
-        if (updated) {
-          updated.style.opacity = "1";
-          updated.style.transform = "scale(1)";
-        }
-      }, 150);
-    }
-  }
-
-  /* ===== استدعاء الباقات والاشتراك ===== */
   var PLANS = [
     { key: "basic",     label: "الأساسية", desc: "جدول غذائي ورياضي ومتابعة شهرية",          price: null, period: "شهرياً" },
     { key: "followup",  label: "المتابعة", desc: "جدول غذائي ورياضي ومتابعة أسبوعية",        price: null, period: "شهرياً", featured: true },
@@ -464,10 +268,8 @@
         btn.className = "btn ghost";
         btn.classList.remove("hidden");
 
-        // إذا كان حسابه محسوباً، نحدث الجدول بسعراته الفعلية
         if (data.calc && data.calc.kcal) {
-          userTargetKcal = data.calc.kcal;
-          renderDailyPlan(userTargetKcal);
+          $("bannerKcal").textContent = "🔥 احتياجك: " + data.calc.kcal + " سعرة";
         }
       } else {
         $("intakeText").textContent = "لم تقم بتعبئة الاستمارة الصحية بعد. عبّ الاستمارة عشان نحسب احتياجك الفعلي بدقة.";
@@ -498,10 +300,6 @@
       $("uname").textContent = Auth.displayName();
       $("avatar").textContent = Array.from(Auth.displayName())[0] || "م";
       $("uemail").textContent = u.email || "";
-
-      loadMealsDB().then(function() {
-        renderDailyPlan(userTargetKcal);
-      });
 
       renderSub();
       renderPlans();

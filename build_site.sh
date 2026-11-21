@@ -19,6 +19,7 @@ PUBLIC_FILES=(
   index.html
   login.html
   account.html
+  plan.html
   start.html
   summary.html
   terms.html
