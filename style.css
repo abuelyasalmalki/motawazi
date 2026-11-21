@@ -1856,3 +1856,362 @@ textarea {
     text-align: center;
   }
 }
+
+
+/* ============================================================
+   هيكل صفحات التطبيق: الدخول، الحساب، الاستمارة، الملخص، القانونية، 404
+   (يأتي آخر الملف عمداً ليتغلّب على التنسيقات العامة فوقه)
+   ============================================================ */
+body.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 85% -10%, rgba(20, 184, 166, 0.10) 0%, transparent 45%),
+    radial-gradient(circle at 0% 100%, rgba(249, 115, 22, 0.06) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+body.app main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+/* الترويسة المختصرة */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-header__inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app-header .logo__symbol {
+  width: 36px;
+  height: 36px;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.app-header .logo__text {
+  font-size: 1.3rem;
+}
+
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.app-header__actions a,
+.app-header__actions .link-btn {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.app-header__actions a:hover {
+  color: var(--primary);
+}
+
+.app-header__actions .link-btn:hover {
+  color: var(--err);
+}
+
+/* التذييل المختصر */
+.app-footer {
+  border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.app-footer__inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.app-footer nav {
+  display: flex;
+  gap: 16px;
+}
+
+.app-footer a {
+  color: var(--text-muted);
+}
+
+/* الحاوية */
+.wrap {
+  max-width: 600px;
+  padding: 36px 20px 56px;
+}
+
+.wrap--narrow {
+  max-width: 460px;
+}
+
+.wrap.legal {
+  max-width: 780px;
+}
+
+/* البطاقات */
+.card h2 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.card > p + p {
+  margin-top: 8px;
+}
+
+.card__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.card__head h2 {
+  margin: 0;
+}
+
+.card__icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card__icon--accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin: 34px 0 6px;
+}
+
+/* الأزرار داخل صفحات التطبيق بعرض كامل */
+.wrap .btn {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.btn.ghost {
+  background: #ffffff;
+  color: var(--primary);
+  border-color: var(--primary-border);
+}
+
+.btn.ghost:hover {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary-hover);
+}
+
+.btn.btn--google {
+  background: #ffffff;
+  color: var(--text-dark);
+  border-color: var(--border);
+  box-shadow: var(--shadow-xs);
+  gap: 10px;
+}
+
+.btn.btn--google:hover {
+  background: var(--bg);
+  border-color: var(--text-subtle);
+  color: var(--text-dark);
+}
+
+/* أزرار التنقّل في الاستمارة */
+.form-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.form-nav .btn {
+  margin-top: 0;
+}
+
+.form-nav .btn:not(.ghost) {
+  flex: 1;
+}
+
+.form-nav .btn.ghost {
+  flex: 0 0 34%;
+}
+
+/* مربعات الاختيار: إلغاء تنسيق الحقول النصية عنها */
+input[type="checkbox"],
+input[type="radio"] {
+  width: auto;
+  padding: 0;
+  box-shadow: none;
+}
+
+/* صفحة الدخول */
+.auth-card {
+  padding: 32px 28px;
+}
+
+.auth-head {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.auth-head h1 {
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.auth-head p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.auth-links {
+  text-align: center;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* صفحة الحساب */
+.welcome {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: var(--gradient-primary);
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 1.45rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+}
+
+.welcome h1 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.welcome p {
+  margin: 0;
+}
+
+.plan h2 {
+  margin: 0 0 4px;
+}
+
+.plan.featured {
+  box-shadow: var(--shadow-md);
+}
+
+.plan .tag {
+  background: var(--gradient-accent);
+}
+
+/* الصفحات القانونية */
+.legal h1 {
+  font-size: clamp(1.7rem, 4vw, 2.1rem);
+  font-weight: 900;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.legal p,
+.legal ul {
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.legal ul {
+  padding-inline-start: 22px;
+}
+
+.legal .card {
+  padding: 32px 28px;
+}
+
+/* صفحة 404 */
+.notfound__code {
+  font-size: clamp(4.5rem, 16vw, 7rem);
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 12px;
+  background: var(--gradient-parallel);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.notfound h1 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.notfound .btn {
+  width: auto;
+  padding: 12px 32px;
+}
+
+@media (max-width: 520px) {
+  .auth-card,
+  .legal .card {
+    padding: 24px 18px;
+  }
+
+  .app-header__actions {
+    gap: 12px;
+    font-size: 0.9rem;
+  }
+}

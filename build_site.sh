@@ -29,6 +29,7 @@ PUBLIC_FILES=(
   auth.js
   start.js
   robots.txt
+  favicon.svg
 )
 
 for f in "${PUBLIC_FILES[@]}"; do
