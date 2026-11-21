@@ -320,10 +320,11 @@
     border: 1px solid #e2e8f0;
   }
   .modal-header {
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 22px 14px;
+    padding: 16px 22px 12px;
     border-bottom: 1px solid #f1f5f9;
   }
   .modal-title {
@@ -356,6 +357,7 @@
     color: var(--text-dark);
   }
   .picker-search-bar {
+    flex-shrink: 0;
     padding: 12px 20px 8px;
   }
   .picker-input {
@@ -377,31 +379,39 @@
     box-shadow: 0 0 0 3px var(--primary-soft);
   }
   .picker-filter-pills {
+    flex-shrink: 0;
     display: flex;
-    gap: 6px;
-    padding: 4px 20px 10px;
+    gap: 8px;
+    padding: 6px 20px 10px;
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    min-height: 46px;
+    box-sizing: border-box;
+    align-items: center;
   }
   .picker-filter-pills::-webkit-scrollbar {
     display: none;
   }
   .filter-pill {
+    flex-shrink: 0;
     white-space: nowrap;
-    padding: 5px 12px;
+    padding: 6px 14px;
     border-radius: var(--radius-full);
-    border: 1px solid #e2e8f0;
+    border: 1px solid #cbd5e1;
     background: #f8fafc;
-    color: var(--text-muted);
-    font-size: 0.82rem;
+    color: var(--text-dark);
+    font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
+    line-height: 1.25;
     transition: all 0.15s;
+    user-select: none;
   }
   .filter-pill:hover {
     background: #f1f5f9;
     color: var(--text-dark);
+    border-color: #94a3b8;
   }
   .filter-pill.active {
     background: var(--primary);
@@ -409,11 +419,12 @@
     color: #ffffff;
   }
   .picker-results-meta {
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 22px;
-    font-size: 0.8rem;
+    padding: 8px 22px;
+    font-size: 0.82rem;
     color: var(--text-muted);
     font-weight: 700;
     border-bottom: 1px solid #f1f5f9;
@@ -665,17 +676,85 @@
     background: #ecfdf5;
     border: 1px solid #a7f3d0;
     border-radius: var(--radius-md);
-    padding: 10px 14px;
+    padding: 12px 16px;
     margin-top: 14px;
     color: #065f46;
     font-size: 0.88rem;
     font-weight: 700;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     animation: fadeIn 0.3s ease;
   }
   .tracker-congrats.show {
     display: flex;
+  }
+
+  /* زر تأكيد وتقفيل التزام اليوم */
+  .tracker-actions {
+    margin-top: 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .btn-lock-day {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 340px;
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
+    border: none;
+    background: #e2e8f0;
+    color: #94a3b8;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: not-allowed;
+    transition: all 0.25s ease;
+    box-shadow: none;
+    user-select: none;
+  }
+  .btn-lock-day.ready {
+    background: linear-gradient(135deg, var(--primary), #0d9488);
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(15, 118, 110, 0.28);
+    animation: pulseGlow 1.8s infinite;
+  }
+  .btn-lock-day.ready:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(15, 118, 110, 0.35);
+  }
+  .btn-lock-day.locked {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1.5px solid #a7f3d0;
+    cursor: default;
+    animation: none;
+    box-shadow: none;
+  }
+  .tracker-unlock-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 8px auto 0;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 600;
+  }
+  .tracker-unlock-btn.show {
+    display: inline-block;
+  }
+  @keyframes pulseGlow {
+    0% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(15, 118, 110, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0); }
   }
 
   /* خيارات الطباعة وتصدير PDF (Print Choices Modal) */
@@ -729,6 +808,47 @@
     color: #ffffff;
   }
 
+  /* تحسينات الشاشات الصغيرة والجوال */
+  @media (max-width: 640px) {
+    .modal-overlay {
+      padding: 12px 8px 0;
+      align-items: flex-end;
+    }
+    .modal-card {
+      max-height: 92vh;
+      border-radius: 20px 20px 0 0;
+    }
+    .modal-header {
+      padding: 14px 16px 10px;
+    }
+    .picker-search-bar {
+      padding: 8px 16px 6px;
+    }
+    .picker-filter-pills {
+      padding: 6px 16px 8px;
+      gap: 6px;
+      min-height: 42px;
+    }
+    .filter-pill {
+      font-size: 0.82rem;
+      padding: 5px 12px;
+    }
+    .picker-results-meta {
+      padding: 6px 16px;
+    }
+    .picker-meals-list {
+      padding: 10px 14px;
+    }
+    .tracker-items-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .tracker-check-btn {
+      padding: 9px 10px;
+      font-size: 0.84rem;
+    }
+  }
+
   /* منطقة مخصصة للطباعة الكاملة (أسبوع أو شهر) */
   #printOutputContainer {
     display: none;
@@ -746,7 +866,6 @@
     .print-sheet:last-child { page-break-after: auto; break-after: auto; }
     body.printing-custom #planContent { display: none !important; }
     body.printing-custom #printOutputContainer { display: block !important; }
-  }
   }
   .print-only-title { display: none; }
 </style>
@@ -845,14 +964,26 @@
           <div class="tracker-check-box">✓</div>
         </button>
         <button type="button" class="tracker-check-btn" data-key="water">
-          <span>💧 شرب الماء (2-3L)</span>
+          <span style="white-space:nowrap;">💧 الماء (2-3L)</span>
           <div class="tracker-check-box">✓</div>
         </button>
       </div>
 
+      <!-- زر تأكيد واعتماد إغلاق اليوم -->
+      <div class="tracker-actions">
+        <button type="button" class="btn-lock-day" id="btnLockDay" disabled>
+          <span class="lock-icon" id="lockBtnIcon">🔒</span>
+          <span class="lock-text" id="lockBtnText">أكمل المهام لتقفيل اليوم (0 من 6)</span>
+        </button>
+        <button type="button" class="tracker-unlock-btn" id="btnUnlockDay">تعديل القائمة ✎</button>
+      </div>
+
       <div class="tracker-congrats" id="trackerCongrats">
-        <span style="font-size:1.3rem;">🎉</span>
-        <span><strong>كفو يا بطل!</strong> أغلقت احتياج والتزام اليوم 100% — استمر بهذه العزيمة!</span>
+        <span style="font-size:1.4rem;">🎉</span>
+        <div>
+          <strong style="display:block; font-size:0.95rem; margin-bottom:2px;">كفو يا بطل! تم تقفيل واعتماد التزام اليوم بنجاح 🎯</strong>
+          <span style="font-size:0.82rem; opacity:0.9;">سلسلة التزامك مستمرة ومحفوظة، استمر بنفس هذه القوة غداً!</span>
+        </div>
       </div>
     </div>
 
@@ -1408,6 +1539,7 @@
   function updateTrackerUI() {
     var keys = ["breakfast", "lunch", "dinner", "snack", "workout", "water"];
     var completed = 0;
+    var isLocked = !!todayTracking.locked;
 
     keys.forEach(function(k) {
       var isDone = !!todayTracking[k];
@@ -1415,6 +1547,8 @@
       var btn = document.querySelector('.tracker-check-btn[data-key="' + k + '"]');
       if (btn) {
         btn.classList.toggle("checked", isDone);
+        btn.style.pointerEvents = isLocked ? "none" : "auto";
+        btn.style.opacity = isLocked ? "0.9" : "1";
       }
     });
 
@@ -1428,14 +1562,103 @@
     var pText = $("trackerProgressPercent");
     if (pText) pText.textContent = percent + "%";
 
+    var lockBtn = $("btnLockDay");
+    var lockIcon = $("lockBtnIcon");
+    var lockText = $("lockBtnText");
+    var unlockBtn = $("btnUnlockDay");
     var congrats = $("trackerCongrats");
-    if (congrats) {
-      congrats.classList.toggle("show", completed === keys.length);
+
+    if (isLocked) {
+      if (lockBtn) {
+        lockBtn.className = "btn-lock-day locked";
+        lockBtn.disabled = true;
+      }
+      if (lockIcon) lockIcon.textContent = "✓";
+      if (lockText) lockText.textContent = "تم تقفيل واعتماد التزام اليوم";
+      if (unlockBtn) unlockBtn.classList.add("show");
+      if (congrats) congrats.classList.add("show");
+    } else if (completed === keys.length) {
+      if (lockBtn) {
+        lockBtn.className = "btn-lock-day ready";
+        lockBtn.disabled = false;
+      }
+      if (lockIcon) lockIcon.textContent = "✨";
+      if (lockText) lockText.textContent = "تأكيد وتقفيل التزام اليوم 🔒";
+      if (unlockBtn) unlockBtn.classList.remove("show");
+      if (congrats) congrats.classList.remove("show");
+    } else {
+      if (lockBtn) {
+        lockBtn.className = "btn-lock-day";
+        lockBtn.disabled = true;
+      }
+      if (lockIcon) lockIcon.textContent = "🔒";
+      if (lockText) lockText.textContent = "أكمل باقي المهام لتقفيل اليوم (" + completed + " من " + keys.length + ")";
+      if (unlockBtn) unlockBtn.classList.remove("show");
+      if (congrats) congrats.classList.remove("show");
     }
   }
 
-  function toggleTrackerItem(key) {
+  function handleLockDay() {
     if (!currentUserId) return;
+    var keys = ["breakfast", "lunch", "dinner", "snack", "workout", "water"];
+    var allDone = keys.every(function(k) { return !!todayTracking[k]; });
+    if (!allDone) return;
+
+    todayTracking.locked = true;
+    todayTracking.lockedAt = new Date().toISOString();
+
+    // فحص وتحديث السلسلة (Streak)
+    var streak = (currentProfileData && currentProfileData.streak) || { count: 0, lastDate: "" };
+    if (streak.lastDate !== todayKey) {
+      if (streak.lastDate === yesterdayKey) {
+        streak.count = (streak.count || 0) + 1;
+      } else {
+        streak.count = 1;
+      }
+      streak.lastDate = todayKey;
+      if (currentProfileData) currentProfileData.streak = streak;
+
+      var streakEl = $("streakCount");
+      if (streakEl) streakEl.textContent = streak.count;
+
+      firebase.firestore().collection("profiles").doc(currentUserId).set({
+        streak: streak
+      }, { merge: true }).catch(function(err) {
+        console.warn("[متوازي] تعذر تحديث السلسلة:", err);
+      });
+    }
+
+    try {
+      localStorage.setItem("motawazi_trk_" + currentUserId + "_" + todayKey, JSON.stringify(todayTracking));
+    } catch(e) {}
+
+    firebase.firestore().collection("profiles").doc(currentUserId)
+      .collection("tracking").doc(todayKey).set(todayTracking, { merge: true })
+      .catch(function(err) {
+        console.warn("[متوازي] تعذر حفظ تقفيل اليوم في فايربيس:", err);
+      });
+
+    updateTrackerUI();
+  }
+
+  function handleUnlockDay() {
+    if (!currentUserId) return;
+    todayTracking.locked = false;
+    delete todayTracking.lockedAt;
+
+    try {
+      localStorage.setItem("motawazi_trk_" + currentUserId + "_" + todayKey, JSON.stringify(todayTracking));
+    } catch(e) {}
+
+    firebase.firestore().collection("profiles").doc(currentUserId)
+      .collection("tracking").doc(todayKey).set({ locked: false }, { merge: true })
+      .catch(function(err) {});
+
+    updateTrackerUI();
+  }
+
+  function toggleTrackerItem(key) {
+    if (!currentUserId || todayTracking.locked) return;
     todayTracking[key] = !todayTracking[key];
     todayTracking.updatedAt = new Date().toISOString();
 
@@ -1445,35 +1668,6 @@
     } catch(e) {}
 
     updateTrackerUI();
-
-    // فحص سلسلة الالتزام (Streak)
-    var keys = ["breakfast", "lunch", "dinner", "snack", "workout", "water"];
-    var allDone = keys.every(function(k) { return !!todayTracking[k]; });
-
-    var streak = (currentProfileData && currentProfileData.streak) || { count: 0, lastDate: "" };
-
-    if (allDone) {
-      if (streak.lastDate !== todayKey) {
-        if (streak.lastDate === yesterdayKey) {
-          streak.count = (streak.count || 0) + 1;
-        } else {
-          streak.count = 1;
-        }
-        streak.lastDate = todayKey;
-        if (currentProfileData) currentProfileData.streak = streak;
-
-        // تحديث شارة السلسلة
-        var streakEl = $("streakCount");
-        if (streakEl) streakEl.textContent = streak.count;
-
-        // حفظ السلسلة في فايربيس
-        firebase.firestore().collection("profiles").doc(currentUserId).set({
-          streak: streak
-        }, { merge: true }).catch(function(err) {
-          console.warn("[متوازي] تعذر تحديث السلسلة:", err);
-        });
-      }
-    }
 
     // حفظ في Firestore
     firebase.firestore().collection("profiles").doc(currentUserId)
@@ -1532,6 +1726,16 @@
         if (k) toggleTrackerItem(k);
       });
     });
+
+    var lockBtn = $("btnLockDay");
+    if (lockBtn) {
+      lockBtn.addEventListener("click", handleLockDay);
+    }
+
+    var unlockBtn = $("btnUnlockDay");
+    if (unlockBtn) {
+      unlockBtn.addEventListener("click", handleUnlockDay);
+    }
   }
 
   // ============================================================
