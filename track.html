@@ -150,6 +150,189 @@
   .intake-summary-card {
     border-left: 4px solid var(--accent);
   }
+
+  /* مؤشرات سجل الالتزام */
+  .streak-stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .streak-stat-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px 8px;
+  }
+  .streak-stat-box b {
+    display: block;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  .streak-stat-box span {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .streak-stat-box.highlight {
+    background: #fff7ed;
+    border-color: #ffedd5;
+  }
+  .streak-stat-box.highlight b {
+    color: #c2410c;
+  }
+
+  /* تقويم سجل الالتزام */
+  .history-calendar-wrap {
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 8px;
+  }
+  .history-calendar-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .calendar-legend {
+    display: flex;
+    gap: 10px;
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: var(--radius-full);
+    display: inline-block;
+  }
+  .legend-dot.golden { background: #eab308; }
+  .legend-dot.done { background: #f97316; }
+  .legend-dot.today { background: var(--primary); }
+
+  .history-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+  .cal-cell {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 7px 4px;
+    text-align: center;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  .cal-cell:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  .cal-cell-day {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .cal-cell-num {
+    font-size: 0.86rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  .cal-cell-status {
+    font-size: 0.82rem;
+  }
+  .cal-cell.is-today {
+    border: 2px solid var(--primary);
+    background: #f0fdfa;
+  }
+  .cal-cell.is-golden {
+    background: #fefce8;
+    border-color: #fde047;
+  }
+  .cal-cell.is-done {
+    background: #fff7ed;
+    border-color: #fdba74;
+  }
+  .cal-cell.is-future {
+    opacity: 0.45;
+    cursor: default;
+  }
+  .cal-cell.is-future:hover {
+    border-color: var(--border);
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* صندوق استعراض تفاصيل اليوم المختار */
+  .day-detail-box {
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    margin-top: 14px;
+    animation: fadeIn 0.2s ease;
+  }
+  .day-detail-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .btn-close-detail {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    line-height: 1;
+  }
+  .day-detail-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
+  }
+  .detail-task-pill {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-full);
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .detail-task-pill.checked {
+    background: #f0fdfa;
+    border-color: var(--primary);
+    color: var(--primary-dark);
+  }
 </style>
 </head>
 <body class="app">
@@ -200,6 +383,62 @@
         <a href="/plan" class="btn btn--primary" style="margin-top:0; width:auto; flex:1;">
           <span>🍽️ استعراض جدول اليوم</span>
         </a>
+      </div>
+    </div>
+
+    <!-- كارت سجل الالتزام وأيام الإنجاز المحفوظة -->
+    <div class="card" id="history">
+      <div class="card__head">
+        <span class="card__icon" aria-hidden="true" style="background:var(--primary-soft); color:var(--primary); font-size:1.2rem;">
+          🎯
+        </span>
+        <div>
+          <h2>سجل الالتزام وأيام الإنجاز المحفوظة</h2>
+          <p class="muted small" style="margin:2px 0 0;">أرشيف أيامك المقفلة وسلسلة استمراريتك نحو هدفك</p>
+        </div>
+      </div>
+
+      <!-- مؤشرات السلسلة والإنجاز -->
+      <div class="streak-stats-bar">
+        <div class="streak-stat-box highlight">
+          <div style="font-size:1.4rem; margin-bottom:2px;">🔥</div>
+          <b id="historyStreakCount">0</b>
+          <span>السلسلة الحالية</span>
+        </div>
+        <div class="streak-stat-box">
+          <div style="font-size:1.4rem; margin-bottom:2px;">🏆</div>
+          <b id="historyLockedDays">0</b>
+          <span>إجمالي الأيام المقفلة</span>
+        </div>
+        <div class="streak-stat-box">
+          <div style="font-size:1.4rem; margin-bottom:2px;">🌟</div>
+          <b id="historyGoldenDays">0</b>
+          <span>الأيام الذهبية (100%)</span>
+        </div>
+      </div>
+
+      <!-- تقويم سجل الالتزام الشهري -->
+      <div class="history-calendar-wrap">
+        <div class="history-calendar-head">
+          <span id="calendarMonthTitle" style="font-weight:800; font-size:1rem; color:var(--text-dark);">تقويم الشهر الحالي</span>
+          <div class="calendar-legend">
+            <span class="legend-item"><span class="legend-dot golden"></span> ذهبي (100%)</span>
+            <span class="legend-item"><span class="legend-dot done"></span> مقفّل (50%+)</span>
+            <span class="legend-item"><span class="legend-dot today"></span> اليوم</span>
+          </div>
+        </div>
+        <div class="history-calendar-grid" id="historyCalendarGrid">
+          <!-- يتم توليد أيام الشهر تلقائياً هنا -->
+        </div>
+      </div>
+
+      <!-- نافذة استعراض تفاصيل اليوم المحدد -->
+      <div id="dayDetailBox" class="day-detail-box" style="display:none;">
+        <div class="day-detail-head">
+          <span id="dayDetailTitle" style="font-weight:800; color:var(--text-dark); font-size:0.92rem;">تفاصيل اليوم</span>
+          <button type="button" class="btn-close-detail" id="btnCloseDetail" aria-label="إغلاق">✕</button>
+        </div>
+        <div class="day-detail-items" id="dayDetailItems"></div>
       </div>
     </div>
 
@@ -392,6 +631,195 @@
     }, 4000);
   });
 
+  // ============================================================
+  // سجل الالتزام وأيام الإنجاز المحفوظة
+  // ============================================================
+  var trackingRecordsMap = {};
+
+  function initCommitmentHistory(uid, profile) {
+    // 1. السلسلة الحالية
+    var streak = (profile && profile.streak) || { count: 0, lastDate: "" };
+    var streakEl = $("historyStreakCount");
+    if (streakEl) streakEl.textContent = streak.count || 0;
+
+    // 2. عنوان الشهر الحالي
+    var now = new Date();
+    var months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+    var monthTitle = $("calendarMonthTitle");
+    if (monthTitle) {
+      monthTitle.textContent = "تقويم شهر " + months[now.getMonth()] + " " + now.getFullYear();
+    }
+
+    // 3. قراءة السجلات المحفوظة من LocalStorage للسرعة
+    for (var k in localStorage) {
+      if (k.indexOf("motawazi_trk_" + uid + "_") === 0) {
+        var dKey = k.replace("motawazi_trk_" + uid + "_", "");
+        try {
+          trackingRecordsMap[dKey] = JSON.parse(localStorage.getItem(k));
+        } catch(e) {}
+      }
+    }
+
+    renderHistoryUI(now);
+
+    // 4. جلب كافة سجلات الأيام من Firestore للتزامن الكامل
+    firebase.firestore().collection("profiles").doc(uid)
+      .collection("tracking").get().then(function(querySnap) {
+        querySnap.forEach(function(doc) {
+          trackingRecordsMap[doc.id] = doc.data();
+        });
+        renderHistoryUI(now);
+      }).catch(function(err) {
+        console.warn("[متوازي] قراءة سجل الالتزام من فايربيس:", err);
+      });
+
+    // زر إغلاق نافذة التفاصيل
+    var btnCloseDet = $("btnCloseDetail");
+    if (btnCloseDet) {
+      btnCloseDet.addEventListener("click", function() {
+        $("dayDetailBox").style.display = "none";
+      });
+    }
+  }
+
+  function renderHistoryUI(now) {
+    var year = now.getFullYear();
+    var month = now.getMonth();
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+    var todayStr = (function() {
+      var y = now.getFullYear();
+      var m = String(now.getMonth() + 1).padStart(2, "0");
+      var da = String(now.getDate()).padStart(2, "0");
+      return y + "-" + m + "-" + da;
+    })();
+
+    var lockedCount = 0;
+    var goldenCount = 0;
+
+    // حساب الإحصائيات الشاملة
+    for (var dKey in trackingRecordsMap) {
+      var item = trackingRecordsMap[dKey];
+      if (item && (item.locked || (item.completedCount && item.completedCount >= 3))) {
+        lockedCount++;
+        if (item.completedCount === 6) {
+          goldenCount++;
+        }
+      }
+    }
+
+    var elLocked = $("historyLockedDays");
+    if (elLocked) elLocked.textContent = lockedCount;
+    var elGolden = $("historyGoldenDays");
+    if (elGolden) elGolden.textContent = goldenCount;
+
+    // بناء شبكة التقويم للشهر الحالي
+    var grid = $("historyCalendarGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    var dayNamesShort = ["أحد", "اثنين", "ثلاثاء", "أربعاء", "خميس", "جمعة", "سبت"];
+
+    for (var dayNum = 1; dayNum <= daysInMonth; dayNum++) {
+      var curDate = new Date(year, month, dayNum);
+      var mStr = String(month + 1).padStart(2, "0");
+      var dStr = String(dayNum).padStart(2, "0");
+      var dateKey = year + "-" + mStr + "-" + dStr;
+
+      var isToday = (dateKey === todayStr);
+      var isFuture = (curDate.getTime() > now.getTime() && !isToday);
+
+      var record = trackingRecordsMap[dateKey];
+      var isLocked = record && (record.locked || (record.completedCount && record.completedCount >= 3));
+      var isGolden = record && record.completedCount === 6;
+
+      var cellClass = "cal-cell";
+      var statusBadge = "—";
+
+      if (isToday) {
+        cellClass += " is-today";
+        statusBadge = "🎯";
+        if (isGolden) { cellClass += " is-golden"; statusBadge = "🌟"; }
+        else if (isLocked) { cellClass += " is-done"; statusBadge = "🔥"; }
+      } else if (isFuture) {
+        cellClass += " is-future";
+        statusBadge = "⚪";
+      } else if (isGolden) {
+        cellClass += " is-golden";
+        statusBadge = "🌟";
+      } else if (isLocked) {
+        cellClass += " is-done";
+        statusBadge = "🔥";
+      }
+
+      var dayName = dayNamesShort[curDate.getDay()];
+
+      var cell = document.createElement("div");
+      cell.className = cellClass;
+      cell.setAttribute("data-date", dateKey);
+      cell.setAttribute("data-day-num", dayNum);
+      cell.setAttribute("data-day-name", dayName);
+
+      cell.innerHTML =
+        '<span class="cal-cell-day">' + dayName + '</span>' +
+        '<span class="cal-cell-num">' + dayNum + '</span>' +
+        '<span class="cal-cell-status">' + statusBadge + '</span>';
+
+      if (!isFuture) {
+        cell.addEventListener("click", (function(dK, dN, dName, rec) {
+          return function() {
+            showDayDetails(dK, dN, dName, rec);
+          };
+        })(dateKey, dayNum, dayName, record));
+      }
+
+      grid.appendChild(cell);
+    }
+  }
+
+  function showDayDetails(dateKey, dayNum, dayName, record) {
+    var box = $("dayDetailBox");
+    if (!box) return;
+
+    var title = $("dayDetailTitle");
+    if (title) {
+      title.textContent = "📅 تفاصيل " + dayName + " " + dayNum + " (" + dateKey + ")";
+    }
+
+    var itemsWrap = $("dayDetailItems");
+    if (!itemsWrap) return;
+
+    if (!record) {
+      itemsWrap.innerHTML =
+        '<div style="grid-column: 1 / -1; color:#64748b; font-size:0.86rem; padding:8px 0; text-align:center;">' +
+          'لم يتم تسجيل التزام في هذا اليوم.' +
+        '</div>';
+      box.style.display = "block";
+      return;
+    }
+
+    var tasks = [
+      { key: "breakfast", label: "🍳 الفطور" },
+      { key: "lunch",     label: "🍲 الغداء" },
+      { key: "dinner",    label: "🥗 العشاء" },
+      { key: "snack",     label: "☕ السناك" },
+      { key: "workout",   label: "🏃‍♂️ التمرين" },
+      { key: "water",     label: "💧 الماء" }
+    ];
+
+    var html = "";
+    tasks.forEach(function(t) {
+      var done = !!record[t.key];
+      html +=
+        '<div class="detail-task-pill ' + (done ? 'checked' : '') + '">' +
+          '<span>' + t.label + '</span>' +
+          '<span>' + (done ? '✓ تم' : '✕ لم يسجل') + '</span>' +
+        '</div>';
+    });
+
+    itemsWrap.innerHTML = html;
+    box.style.display = "block";
+  }
+
   function start() {
     if (!Auth.ready) {
       $("boot").className = "msg err";
@@ -408,18 +836,21 @@
         $("trackApp").classList.remove("hidden");
 
         var startW = null, targetW = null;
+        var pData = {};
         if (snap.exists) {
-          var p = snap.data();
-          if (p.answers) {
-            startW = p.answers.weightKg;
-            targetW = p.answers.targetKg;
+          pData = snap.data();
+          if (pData.answers) {
+            startW = pData.answers.weightKg;
+            targetW = pData.answers.targetKg;
           }
         }
         loadWeights(u.uid, startW, targetW);
+        initCommitmentHistory(u.uid, pData);
       }).catch(function() {
         $("boot").classList.add("hidden");
         $("trackApp").classList.remove("hidden");
         loadWeights(u.uid, null, null);
+        initCommitmentHistory(u.uid, {});
       });
     });
   }

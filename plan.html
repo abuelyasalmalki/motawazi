@@ -621,6 +621,71 @@
     border-radius: var(--radius-full);
     transition: width 0.35s ease;
   }
+
+  /* شريط أيام الأسبوع وسجل الالتزام المحفوظ */
+  .tracker-week-history {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    gap: 4px;
+  }
+  .week-dot-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+  }
+  .week-dot-day {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .week-dot-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.86rem;
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .week-dot-item.is-today .week-dot-day {
+    color: var(--primary);
+    font-weight: 800;
+  }
+  .week-dot-item.is-today .week-dot-circle {
+    border-color: var(--primary);
+    background: #f0fdfa;
+    box-shadow: 0 0 0 2px var(--primary-soft);
+    color: var(--primary);
+  }
+  .week-dot-item.is-done .week-dot-circle {
+    background: #fff7ed;
+    border-color: #fdba74;
+    color: #ea580c;
+  }
+  .week-dot-item.is-golden .week-dot-circle {
+    background: #fefce8;
+    border-color: #fde047;
+    color: #ca8a04;
+  }
+  .week-dot-item.is-missed .week-dot-circle {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+  }
   .tracker-items-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -979,11 +1044,20 @@
       </div>
 
       <div class="tracker-congrats" id="trackerCongrats">
-        <span style="font-size:1.4rem;">🎉</span>
+        <span style="font-size:1.4rem;" id="trackerCongratsIcon">🎉</span>
         <div>
-          <strong style="display:block; font-size:0.95rem; margin-bottom:2px;">كفو يا بطل! تم تقفيل واعتماد التزام اليوم بنجاح 🎯</strong>
-          <span style="font-size:0.82rem; opacity:0.9;">سلسلة التزامك مستمرة ومحفوظة، استمر بنفس هذه القوة غداً!</span>
+          <strong style="display:block; font-size:0.95rem; margin-bottom:2px;" id="trackerCongratsHeading">كفو يا بطل! تم تقفيل واعتماد التزام اليوم بنجاح 🎯</strong>
+          <span style="font-size:0.82rem; opacity:0.9;" id="trackerCongratsText">سلسلة التزامك مستمرة ومحفوظة، استمر بنفس هذه القوة غداً!</span>
         </div>
+      </div>
+
+      <!-- رابط استعراض السجل المحفوظ في صفحة متابعتي -->
+      <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <span style="color: var(--text-muted); font-size: 0.84rem;">سلسلة أيامك السابقة وتفاصيل إنجازك محفوظة:</span>
+        <a href="/track#history" style="color: var(--primary); font-weight: 800; font-size: 0.86rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+          <span>سجل التزامي المحفوظ 📅</span>
+          <span>←</span>
+        </a>
       </div>
     </div>
 
@@ -1503,6 +1577,8 @@
   // ============================================================
   var currentUserId = null;
   var currentProfileData = null;
+  var weekTrackingCache = {};
+
   var todayKey = (function() {
     var d = new Date();
     var y = d.getFullYear();
@@ -1567,6 +1643,8 @@
     var lockText = $("lockBtnText");
     var unlockBtn = $("btnUnlockDay");
     var congrats = $("trackerCongrats");
+    var congratsHeading = $("trackerCongratsHeading");
+    var congratsText = $("trackerCongratsText");
 
     if (isLocked) {
       if (lockBtn) {
@@ -1574,25 +1652,43 @@
         lockBtn.disabled = true;
       }
       if (lockIcon) lockIcon.textContent = "✓";
-      if (lockText) lockText.textContent = "تم تقفيل واعتماد التزام اليوم";
+      if (lockText) lockText.textContent = "تم تقفيل واعتماد التزام اليوم (" + completed + " من 6)";
       if (unlockBtn) unlockBtn.classList.add("show");
       if (congrats) congrats.classList.add("show");
-    } else if (completed === keys.length) {
+
+      if (congratsHeading && congratsText) {
+        if (completed === 6) {
+          congratsHeading.textContent = "كفو يا بطل! تم تقفيل يوم ذهبي 100% 🌟";
+          congratsText.textContent = "أغلقت جميع وجباتك وتمارينك بدقة، استمر بنفس هذه القوة!";
+        } else {
+          congratsHeading.textContent = "بطل! تم تقفيل واعتماد التزام اليوم بنجاح 🎯";
+          congratsText.textContent = "أنجزت " + completed + " من 6 مهام، استمراريتك ومرونتك هي سر النتيجة الدائمة!";
+        }
+      }
+    } else if (completed >= 3) {
+      // مرونة ذكية: التقفيل متاح من 50% فأعلى (3 مهام فأكثر)
       if (lockBtn) {
         lockBtn.className = "btn-lock-day ready";
         lockBtn.disabled = false;
       }
-      if (lockIcon) lockIcon.textContent = "✨";
-      if (lockText) lockText.textContent = "تأكيد وتقفيل التزام اليوم 🔒";
       if (unlockBtn) unlockBtn.classList.remove("show");
       if (congrats) congrats.classList.remove("show");
+
+      if (completed === 6) {
+        if (lockIcon) lockIcon.textContent = "✨";
+        if (lockText) lockText.textContent = "تأكيد التقفيل (يوم ذهبي 100% 🌟)";
+      } else {
+        if (lockIcon) lockIcon.textContent = "🔒";
+        if (lockText) lockText.textContent = "تأكيد وتقفيل التزام اليوم (" + completed + " من 6 مهام)";
+      }
     } else {
+      // أقل من 3 مهام (تحت 50%)
       if (lockBtn) {
         lockBtn.className = "btn-lock-day";
         lockBtn.disabled = true;
       }
       if (lockIcon) lockIcon.textContent = "🔒";
-      if (lockText) lockText.textContent = "أكمل باقي المهام لتقفيل اليوم (" + completed + " من " + keys.length + ")";
+      if (lockText) lockText.textContent = "أكمل 3 مهام على الأقل لتقفيل اليوم (" + completed + " من 6)";
       if (unlockBtn) unlockBtn.classList.remove("show");
       if (congrats) congrats.classList.remove("show");
     }
@@ -1601,11 +1697,13 @@
   function handleLockDay() {
     if (!currentUserId) return;
     var keys = ["breakfast", "lunch", "dinner", "snack", "workout", "water"];
-    var allDone = keys.every(function(k) { return !!todayTracking[k]; });
-    if (!allDone) return;
+    var completed = keys.filter(function(k) { return !!todayTracking[k]; }).length;
+    if (completed < 3) return; // شرط المرونة الأدنى 50%
 
     todayTracking.locked = true;
     todayTracking.lockedAt = new Date().toISOString();
+    todayTracking.completedCount = completed;
+    todayTracking.percent = Math.round((completed / keys.length) * 100);
 
     // فحص وتحديث السلسلة (Streak)
     var streak = (currentProfileData && currentProfileData.streak) || { count: 0, lastDate: "" };
@@ -1628,6 +1726,8 @@
       });
     }
 
+    weekTrackingCache[todayKey] = Object.assign({}, todayTracking);
+
     try {
       localStorage.setItem("motawazi_trk_" + currentUserId + "_" + todayKey, JSON.stringify(todayTracking));
     } catch(e) {}
@@ -1646,6 +1746,8 @@
     todayTracking.locked = false;
     delete todayTracking.lockedAt;
 
+    weekTrackingCache[todayKey] = Object.assign({}, todayTracking);
+
     try {
       localStorage.setItem("motawazi_trk_" + currentUserId + "_" + todayKey, JSON.stringify(todayTracking));
     } catch(e) {}
@@ -1661,6 +1763,13 @@
     if (!currentUserId || todayTracking.locked) return;
     todayTracking[key] = !todayTracking[key];
     todayTracking.updatedAt = new Date().toISOString();
+
+    var keys = ["breakfast", "lunch", "dinner", "snack", "workout", "water"];
+    var completed = keys.filter(function(k) { return !!todayTracking[k]; }).length;
+    todayTracking.completedCount = completed;
+    todayTracking.percent = Math.round((completed / keys.length) * 100);
+
+    weekTrackingCache[todayKey] = Object.assign({}, todayTracking);
 
     // حفظ محلي فوري
     try {
@@ -1703,7 +1812,7 @@
       }
     } catch(e) {}
 
-    // استرجاع من فايربيس لتحديث أي تغييرات
+    // استرجاع من فايربيس لتحديث بيانات اليوم
     firebase.firestore().collection("profiles").doc(uid)
       .collection("tracking").doc(todayKey).get().then(function(docSnap) {
         if (docSnap.exists) {
