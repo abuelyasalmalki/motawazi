@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0f766e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="متوازي">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/favicon.svg">
 <title>جدولي — متوازي</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,14 +62,87 @@
     box-shadow: var(--shadow-sm);
   }
 
-  /* تبويبات الأيام */
+  /* بطاقة التحفيز والترحيب اليومي */
+  .daily-greeting-card {
+    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 60%, #fff7ed 100%);
+    border: 1.5px solid #ccfbf1;
+    border-radius: var(--radius-lg);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    box-shadow: 0 4px 16px rgba(15, 118, 110, 0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  .daily-greeting-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--primary), var(--accent));
+  }
+  .greeting-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    flex-shrink: 0;
+  }
+  .greeting-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .greeting-title {
+    margin: 0 0 2px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  .greeting-subtitle {
+    margin: 0;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+  .greeting-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    color: var(--primary-dark);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+  }
+  .greeting-badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: var(--radius-full);
+    background: var(--primary);
+  }
+
+  /* تبويبات الأيام بسكرول ناعم وسناب للجوال */
   .days-nav {
     display: flex;
     gap: 8px;
     overflow-x: auto;
-    padding-bottom: 8px;
-    margin-bottom: 20px;
+    scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    padding: 4px 2px 14px;
+    margin-bottom: 20px;
     scrollbar-width: none;
   }
   .days-nav::-webkit-scrollbar { display: none; }
@@ -71,13 +150,21 @@
     background: #ffffff;
     border: 1.5px solid var(--border);
     border-radius: var(--radius-full);
-    padding: 8px 18px;
+    padding: 10px 18px;
     font-size: 0.92rem;
     font-weight: 700;
     color: var(--text-muted);
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s ease;
+    scroll-snap-align: center;
+    flex-shrink: 0;
+    user-select: none;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
   }
   .day-tab:hover {
     border-color: var(--primary-light);
@@ -87,7 +174,8 @@
     background: var(--primary);
     border-color: var(--primary);
     color: #ffffff;
-    box-shadow: 0 2px 8px rgba(15, 118, 110, 0.25);
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+    font-weight: 800;
   }
 
   /* بطاقات الوجبات */
@@ -967,6 +1055,19 @@
   </div>
 
   <div id="planContent" class="hidden">
+    <!-- بطاقة التحفيز والترحيب اليومي -->
+    <div class="daily-greeting-card" id="dailyGreetingCard">
+      <div class="greeting-icon" id="greetingIcon">☀️</div>
+      <div class="greeting-content">
+        <h2 class="greeting-title" id="greetingTitle">صباح الهمة والنشاط!</h2>
+        <p class="greeting-subtitle" id="greetingSubtitle">يوم جديد لصحة أفضل ونزول مستمر في وزنك بإذن الله.</p>
+      </div>
+      <div class="greeting-badge">
+        <span class="greeting-badge-dot"></span>
+        <span>ملفك معتمد وموزون</span>
+      </div>
+    </div>
+
     <div class="plan-page-head">
       <div class="plan-page-title">
         <h1 id="userPlanHeading">جدولك الغذائي والرياضي المتوازي</h1>
@@ -1200,6 +1301,22 @@
     <nav aria-label="روابط قانونية"><a href="/terms">الشروط والأحكام</a><a href="/privacy">سياسة الخصوصية</a></nav>
   </div>
 </footer>
+
+<!-- شريط التنقل السفلي للهواتف الذكية -->
+<nav class="mobile-bottom-nav" aria-label="شريط التنقل الرئيسي">
+  <a href="/plan" class="mobile-nav-item active">
+    <span class="nav-icon">🍽️</span>
+    <span class="nav-label">جدولي</span>
+  </a>
+  <a href="/track" class="mobile-nav-item">
+    <span class="nav-icon">📊</span>
+    <span class="nav-label">متابعتي</span>
+  </a>
+  <a href="/account" class="mobile-nav-item">
+    <span class="nav-icon">👤</span>
+    <span class="nav-label">حسابي</span>
+  </a>
+</nav>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -1563,12 +1680,15 @@
     openMealPicker(slotKey);
   }
 
-  // تفعيل تبويبات الأيام
+  // تفعيل تبويبات الأيام بسكرول ناعم وتوسيط بالإبهام
   var dayTabs = document.querySelectorAll(".day-tab");
   dayTabs.forEach(function(tab) {
     tab.addEventListener("click", function() {
       var d = parseInt(tab.getAttribute("data-day"), 10);
       renderDayPlan(d);
+      if (tab.scrollIntoView) {
+        tab.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
     });
   });
 
@@ -2135,6 +2255,42 @@
     }
   });
 
+  function initGreeting(profile, user) {
+    var rawName = "";
+    if (profile && profile.name) rawName = profile.name;
+    else if (profile && profile.answers && profile.answers.name) rawName = profile.answers.name;
+    else if (user && user.displayName) rawName = user.displayName;
+
+    var firstName = rawName ? rawName.trim().split(" ")[0] : "يا بطل";
+    var hour = new Date().getHours();
+    var greetingText = "صباح الهمة والنشاط";
+    var icon = "☀️";
+    var subtitle = "يوم جديد لصحة أفضل ونزول مستمر في وزنك بإذن الله.";
+
+    if (hour >= 12 && hour < 17) {
+      greetingText = "مساء الحيوية والنشاط";
+      icon = "🌤️";
+      subtitle = "واصل التزامك بوجبات اليوم والتمارين لتحقيق هدفك.";
+    } else if (hour >= 17 || hour < 5) {
+      greetingText = "مساء العافية والإنجاز";
+      icon = "🌙";
+      subtitle = "راجع مهامك اليومية وأقفل يومك للمحافظة على سلسلة استمراريتك.";
+    }
+
+    var titleEl = $("greetingTitle");
+    if (titleEl) {
+      titleEl.textContent = greetingText + "، " + firstName + "!";
+    }
+    var subEl = $("greetingSubtitle");
+    if (subEl) {
+      subEl.textContent = subtitle;
+    }
+    var iconEl = $("greetingIcon");
+    if (iconEl) {
+      iconEl.textContent = icon;
+    }
+  }
+
   function start() {
     if (!Auth.ready) {
       $("boot").className = "msg err";
@@ -2171,6 +2327,7 @@
         loadMealsDB().then(function() {
           $("boot").classList.add("hidden");
           $("planContent").classList.remove("hidden");
+          initGreeting(p, u);
           renderDayPlan(0);
           initTracker(u.uid, p);
         });

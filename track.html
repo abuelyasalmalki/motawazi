@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0f766e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="متوازي">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/favicon.svg">
 <title>متابعتي — متوازي</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -642,6 +648,22 @@
     <nav aria-label="روابط قانونية"><a href="/terms">الشروط والأحكام</a><a href="/privacy">سياسة الخصوصية</a></nav>
   </div>
 </footer>
+
+<!-- شريط التنقل السفلي للهواتف الذكية -->
+<nav class="mobile-bottom-nav" aria-label="شريط التنقل الرئيسي">
+  <a href="/plan" class="mobile-nav-item">
+    <span class="nav-icon">🍽️</span>
+    <span class="nav-label">جدولي</span>
+  </a>
+  <a href="/track" class="mobile-nav-item active">
+    <span class="nav-icon">📊</span>
+    <span class="nav-label">متابعتي</span>
+  </a>
+  <a href="/account" class="mobile-nav-item">
+    <span class="nav-icon">👤</span>
+    <span class="nav-label">حسابي</span>
+  </a>
+</nav>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>

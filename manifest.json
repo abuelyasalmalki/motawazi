@@ -1,0 +1,21 @@
+{
+  "name": "متوازي | رشاقة متوازية",
+  "short_name": "متوازي",
+  "description": "منصة متوازي للتغذية والتمارين الرياضية المتوازية",
+  "start_url": "/plan",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8fafc",
+  "theme_color": "#0f766e",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
