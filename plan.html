@@ -443,7 +443,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
   .workout-head h3 {
     margin: 0;
@@ -453,6 +453,135 @@
     display: flex;
     align-items: center;
     gap: 8px;
+  }
+  .workout-track-switch {
+    display: flex;
+    background: #f1f5f9;
+    border-radius: 999px;
+    padding: 3px;
+    gap: 4px;
+    margin-bottom: 16px;
+    border: 1px solid #e2e8f0;
+  }
+  .workout-track-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: inherit;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .workout-track-btn.active {
+    background: #ffffff;
+    color: var(--accent);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .workout-phase-box {
+    background: rgba(254, 243, 199, 0.6);
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.84rem;
+    color: #92400e;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.45;
+  }
+  .workout-phase-box.cooldown {
+    background: rgba(236, 253, 245, 0.7);
+    border-color: #a7f3d0;
+    color: #065f46;
+    margin-top: 14px;
+    margin-bottom: 0;
+  }
+  .workout-exercises-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .exercise-card {
+    background: #ffffff;
+    border: 1px solid #fed7aa;
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  }
+  .exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .exercise-num-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .exercise-num {
+    background: #ffedd5;
+    color: #c2410c;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.76rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .exercise-name {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0;
+  }
+  .exercise-muscle-tag {
+    font-size: 0.76rem;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  .exercise-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: #0f766e;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .exercise-metric-pill {
+    background: #f0fdfa;
+    border: 1px solid #ccfbf1;
+    border-radius: 6px;
+    padding: 2px 8px;
+  }
+  .exercise-tip {
+    font-size: 0.8rem;
+    color: #78350f;
+    background: #fffbeb;
+    border-radius: 6px;
+    padding: 6px 10px;
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
   }
 
   .plan-summary-bar {
@@ -1303,11 +1432,38 @@
         </h3>
         <span class="macro-tag" style="background:#ffffff; color:var(--accent);" id="workoutLevel">مستوى مبتدئ متدرج</span>
       </div>
-      <h4 id="workoutTitle" style="font-size:1.1rem; margin-bottom:6px; color:var(--text-dark);">تمارين مقاومة منزلية + مشي 20 دقيقة</h4>
-      <p id="workoutDesc" style="font-size:0.9rem; color:var(--text-muted); margin-bottom:12px; line-height:1.5;">تنشيط للعضلات لكامل الجسم بدون أجهزة معقدة، يركز على حرق الدهون والمحافظة على النشاط اليومي.</p>
-      <div style="display:flex; gap:8px;">
-        <span class="macro-tag">⏱️ 30 دقيقة</span>
-        <span class="macro-tag">⚡ ~240 سعرة محروقة</span>
+
+      <!-- محول المسار الرياضي (منزلي / نادي) -->
+      <div class="workout-track-switch" role="tablist" aria-label="اختر مسار التمارين">
+        <button type="button" class="workout-track-btn active" id="btnTrackHome" role="tab" aria-selected="true" data-track="home">
+          <span>🏠 مسار منزلي (بدون أجهزة)</span>
+        </button>
+        <button type="button" class="workout-track-btn" id="btnTrackGym" role="tab" aria-selected="false" data-track="gym">
+          <span>🏋️‍♂️ مسار النادي (Gym)</span>
+        </button>
+      </div>
+
+      <h4 id="workoutTitle" style="font-size:1.15rem; margin-bottom:4px; color:var(--text-dark); font-weight:800;"></h4>
+      <p id="workoutTarget" style="font-size:0.88rem; color:var(--text-muted); margin-bottom:12px; line-height:1.5;"></p>
+      
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+        <span class="macro-tag" id="workoutDuration">⏱️ 30 دقيقة</span>
+        <span class="macro-tag" id="workoutCalories">⚡ ~210 سعرة محروقة</span>
+      </div>
+
+      <!-- الإحماء والتهيئة -->
+      <div id="workoutWarmupBox" class="workout-phase-box">
+        <span style="font-size:1rem; flex-shrink:0;">🔥</span>
+        <div><strong>الإحماء والتهيئة:</strong> <span id="workoutWarmupText"></span></div>
+      </div>
+
+      <!-- قائمة التمارين التفصيلية -->
+      <div id="workoutExercisesList" class="workout-exercises-list"></div>
+
+      <!-- التهدئة والإطالات -->
+      <div id="workoutCooldownBox" class="workout-phase-box cooldown">
+        <span style="font-size:1rem; flex-shrink:0;">🧘‍♂️</span>
+        <div><strong>التهدئة والإطالات:</strong> <span id="workoutCooldownText"></span></div>
       </div>
     </div>
 
@@ -1457,15 +1613,703 @@
     snack:     { ar: "سناك / خفايف", icon: "☕", ratio: 0.10 }
   };
 
-  var WORKOUTS = [
-    { title: "تمارين مقاومة منزلية لكامل الجسم + مشي 20 دقيقة", desc: "سكوات خفيف، بوش أب على الجدار، تمارين تنشيط للظهر بدون أجهزة." },
-    { title: "كارديو متدرج (مشي سريع أو صعود الدرج) 30 دقيقة", desc: "رفع معدل نبضات القلب لحرق الدهون مع راحة دقيقة بين كل 10 دقائق." },
-    { title: "تمارين بطن وجذع (Core) + إطالات عضلية", desc: "بلانك 30 ثانية (3 جولات)، تمارين تمدد ومرونة للظهر والرقبة." },
-    { title: "يوم نشاط خفيف (مشي استشفائي 35 دقيقة)", desc: "مشي مريح في الهواء الطلق يساعد على الاستشفاء العضلي وتحسين الهضم." },
-    { title: "تمارين مقاومة الجزء السفلي (أرجل ومؤخرة)", desc: "تمارين طعنات (Lunges) وجسر الحوض (Glute Bridge) بالوزن الطبيعي للجسم." },
-    { title: "تمارين مقاومة الجزء العلوي + كارديو 15 دقيقة", desc: "تمارين أكتاف وذراعين باستخدام وزن الجسم لشد الترهلات." },
-    { title: "يوم راحة تامة واستشفاء (Rest Day)", desc: "استرخاء كامل للعضلات، شرب كميات كافية من الماء للمساعدة في بناء الأنسجة." }
-  ];
+  var DEFAULT_WORKOUTS_DATA = [
+  {
+    "day": 1,
+    "dayLabel": "اليوم 1",
+    "home": {
+      "title": "مقاومة منزلية لكامل الجسم + تنشيط مسار الحرق",
+      "target": "إيقاظ العضلات الكبيرة، حماية المفاصل، وتحفيز الأيض",
+      "level": "مبتدئ متدرج",
+      "durationMinutes": 30,
+      "estCalories": 210,
+      "warmup": "دوران لطيف للمفاصل (الكتف والركبة والحوض) ومشي هادئ في المكان 5 دقائق",
+      "exercises": [
+        {
+          "name": "سكوات بملامسة الكرسي (Box Squat)",
+          "targetMuscle": "عضلات الفخذ الأمامية والخلفية والمؤخرة",
+          "sets": 3,
+          "reps": "10-12 تكرار",
+          "restSeconds": 60,
+          "tip": "المس الكرسي بمؤخرتك دون الجلوس الكامل، واحرص أن تكون الركبتان باتجاه أصابع القدمين"
+        },
+        {
+          "name": "تمرين الضغط على الجدار (Wall Push-ups)",
+          "targetMuscle": "الصدر، مقدمة الكتف، وعضلة الترايسبس",
+          "sets": 3,
+          "reps": "10-12 تكرار",
+          "restSeconds": 45,
+          "tip": "حافظ على جسمك في خط مستقيم واحد واثنِ المرفقين بزاوية 45 درجة لتخفيف الضغط عن الكتف"
+        },
+        {
+          "name": "جسر الحوض الأرضي (Glute Bridge)",
+          "targetMuscle": "المؤخرة، أوتار الركبة، وأسفل الظهر",
+          "sets": 3,
+          "reps": "12 تكرار",
+          "restSeconds": 45,
+          "tip": "ادفع من خلال الكعبين واعتصر عضلات المؤخرة لمدة ثانية في القمة بدون رفع الحوض بشكل مبالغ فيه"
+        },
+        {
+          "name": "مشي منزلي منتظم بخطوات واثقة",
+          "targetMuscle": "كارديو لتنشيط الدورة الدموية وحرق الدهون",
+          "sets": 1,
+          "reps": "12-15 دقيقة",
+          "restSeconds": 0,
+          "tip": "حرك الذراعين بانسجام مع خطواتك وتنفس بإيقاع هادئ ومنتظم"
+        }
+      ],
+      "cooldown": "إطالات هادئة لعضلات الفخذ والصدر مع تنفس عميق لمدة 4 دقائق"
+    },
+    "gym": {
+      "title": "تأسيس كامل الجسم بأجهزة النادي الآمنة",
+      "target": "بناء النغمة العضلية ورفع كفاءة الجهاز العضلي العصبي",
+      "level": "مبتدئ نادي",
+      "durationMinutes": 40,
+      "estCalories": 270,
+      "warmup": "مشي على جهاز السير بدون انحدار وبسرعة مريحة (4-5 كم/س) لمدة 5 دقائق",
+      "exercises": [
+        {
+          "name": "جهاز دفع الأرجل المائل (Leg Press)",
+          "targetMuscle": "عضلات الفخذين والمؤخرة بأمان للظهر",
+          "sets": 3,
+          "reps": "12 تكرار",
+          "restSeconds": 60,
+          "tip": "اختر وزناً خفيفاً ولا تقفل مفصل الركبة تماماً عند دفع الوزن للأعلى"
+        },
+        {
+          "name": "جهاز سحب الظهر العالي (Lat Pulldown)",
+          "targetMuscle": "عضلات الظهر العريضة والذراعين",
+          "sets": 3,
+          "reps": "10-12 تكرار",
+          "restSeconds": 60,
+          "tip": "اسحب البار نحو أعلى الصدر برفق واجعل الظهر مستقيماً مع ميلان بسيط للخلف"
+        },
+        {
+          "name": "جهاز ضغط الصدر جالس (Chest Press Machine)",
+          "targetMuscle": "الصدر والأكتاف وعضلات الدفع",
+          "sets": 3,
+          "reps": "10-12 تكرار",
+          "restSeconds": 60,
+          "tip": "اضبط المقعد بحيث يكون المقبض بمحاذاة منتصف الصدر مع الحفاظ على ملاصقة الظهر للمسند"
+        },
+        {
+          "name": "دراجة ثابتة بجهد متوسط",
+          "targetMuscle": "كارديو آمن على الركبتين وخافض للإجهاد",
+          "sets": 1,
+          "reps": "15 دقيقة",
+          "restSeconds": 0,
+          "tip": "اضبط ارتفاع المقعد ليكون مناسباً لركبتيك، وحافظ على دوران منتظم وسلس"
+        }
+      ],
+      "cooldown": "إطالات استرخائية للجزء السفلي والعلوي مع شرب رشفات ماء لمدة 5 دقائق"
+    }
+  },
+  {
+    "day": 2,
+    "dayLabel": "اليوم 2",
+    "home": {
+      "title": "تقوية الجزء العلوي وتحسين استقامة القوام",
+      "target": "شد الظهر والذراعين ونحت عضلات الجذع بدون أوزان",
+      "level": "مبتدئ متدرج",
+      "durationMinutes": 30,
+      "estCalories": 190,
+      "warmup": "دوران الذراعين وتموج الكتفين وتحريك الجذع يميناً ويساراً لمدة 5 دقائق",
+      "exercises": [
+        {
+          "name": "سحب منشفة للظهر مستلقياً (Prone Towel Row)",
+          "targetMuscle": "عضلات الظهر والكتف الخلفي",
+          "sets": 3,
+          "reps": "12 تكرار",
+          "restSeconds": 45,
+          "tip": "استلقِ على بطنك مع شد المنشفة بين يديك وسحبها باتجاه الصدر مع ضم لوحي الكتف"
+        },
+        {
+          "name": "تمرين الترايسبس على الكرسي (Chair Dips المعدل)",
+          "targetMuscle": "عضلة الترايسبس خلف الذراع",
+          "sets": 3,
+          "reps": "10 تكرارات",
+          "restSeconds": 45,
+          "tip": "اثنِ ركبتيك وقرّب قدميك من الكرسي لتخفيف الحمل، وانزل مسافة قصيرة دون تحميل زائد على الكتف"
+        },
+        {
+          "name": "الطائر المعاكس الأرضي (Bird Dog)",
+          "targetMuscle": "عضلات الجذع وأسفل الظهر والتوازن",
+          "sets": 3,
+          "reps": "10 تكرارات لكل جهة",
+          "restSeconds": 45,
+          "tip": "ارفع الذراع اليمنى والرجل اليسرى ببطء وثبات تام، مع شد البطن لحماية أسفل الظهر"
+        },
+        {
+          "name": "بلانك مرتفع على الكرسي أو الأريكة (Incline Plank)",
+          "targetMuscle": "عضلات البطن العميقة واستقرار الجذع",
+          "sets": 3,
+          "reps": "20-30 ثانية ثبات",
+          "restSeconds": 45,
+          "tip": "تجنب هبوط الحوض أو تقوس الظهر، وشد البطن للداخل كأنك تستعد لتلقي ضربة خفيفة"
+        }
+      ],
+      "cooldown": "إطالة الصدر على زاوية الجدار وإطالة وضعية الطفل (Child's Pose) لمدة 4 دقائق"
+    },
+    "gym": {
+      "title": "سحب ودفع الجزء العلوي بالدامبلز والكابلات",
+      "target": "تحسين مرونة الكتفين وشد الذراعين ودعم حزام الكتف",
+      "level": "مبتدئ نادي",
+      "durationMinutes": 35,
+      "estCalories": 240,
+      "warmup": "جهاز التجديف الهادئ أو الدراجة الهوائية لمدة 5 دقائق",
+      "exercises": [
+        {
+          "name": "سحب الكيبل الأرضي للظهر (Seated Cable Row)",
+          "targetMuscle": "منتصف الظهر واللوحين والساعدين",
+          "sets": 3,
+          "reps": "12 تكرار",
+          "restSeconds": 60,
+          "tip": "اسحب المقبض لأسفل البطن مع إبقاء الصدر بارزاً والكتفين للأسفل بعيداً عن الأذنين"
+        },
+        {
+          "name": "دفع أكتاف بالدامبلز جالس (Seated DB Shoulder Press)",
+          "targetMuscle": "عضلات الكتف العلوية والجانبية",
+          "sets": 3,
+          "reps": "10-12 تكرار",
+          "restSeconds": 60,
+          "tip": "استند بالظهر كاملاً على المقعد، وادفع الدامبلز للأعلى دون ملامستهما في القمة"
+        },
+        {
+          "name": "سحب حبل الترايسبس بالكيبل (Cable Rope Pushdown)",
+          "targetMuscle": "عضلات الذراع الخلفية",
+          "sets": 3,
+          "reps": "12 تكرار",
+          "restSeconds": 45,
+          "tip": "ثبت المرفقين بجانب الجسم تماماً ولا تسمح لهما بالتأرجح للأمام والخلف"
+        },
+        {
+          "name": "تمرين الحشرة الميتة (Dead Bug)",
+          "targetMuscle": "تقوية عضلات البطن بدون إجهاد الرقبة",
+          "sets": 3,
+          "reps": "10 تكرارات لكل جهة",
+          "restSeconds": 45,
+          "tip": "ألصق أسفل ظهرك بالأرض تماماً أثناء تحريك الذراع المقابلة للرجل المعاكسة ببطء"
+        }
+      ],
+      "cooldown": "إطالات مهدئة لعضلات الصدر والكتفين وأعلى الظهر لمدة 4 دقائق"
+    }
+  },
+  {
+    "day": 3,
+    "dayLabel": "اليوم 3",
+    "home": {
+      "title": "تقوية الأرجل والجزء السفلي صديقة للمفاصل",
+      "target": "تقوية عضلات الفخذ والمؤخرة الداعمة للركبة وحرق سعرات عالٍ",
+      "level": "مبتدئ متدرج",
+      "durationMinutes": 30,
+      "estCalories": 220,
+      "warmup": "تحريك مفصل الكاحل والركبة، ومشي عرضي خفيف خطوة لليمين وخطوة لليسار لمدة 5 دقائق",
+      "exercises": [
+        {
+          "name": "النزول العكسي مع مسند (Reverse Lunge with Support)",
+          "targetMuscle": "عضلات الفخذ الأمامية والمؤخرة",
+          "sets": 3,
+          "reps": "8-10 تكرارات لكل رجل",
+          "restSeconds": 60,
+          "tip": "أمسك طرف طاولة أو جدار للتوازن، وارجع بالقدم للخلف برفق مع النزول بزاوية 90 درجة"
+        },
+        {
+          "name": "رفع الساق جانباً مستلقياً (Side-Lying Leg Lift)",
+          "targetMuscle": "العضلات المبعدة للفخذ وجوانب المؤخرة (Glute Medius)",
+          "sets": 3,
+          "reps": "12-15 تكرار لكل جهة",
+          "restSeconds": 45,
+          "tip": "حافظ على جسمك مستقيماً وارفع الساق ببطء دون تدوير الحوض للخلف"
+        },
+        {
+          "name": "رفع الساقين للأعلى في وضع الجسر (Glute Bridge Hold)",
+          "targetMuscle": "المؤخرة وثبات الحوض وأسفل الظهر",
+          "sets": 3,
+          "reps": "20-25 ثانية ثبات",
+          "restSeconds": 45,
+          "tip": "اثبت في وضع الجسر مع التنفس المستمر وشد عضلات الفخذ الخلفية والمؤخرة بقوة"
+        },
+        {
+          "name": "رفع الكعبين واقفاً (Calf Raises)",
+          "targetMuscle": "عضلات السمانة (بطات الأرجل) والكاحل",
+          "sets": 3,
+          "reps": "15 تكرار",
+          "restSeconds": 45,
+          "tip": "قف مستنداً للجدار، واصعد على أطراف أصابعك لأقصى مدى واثبت نصف ثانية قبل الهبوط المتحكم فيه"
+        }
+      ],
+      "cooldown": "إطالات ناعمة لأوتار الركبة وعضلة الفخذ الرباعية وبطّة الرجل لمدة 4 دقائق"
+    },
+    "gym": {
+      "title": "نحت وتقوية الجزء السفلي بأجهزة عزل المفاصل",
+      "target": "تفعيل الألياف العضلية السفلية دون ضغط محوري على العمود الفقري",
+      "level": "مبتدئ نادي",
+      "durationMinutes": 40,
+      "estCalories": 280,
+      "warmup": "جهاز السلالم البطيء أو الدراجة الثابتة بمقاومة منخفضة 5 دقائق",
+      "exercises": [
+        {
+          "name": "جهاز ثني الساقين مستلقياً (Lying/Seated Leg Curl)",
+          "targetMuscle": "أوتار الركبة وعضلات الفخذ الخلفية",
+          "sets": 3,
+          "reps": "12 تكرار",
+          "restSeconds": 60,
+          "tip": "اسحب الوزن بحركة انسيابية واعد الساقين ببطء لتشعر بالتمدد دون ترك الوزن يرتطم"
+        },
+        {
+          "name": "جهاز تمديد الساقين (Leg Extension)",
+          "targetMuscle": "عضلة الفخذ الأمامية الرباعية المحيطة بالركبة",
+          "sets": 3,
+          "reps": "12 تكرار",
+          "restSeconds": 60,
+          "tip": "استخدم وزناً خفيفاً ولا تفرد الركبة بقفل حاد، بل ركز على عصر العضلة في القمة"
+        },
+        {
+          "name": "جهاز ضم وفتح الفخذين (Hip Abductor/Adductor Machine)",
+          "targetMuscle": "الفخذ الداخلي والخارجي ومثبتات الحوض",
+          "sets": 3,
+          "reps": "12-15 تكرار",
+          "restSeconds": 45,
+          "tip": "حركة بطيئة ومنتظمة، تحمي مفصل الورك وتزيد من ثبات الركبتين أثناء المشي اليومي"
+        },
+        {
+          "name": "مشي على السير بميلان خفيف (Incline Treadmill Walk)",
+          "targetMuscle": "كارديو سفلي لتفعيل عضلات المؤخرة وحرق الدهون",
+          "sets": 1,
+          "reps": "15 دقيقة (ميلان 3-5% سرعة 4 كم/س)",
+          "restSeconds": 0,
+          "tip": "لا تتمسك بالمقابض بقوة، حافظ على استقامة صدرك وادفع الخطوات من كعب القدم"
+        }
+      ],
+      "cooldown": "إطالة الفخذ الخلفي وعضلات الألوية على بساط التمرين لمدة 5 دقائق"
+    }
+  },
+  {
+    "day": 4,
+    "dayLabel": "اليوم 4",
+    "home": {
+      "title": "استشفاء نشط + كارديو منخفض الشدة وحركة مفاصل",
+      "target": "تصريف حامض اللاكتيك، تجديد النشاط، وحرق سعرات بدون إرهاق",
+      "level": "مبتدئ متدرج",
+      "durationMinutes": 25,
+      "estCalories": 160,
+      "warmup": "تنفس بطني عميق مع دوران الرقبة والأكتاف والخصر لمدة 4 دقائق",
+      "exercises": [
+        {
+          "name": "مشي نشط داخل المنزل أو في فناء البيت",
+          "targetMuscle": "عضلة القلب وتنشيط الدورة الدموية للجسم كله",
+          "sets": 1,
+          "reps": "15 دقيقة متواصلة",
+          "restSeconds": 0,
+          "tip": "حافظ على خطوة مريحة وسريعة نسبياً بحيث تستطيع التحدث دون انقطاع نفسك تماماً"
+        },
+        {
+          "name": "رفع الركبتين لمستوى الوسط بالتناوب بدون قفز (High Knees March)",
+          "targetMuscle": "مفصل الورك وأسفل البطن والتوازن",
+          "sets": 3,
+          "reps": "20 خطوة بالتناوب",
+          "restSeconds": 45,
+          "tip": "ارفع ركبتك لمستوى مريح بهدوء وحافظ على صدرك مرفوعاً وكتفيك مسترخيين"
+        },
+        {
+          "name": "تمرين القطة والجمل لتليين العمود الفقري (Cat-Cow Stretch)",
+          "targetMuscle": "مرونة الظهر والعمود الفقري وتخفيف التوتر العضلي",
+          "sets": 2,
+          "reps": "10 دورات تنفس",
+          "restSeconds": 30,
+          "tip": "خذ شهيقاً مع رفع الصدر قليلاً، وزفيراً مع تقويس الظهر للأعلى وسحب السرة للداخل برفق"
+        }
+      ],
+      "cooldown": "استرخاء كامل على الأرض مع مد الذراعين وتغميض العينين للتنفس العميق لمدة 4 دقائق"
+    },
+    "gym": {
+      "title": "كارديو استشفائي منخفض الشدة (LISS) وإطالات عميقة",
+      "target": "تعزيز تدفق الدم المغذي للعضلات وتخفيف آلام التمارين السابقة",
+      "level": "مبتدئ نادي",
+      "durationMinutes": 30,
+      "estCalories": 200,
+      "warmup": "3 دقائق مشي بطيء جداً لتهيئة الجسم وتدفئة المفاصل",
+      "exercises": [
+        {
+          "name": "تمرين جهاز الدراجة ذات الذراعين المتحركة أو الأوربتراك الهادئ",
+          "targetMuscle": "كامل عضلات الجسم بنعومة ودون صدمات ميكانيكية",
+          "sets": 1,
+          "reps": "15 دقيقة",
+          "restSeconds": 0,
+          "tip": "اضبط المقاومة على درجة خفيفة جداً وركز على سلاسة الدوران والهدوء الذهني"
+        },
+        {
+          "name": "إطالة الظهر بالبار المعلق (Dead Hang بمساعدة القدمين)",
+          "targetMuscle": "تفريغ الضغط عن فقرات الظهر وتمديد عضلات الكتف",
+          "sets": 3,
+          "reps": "20-30 ثانية",
+          "restSeconds": 45,
+          "tip": "أمسك البار العالي واجعل قدميك تلامسان الأرض جزئياً لتخفيف الوزن والتنفس بعمق"
+        },
+        {
+          "name": "تمرين الحزام المطاطي لإطالة أوتار الركبة (Resistance Band Hamstring Stretch)",
+          "targetMuscle": "أوتار الركبة وخلفية الفخذ",
+          "sets": 2,
+          "reps": "30 ثانية لكل رجل",
+          "restSeconds": 30,
+          "tip": "استلقِ على ظهرك وثبت الحزام تحت مشط القدم، واسحب الساق للأعلى بنعومة دون ثني شديد للركبة"
+        }
+      ],
+      "cooldown": "جلسة سونا دافئة خفيفة (اختياري) أو استرخاء وتمدد خفيف لمدة 5 دقائق"
+    }
+  },
+  {
+    "day": 5,
+    "dayLabel": "اليوم 5",
+    "home": {
+      "title": "مقاومة مركبة للجسم كامل لتسريع استهلاك الطاقة",
+      "target": "رفع اللياقة العضلية العامة وشد الترهلات بتمارين وظيفية",
+      "level": "مبتدئ متدرج",
+      "durationMinutes": 30,
+      "estCalories": 230,
+      "warmup": "حركات دائرية للكتفين ومشي سريع في المكان 5 دقائق",
+      "exercises": [
+        {
+          "name": "سكوات بنبض لطيف بالاستناد (Supported Pulse Squat)",
+          "targetMuscle": "الأرجل والمؤخرة",
+          "sets": 3,
+          "reps": "10 تكرارات",
+          "restSeconds": 60,
+          "tip": "انزل لنصف مسافة السكوات واصعد بلطف لزيادة الوقت تحت الشد دون إجهاد المفاصل"
+        },
+        {
+          "name": "تمرين البوش أب المائل على حافة الأريكة (Incline Push-ups)",
+          "targetMuscle": "عضلات الصدر والكتف وثبات البطن",
+          "sets": 3,
+          "reps": "8-10 تكرارات",
+          "restSeconds": 45,
+          "tip": "كلما كان السطح أعلى كان التمرين أسهل وأكثر أماناً لمفاصلك، تدرج حسب قدرتك"
+        },
+        {
+          "name": "تمرين التجديف المنزلي باستخدام حقيبة خفيفة (Bent-over Backpack Row)",
+          "targetMuscle": "أعلى ومنتصف الظهر وعضلات البايسبس",
+          "sets": 3,
+          "reps": "10-12 تكرار",
+          "restSeconds": 45,
+          "tip": "احنِ جذعك للأمام مع ظهر مستقيم وركبتين شبه مثنيتين، واسحب الحقيبة باتجاه حزام خصرك"
+        },
+        {
+          "name": "تمرين لمس الكعبين جالس (Seated Heel Taps)",
+          "targetMuscle": "عضلات البطن السفلية وثبات الحوض",
+          "sets": 3,
+          "reps": "12 تكرار لكل جهة",
+          "restSeconds": 45,
+          "tip": "اجلس على طرف كرسي مريح، مل للخلف قليلاً مع شد البطن والمس الأرض بكعبيك بالتناوب"
+        }
+      ],
+      "cooldown": "إطالات ناعمة للصدر والظهر مع تمارين تفريغ النفس لمدة 4 دقائق"
+    },
+    "gym": {
+      "title": "تدريب القوة الشامل بالأوزان والأجهزة المتعددة",
+      "target": "تحفيز كامل للألياف العضلية لتحسين حساسية الإنسولين وحرق الشحوم",
+      "level": "مبتدئ نادي",
+      "durationMinutes": 40,
+      "estCalories": 290,
+      "warmup": "جهاز التجديف الهادئ أو مشي السير لمدة 5 دقائق",
+      "exercises": [
+        {
+          "name": "سكوات الدامبل الممسوك كالكأس (Goblet Squat)",
+          "targetMuscle": "الأرجل والمؤخرة وقوة الجذع",
+          "sets": 3,
+          "reps": "10-12 تكرار",
+          "restSeconds": 60,
+          "tip": "أمسك دمبل خفيف أمام صدرك بكلتا يديك، وانزل بمؤخرتك للخلف كأنك تجلس على مقعد منخفض"
+        },
+        {
+          "name": "سحب بالدمبل بيد واحدة مستنداً (One-Arm DB Row)",
+          "targetMuscle": "عضلات الظهر الجانبية والوسطى",
+          "sets": 3,
+          "reps": "10 تكرارات لكل جهة",
+          "restSeconds": 60,
+          "tip": "اسند ركبتك ويدك على المقعد، واسحب الدمبل باتجاه الحوض مع إبقاء مرفقك قريباً من جسمك"
+        },
+        {
+          "name": "ضغط صدر بالدامبلز على مقعد مائل (Incline DB Bench Press)",
+          "targetMuscle": "الصدر العلوي والأكتاف الأمامية",
+          "sets": 3,
+          "reps": "10-12 تكرار",
+          "restSeconds": 60,
+          "tip": "اضبط ميل المقعد على زاوية 30 درجة تقريباً وادفع للأعلى بسلاسة دون اندفاع عنيف"
+        },
+        {
+          "name": "مشي المزارع بالدامبلز الخفيفة (Farmer's Walk)",
+          "targetMuscle": "قوة القبضة، ثبات الكتفين، والجذع وحرق السعرات",
+          "sets": 3,
+          "reps": "30-40 ثانية مشي هادئ",
+          "restSeconds": 45,
+          "tip": "أمسك دمبل في كل يد وامشِ بقامة منتصبة وصدر مرتفع، وكأنك تسير بثقة مطلقة"
+        }
+      ],
+      "cooldown": "إطالة هادئة لعضلات الصدر والظهر والأرجل لمدة 5 دقائق"
+    }
+  },
+  {
+    "day": 6,
+    "dayLabel": "اليوم 6",
+    "home": {
+      "title": "حرق دهون خفيف الصدمات (Low-Impact) وتقوية الجذع",
+      "target": "حرق طاقة مستمر دون ضغط على المفاصل مع شد جدار البطن",
+      "level": "مبتدئ متدرج",
+      "durationMinutes": 30,
+      "estCalories": 210,
+      "warmup": "تأرجح الذراعين وتحريك الورك بحركات دائرية لمدة 5 دقائق",
+      "exercises": [
+        {
+          "name": "الخطو الجانبي مع لمس الركبة (Step Jack بدون قفز)",
+          "targetMuscle": "كارديو كامل الجسم وأكتاف وأرجل",
+          "sets": 3,
+          "reps": "12-15 تكرار لكل جهة",
+          "restSeconds": 45,
+          "tip": "مد قدمك لليمين مع رفع الذراعين للأعلى، ثم عد للمنتصف وبدّل لليسار دون أي قفز"
+        },
+        {
+          "name": "تمرين المتسلق البطيء على الكرسي (Slow Incline Mountain Climbers)",
+          "targetMuscle": "عضلات البطن والكتفين ورفع النبض",
+          "sets": 3,
+          "reps": "10 تكرارات لكل رجل",
+          "restSeconds": 45,
+          "tip": "ضع يديك على المقعد واسحب ركبتك ببطء نحو صدرك واثبت ثانية، التركيز هنا على التحكم وليس السرعة"
+        },
+        {
+          "name": "المشي على الحائط جالس (Wall Sit المعدل)",
+          "targetMuscle": "قوة وتحمل عضلات الفخذ الأمامية",
+          "sets": 3,
+          "reps": "20-30 ثانية ثبات",
+          "restSeconds": 60,
+          "tip": "استند بظهرك كاملاً على الجدار وانزل بمستوى مريح وغير مؤلم لمفصل الركبة"
+        },
+        {
+          "name": "مشي خفيف مع التلويح بالذراعين",
+          "targetMuscle": "تهدئة تدريجية للنبض وتدوير الأكسجين",
+          "sets": 1,
+          "reps": "10 دقائق",
+          "restSeconds": 0,
+          "tip": "اجعل أنفاسك عميقة ومريحة لتبدأ العضلات في الاسترخاء"
+        }
+      ],
+      "cooldown": "إطالات لطيفة لأسفل الظهر والرقبة والكتف لمدة 4 دقائق"
+    },
+    "gym": {
+      "title": "جلسة حرق منتظم وتنشيط العضلات الأساسية (Core & LISS)",
+      "target": "استهلاك مخازن الجليكوجين بكفاءة وتحسين كفاءة التنفس",
+      "level": "مبتدئ نادي",
+      "durationMinutes": 35,
+      "estCalories": 250,
+      "warmup": "مشي خفيف على السير بسرعة منخفضة لمدة 5 دقائق",
+      "exercises": [
+        {
+          "name": "كارديو الدراجة الثابتة أو جهاز المشي البيضاوي (Elliptical)",
+          "targetMuscle": "حرق مستمر للسعرات وحماية كاملة للمفاصل",
+          "sets": 1,
+          "reps": "20 دقيقة بوتيرة ثابتة",
+          "restSeconds": 0,
+          "tip": "حافظ على شدة تسمح لك بنطق جملة كاملة بسهولة (نطاق حرق الدهون الأنسب)"
+        },
+        {
+          "name": "سحب الكيبل لتنشيط البطن (Standing Cable Core Anti-Rotation / Pallof Press)",
+          "targetMuscle": "عضلات الجذع العميقة والخواصر وثبات العمود الفقري",
+          "sets": 3,
+          "reps": "10 تكرارات لكل جانب",
+          "restSeconds": 45,
+          "tip": "قف موازياً للكيبل، ادفع المقبض للأمام بثبات وقاوم قوة السحب دون التواء جذعك"
+        },
+        {
+          "name": "تمرين مد الظهر على جهاز الفايبر (Back Extension)",
+          "targetMuscle": "عضلات أسفل الظهر والألوية",
+          "sets": 3,
+          "reps": "10-12 تكرار",
+          "restSeconds": 45,
+          "tip": "انزل بجذعك بهدوء واصعد حتى يصبح جسمك مستقيماً فقط دون المبالغة في تقويس الظهر للخلف"
+        }
+      ],
+      "cooldown": "إطالات مرنة شاملة على سجادة التمرين مع شرب كمية كافية من الماء 5 دقائق"
+    }
+  },
+  {
+    "day": 7,
+    "dayLabel": "اليوم 7",
+    "home": {
+      "title": "يوم الراحة التامة والاستشفاء الذهني والجسدي",
+      "target": "إعادة بناء الأنسجة العضلية، تهدئة الجهاز العصبي، والاستعداد للأسبوع القادم",
+      "level": "استشفاء وراحة",
+      "durationMinutes": 15,
+      "estCalories": 80,
+      "warmup": "جلسة تنفس هادئة في مكان مريح وجيد التهوية لمدة 3 دقائق",
+      "exercises": [
+        {
+          "name": "مشي حر ترفيهي غير إلزامي",
+          "targetMuscle": "استرخاء عام وتحسين المزاج",
+          "sets": 1,
+          "reps": "15 دقيقة (اختياري تماماً)",
+          "restSeconds": 0,
+          "tip": "امشِ للاستمتاع وتصفية الذهن فقط وبدون أي قيود أو استعجال"
+        },
+        {
+          "name": "إطالة الاستلقاء واحتضان الركبة للصدر (Knee to Chest Stretch)",
+          "targetMuscle": "تفريغ توتر أسفل الظهر ومفصل الحوض",
+          "sets": 2,
+          "reps": "30 ثانية لكل رجل",
+          "restSeconds": 30,
+          "tip": "اسحب ركبتك برفق نحو صدرك مع إبقاء الرأس والأكتاف مسترخية على الأرض"
+        },
+        {
+          "name": "وضعية الطفل المريحة (Child's Pose)",
+          "targetMuscle": "تهدئة عضلات الظهر والحوض والكتفين",
+          "sets": 2,
+          "reps": "45-60 ثانية ثبات",
+          "restSeconds": 30,
+          "tip": "اجلس على كعبيك ومد يديك للأمام بهدوء، وأرخِ جبهتك على الأرض وتنفس ببطء"
+        }
+      ],
+      "cooldown": "شرب كوب ماء دافئ أو شاي أعشاب مهدئ والتأكيد على النوم الكافي (7-8 ساعات)"
+    },
+    "gym": {
+      "title": "يوم راحة كامل وتجديد الطاقة (Rest Day)",
+      "target": "منح العضلات والأوتار الوقت الكافي للبناء واستعادة الحيوية",
+      "level": "راحة واستشفاء",
+      "durationMinutes": 15,
+      "estCalories": 90,
+      "warmup": "تمرين إحماء وتمدد ديناميكي بطيء جداً 3 دقائق",
+      "exercises": [
+        {
+          "name": "مشي استرخائي على مسار النادي أو الهواء الطلق",
+          "targetMuscle": "تحريك الدورة الدموية بدون أي مقاومة",
+          "sets": 1,
+          "reps": "15 دقيقة بسرعة بطيئة",
+          "restSeconds": 0,
+          "tip": "الهدف اليوم ليس حرق السعرات بل مكافأة جسمك على مجهود الأسبوع كاملاً"
+        },
+        {
+          "name": "جلسة رول الفوم للمساج العضلي (Foam Rolling)",
+          "targetMuscle": "تحرير الأنسجة العضلية اللفافية (Myofascial Release)",
+          "sets": 2,
+          "reps": "30 ثانية لكل عضلة مشدودة",
+          "restSeconds": 30,
+          "tip": "مرر الفوم رولر على عضلات الفخذ والظهر برفق وتوقف عند نقاط الشد مع التنفس"
+        },
+        {
+          "name": "إطالات عامة على البساط مع تمارين اليوغا الأساسية",
+          "targetMuscle": "زيادة المرونة وتخفيف التيبس العضلي",
+          "sets": 1,
+          "reps": "5-8 دقائق تمدد متنوع",
+          "restSeconds": 0,
+          "tip": "تنفس بعمق من بطنك واشعر بجسمك وهو يستعيد عافيته وتوازنه"
+        }
+      ],
+      "cooldown": "استحمام دافئ لتهدئة العضلات والتركيز على التغذية الغنية بالبروتين والترطيب"
+    }
+  }
+];
+
+  var WORKOUTS_DATA = null;
+  var currentWorkoutTrack = "home";
+  try {
+    currentWorkoutTrack = localStorage.getItem("motawazi_workout_track") || "home";
+  } catch (e) {
+    currentWorkoutTrack = "home";
+  }
+
+  function loadWorkoutsDB() {
+    return fetch("/config/workouts.json")
+      .catch(function() { return fetch("/workouts.json"); })
+      .then(function(res) { return res.json(); })
+      .then(function(data) { WORKOUTS_DATA = data; })
+      .catch(function(e) {
+        console.warn("[متوازي] تعذر جلب التمارين، استخدام الاحتياطي:", e);
+        WORKOUTS_DATA = DEFAULT_WORKOUTS_DATA;
+      });
+  }
+
+  function setupWorkoutTrackButtons() {
+    var btnHome = $("btnTrackHome");
+    var btnGym = $("btnTrackGym");
+    if (!btnHome || !btnGym) return;
+
+    btnHome.classList.toggle("active", currentWorkoutTrack === "home");
+    btnHome.setAttribute("aria-selected", currentWorkoutTrack === "home" ? "true" : "false");
+    btnGym.classList.toggle("active", currentWorkoutTrack === "gym");
+    btnGym.setAttribute("aria-selected", currentWorkoutTrack === "gym" ? "true" : "false");
+
+    btnHome.addEventListener("click", function() {
+      setWorkoutTrack("home");
+    });
+    btnGym.addEventListener("click", function() {
+      setWorkoutTrack("gym");
+    });
+  }
+
+  function setWorkoutTrack(track) {
+    currentWorkoutTrack = (track === "gym") ? "gym" : "home";
+    try { localStorage.setItem("motawazi_workout_track", currentWorkoutTrack); } catch (e) {}
+
+    var btnHome = $("btnTrackHome");
+    var btnGym = $("btnTrackGym");
+    if (btnHome && btnGym) {
+      btnHome.classList.toggle("active", currentWorkoutTrack === "home");
+      btnHome.setAttribute("aria-selected", currentWorkoutTrack === "home" ? "true" : "false");
+      btnGym.classList.toggle("active", currentWorkoutTrack === "gym");
+      btnGym.setAttribute("aria-selected", currentWorkoutTrack === "gym" ? "true" : "false");
+    }
+
+    renderWorkout(currentDayIndex);
+  }
+
+  function renderWorkout(dayIdx) {
+    var list = WORKOUTS_DATA || DEFAULT_WORKOUTS_DATA;
+    if (!list || !list.length) return;
+    var dayItem = list[dayIdx % list.length];
+    if (!dayItem) return;
+
+    var track = dayItem[currentWorkoutTrack] || dayItem.home;
+    if (!track) return;
+
+    if ($("workoutLevel")) $("workoutLevel").textContent = track.level || "مبتدئ متدرج";
+    if ($("workoutTitle")) $("workoutTitle").textContent = track.title || "";
+    if ($("workoutTarget")) $("workoutTarget").textContent = "🎯 " + (track.target || "");
+    if ($("workoutDuration")) $("workoutDuration").textContent = "⏱️ " + (track.durationMinutes || 30) + " دقيقة";
+    if ($("workoutCalories")) $("workoutCalories").textContent = "⚡ ~" + (track.estCalories || 200) + " سعرة محروقة";
+
+    if ($("workoutWarmupText")) $("workoutWarmupText").textContent = track.warmup || "";
+    if ($("workoutCooldownText")) $("workoutCooldownText").textContent = track.cooldown || "";
+
+    var exList = $("workoutExercisesList");
+    if (exList) {
+      exList.innerHTML = "";
+      (track.exercises || []).forEach(function(ex, i) {
+        var itemEl = document.createElement("div");
+        itemEl.className = "exercise-card";
+
+        var setsRepsText = (ex.sets && ex.sets > 1 ? (ex.sets + " جولات × ") : "") + (ex.reps || "");
+        var restText = ex.restSeconds ? ("راحة " + ex.restSeconds + " ث") : "بدون راحة";
+
+        itemEl.innerHTML =
+          '<div class="exercise-header">' +
+            '<div class="exercise-num-title">' +
+              '<div class="exercise-num">' + (i + 1) + '</div>' +
+              '<h5 class="exercise-name">' + ex.name + '</h5>' +
+            '</div>' +
+            (ex.targetMuscle ? '<span class="exercise-muscle-tag">' + ex.targetMuscle + '</span>' : '') +
+          '</div>' +
+          '<div class="exercise-metrics">' +
+            '<span class="exercise-metric-pill">🎯 ' + setsRepsText + '</span>' +
+            '<span class="exercise-metric-pill">⏱️ ' + restText + '</span>' +
+          '</div>' +
+          (ex.tip ? (
+            '<div class="exercise-tip">' +
+              '<span style="flex-shrink:0;">💡</span>' +
+              '<span><strong>توجيه الكابتن:</strong> ' + ex.tip + '</span>' +
+            '</div>'
+          ) : '');
+
+        exList.appendChild(itemEl);
+      });
+    }
+  }
 
   function loadMealsDB() {
     return fetch("/config/meals.json")
@@ -1585,10 +2429,8 @@
     $("summaryCarbs").textContent = totalC + " جم";
     $("summaryFat").textContent = totalF + " جم";
 
-    // تمرين اليوم
-    var w = WORKOUTS[dayIdx % WORKOUTS.length];
-    $("workoutTitle").textContent = w.title;
-    $("workoutDesc").textContent = w.desc;
+    // تمرين اليوم الرياضي الموازي
+    renderWorkout(dayIdx);
 
     // أزرار طريقة التحضير
     var prepBtns = container.querySelectorAll(".btn-prep");
@@ -2265,7 +3107,20 @@
         }
       });
 
-      var w = WORKOUTS[d % WORKOUTS.length];
+      var wList = WORKOUTS_DATA || DEFAULT_WORKOUTS_DATA;
+      var wDay = wList ? wList[d % wList.length] : null;
+      var wTrack = wDay ? (wDay[currentWorkoutTrack] || wDay.home) : null;
+      var wTitle = wTrack ? wTrack.title : "";
+      var wTarget = wTrack ? wTrack.target : "";
+      var wDuration = wTrack ? (wTrack.durationMinutes + " دقيقة") : "";
+      var wCal = wTrack ? ("~" + wTrack.estCalories + " سعرة") : "";
+      var wTrackLabel = currentWorkoutTrack === "gym" ? "مسار النادي" : "مسار منزلي";
+      var exSummary = "";
+      if (wTrack && wTrack.exercises) {
+        exSummary = wTrack.exercises.map(function(ex, i) {
+          return (i + 1) + ". " + ex.name + " (" + (ex.sets > 1 ? (ex.sets + "×") : "") + ex.reps + ")";
+        }).join(" | ");
+      }
 
       html +=
         '<div class="print-sheet" style="margin-bottom: 30px; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px 20px; background: #ffffff;">' +
@@ -2296,10 +3151,14 @@
 
       html +=
           '</div>' +
-          '<div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:10px 14px;">' +
-            '<strong style="color:#c2410c; font-size:0.88rem;">🏃‍♂️ تمرين اليوم:</strong> ' +
-            '<span style="font-size:0.88rem; font-weight:700; color:var(--text-dark);">' + w.title + '</span>' +
-            '<div style="font-size:0.8rem; color:#7c2d12; margin-top:3px;">' + w.desc + '</div>' +
+          '<div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:12px 14px;">' +
+            '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">' +
+              '<strong style="color:#c2410c; font-size:0.88rem;">🏃‍♂️ تمرين اليوم (' + wTrackLabel + '):</strong>' +
+              '<span style="font-size:0.78rem; color:#9a3412; font-weight:700;">⏱️ ' + wDuration + ' | ⚡ ' + wCal + '</span>' +
+            '</div>' +
+            '<div style="font-size:0.92rem; font-weight:800; color:var(--text-dark); margin-bottom:2px;">' + wTitle + '</div>' +
+            '<div style="font-size:0.8rem; color:#7c2d12; margin-bottom:6px;">' + wTarget + '</div>' +
+            (exSummary ? '<div style="font-size:0.78rem; color:#475569; background:#ffffff; padding:6px 10px; border-radius:6px; border:1px dashed #fdba74;"><strong>التمارين:</strong> ' + exSummary + '</div>' : '') +
           '</div>' +
         '</div>';
     }
@@ -2514,11 +3373,12 @@
           userTargetKcal = p.calc.kcal;
         }
 
-        loadMealsDB().then(function() {
+        Promise.all([loadMealsDB(), loadWorkoutsDB()]).then(function() {
           $("boot").classList.add("hidden");
           $("planContent").classList.remove("hidden");
           initGreeting(p, u);
           setupDaysNavTabs();
+          setupWorkoutTrackButtons();
           var todayIdx = getTodayDayIndex();
           renderDayPlan(todayIdx);
           // توسيط التبويب النشط لليوم بالإبهام
