@@ -40,6 +40,8 @@ function scaleMeal(meal, targetSlotCalories) {
     description: meal.description,
     portion: meal.portion,
     portionUnit: meal.portionUnit,
+    scaleWeightText: meal.scaleWeightText,
+    scaleWeights: meal.scaleWeights,
     calories: scaledKcal,
     macros: {
       protein: scaledProtein,
