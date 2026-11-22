@@ -16,8 +16,91 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=20261122b">
 <style>
+  /* شريط التنقل السفلي الذكي للهواتف — مضمن مباشرة لتجاوز كاش المتصفح */
+  .mobile-bottom-nav {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    body {
+      padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    .mobile-bottom-nav {
+      display: flex !important;
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      height: calc(62px + env(safe-area-inset-bottom, 0px)) !important;
+      padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+      background: #ffffff !important;
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      border-top: 1px solid #e2e8f0 !important;
+      box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08) !important;
+      z-index: 99999 !important;
+      justify-content: space-around !important;
+      align-items: center !important;
+      box-sizing: border-box !important;
+    }
+    .mobile-nav-item {
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 3px !important;
+      height: 100% !important;
+      text-decoration: none !important;
+      color: #64748b !important;
+      font-size: 0.78rem !important;
+      font-weight: 700 !important;
+      user-select: none !important;
+      position: relative !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    .mobile-nav-item .nav-icon {
+      font-size: 1.35rem !important;
+      line-height: 1 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .mobile-nav-item .nav-label {
+      line-height: 1.1 !important;
+    }
+    .mobile-nav-item.active {
+      color: #0f766e !important;
+      font-weight: 800 !important;
+    }
+    .mobile-nav-item.active .nav-icon {
+      transform: scale(1.12) !important;
+    }
+    .mobile-nav-item.active::after {
+      content: "" !important;
+      position: absolute !important;
+      top: 0 !important;
+      width: 36px !important;
+      height: 3px !important;
+      background: #0f766e !important;
+      border-radius: 0 0 4px 4px !important;
+    }
+  }
+
+  /* تمييز تبويب اليوم في شريط الأيام */
+  .day-tab.today-indicator {
+    border-color: #0f766e;
+    background: #f0fdfa;
+    color: #0f766e;
+    font-weight: 800;
+  }
+  .day-tab.today-indicator.active {
+    background: #0f766e;
+    color: #ffffff;
+  }
   /* تنسيقات صفحة الجدول والطباعة PDF */
   .plan-page-head {
     display: flex;
@@ -1057,10 +1140,10 @@
   <div id="planContent" class="hidden">
     <!-- بطاقة التحفيز والترحيب اليومي -->
     <div class="daily-greeting-card" id="dailyGreetingCard">
-      <div class="greeting-icon" id="greetingIcon">☀️</div>
+      <div class="greeting-icon" id="greetingIcon">🌱</div>
       <div class="greeting-content">
-        <h2 class="greeting-title" id="greetingTitle">صباح الهمة والنشاط!</h2>
-        <p class="greeting-subtitle" id="greetingSubtitle">يوم جديد لصحة أفضل ونزول مستمر في وزنك بإذن الله.</p>
+        <h2 class="greeting-title" id="greetingTitle">أهلاً بك في متوازي! 🎯</h2>
+        <p class="greeting-subtitle" id="greetingSubtitle">خطتك الغذائية والرياضية اليومية جاهزة وموزونة لهدفك.</p>
       </div>
       <div class="greeting-badge">
         <span class="greeting-badge-dot"></span>
@@ -1680,6 +1763,29 @@
     openMealPicker(slotKey);
   }
 
+  var ARABIC_DAY_NAMES = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"];
+
+  function getTodayDayIndex() {
+    var jsDay = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    return (jsDay + 1) % 7; // Saturday(6) => 0, Sunday(0) => 1, Monday(1) => 2, ..., Friday(5) => 6
+  }
+
+  function setupDaysNavTabs() {
+    var todayIdx = getTodayDayIndex();
+    var tabs = document.querySelectorAll(".day-tab");
+    tabs.forEach(function(tab) {
+      var d = parseInt(tab.getAttribute("data-day"), 10);
+      var isToday = (d === todayIdx);
+      if (isToday) {
+        tab.innerHTML = '<span>🌟 اليوم (' + ARABIC_DAY_NAMES[d] + ')</span>';
+        tab.classList.add("today-indicator");
+      } else {
+        tab.innerHTML = '<span>اليوم ' + (d + 1) + ' (' + ARABIC_DAY_NAMES[d] + ')</span>';
+        tab.classList.remove("today-indicator");
+      }
+    });
+  }
+
   // تفعيل تبويبات الأيام بسكرول ناعم وتوسيط بالإبهام
   var dayTabs = document.querySelectorAll(".day-tab");
   dayTabs.forEach(function(tab) {
@@ -1699,22 +1805,25 @@
   var currentProfileData = null;
   var weekTrackingCache = {};
 
-  var todayKey = (function() {
+  function getTodayKey() {
     var d = new Date();
     var y = d.getFullYear();
     var m = String(d.getMonth() + 1).padStart(2, "0");
     var day = String(d.getDate()).padStart(2, "0");
     return y + "-" + m + "-" + day;
-  })();
+  }
 
-  var yesterdayKey = (function() {
+  function getYesterdayKey() {
     var d = new Date();
     d.setDate(d.getDate() - 1);
     var y = d.getFullYear();
     var m = String(d.getMonth() + 1).padStart(2, "0");
     var day = String(d.getDate()).padStart(2, "0");
     return y + "-" + m + "-" + day;
-  })();
+  }
+
+  var todayKey = getTodayKey();
+  var yesterdayKey = getYesterdayKey();
 
   var todayTracking = {
     breakfast: false,
@@ -1722,8 +1831,47 @@
     dinner: false,
     snack: false,
     workout: false,
-    water: false
+    water: false,
+    completedCount: 0,
+    percent: 0,
+    locked: false
   };
+
+  function resetTodayTracking() {
+    todayTracking = {
+      breakfast: false,
+      lunch: false,
+      dinner: false,
+      snack: false,
+      workout: false,
+      water: false,
+      completedCount: 0,
+      percent: 0,
+      locked: false
+    };
+  }
+
+  function checkDayRollover() {
+    var currentKey = getTodayKey();
+    if (currentKey !== todayKey) {
+      console.log("[متوازي] انطلاق يوم جديد تلقائياً:", currentKey);
+      todayKey = currentKey;
+      yesterdayKey = getYesterdayKey();
+      resetTodayTracking();
+      setupDaysNavTabs();
+      var todayIdx = getTodayDayIndex();
+      renderDayPlan(todayIdx);
+      if (currentUserId && currentProfileData) {
+        initTracker(currentUserId, currentProfileData);
+      }
+    }
+  }
+
+  document.addEventListener("visibilitychange", function() {
+    if (!document.hidden) checkDayRollover();
+  });
+  window.addEventListener("focus", checkDayRollover);
+  setInterval(checkDayRollover, 45000);
 
   function getArabicDateText() {
     var d = new Date();
@@ -1910,6 +2058,9 @@
     currentUserId = uid;
     currentProfileData = profile;
 
+    todayKey = getTodayKey();
+    yesterdayKey = getYesterdayKey();
+
     var dateLabel = $("trackerDateText");
     if (dateLabel) dateLabel.textContent = getArabicDateText();
 
@@ -1923,14 +2074,19 @@
     if (streakEl) streakEl.textContent = streak.count || 0;
 
     // استرجاع بيانات اليوم من LocalStorage أولاً لسرعة العرض
+    var hadCached = false;
     try {
       var cached = localStorage.getItem("motawazi_trk_" + uid + "_" + todayKey);
       if (cached) {
         var parsed = JSON.parse(cached);
         Object.assign(todayTracking, parsed);
-        updateTrackerUI();
+        hadCached = true;
       }
     } catch(e) {}
+    if (!hadCached) {
+      resetTodayTracking();
+    }
+    updateTrackerUI();
 
     // استرجاع من فايربيس لتحديث بيانات اليوم
     firebase.firestore().collection("profiles").doc(uid)
@@ -1938,11 +2094,14 @@
         if (docSnap.exists) {
           var remoteData = docSnap.data();
           Object.assign(todayTracking, remoteData);
-          updateTrackerUI();
           try {
             localStorage.setItem("motawazi_trk_" + uid + "_" + todayKey, JSON.stringify(todayTracking));
           } catch(e) {}
+        } else {
+          // اليوم جديد: تصفير المهام لتبدأ نظيفة وجديدة تلقائياً
+          resetTodayTracking();
         }
+        updateTrackerUI();
       }).catch(function(e) {
         console.warn("[متوازي] قراءة تتبع اليوم من فايربيس:", e);
       });
@@ -2261,33 +2420,26 @@
     else if (profile && profile.answers && profile.answers.name) rawName = profile.answers.name;
     else if (user && user.displayName) rawName = user.displayName;
 
-    var firstName = rawName ? rawName.trim().split(" ")[0] : "يا بطل";
-    var hour = new Date().getHours();
-    var greetingText = "صباح الهمة والنشاط";
-    var icon = "☀️";
-    var subtitle = "يوم جديد لصحة أفضل ونزول مستمر في وزنك بإذن الله.";
-
-    if (hour >= 12 && hour < 17) {
-      greetingText = "مساء الحيوية والنشاط";
-      icon = "🌤️";
-      subtitle = "واصل التزامك بوجبات اليوم والتمارين لتحقيق هدفك.";
-    } else if (hour >= 17 || hour < 5) {
-      greetingText = "مساء العافية والإنجاز";
-      icon = "🌙";
-      subtitle = "راجع مهامك اليومية وأقفل يومك للمحافظة على سلسلة استمراريتك.";
+    rawName = (rawName || "").trim();
+    // التحقق من وجود اسم عربي بدون أحرف إنجليزية أو بريد
+    var hasArabic = /[\u0600-\u06FF]/.test(rawName);
+    var greetingText = "أهلاً بك في متوازي! 🎯";
+    if (hasArabic) {
+      var firstName = rawName.split(" ")[0];
+      greetingText = "أهلاً بك، " + firstName + "! 🎯";
     }
 
     var titleEl = $("greetingTitle");
     if (titleEl) {
-      titleEl.textContent = greetingText + "، " + firstName + "!";
+      titleEl.textContent = greetingText;
     }
     var subEl = $("greetingSubtitle");
     if (subEl) {
-      subEl.textContent = subtitle;
+      subEl.textContent = "خطتك الغذائية والرياضية اليومية جاهزة وموزونة لهدفك.";
     }
     var iconEl = $("greetingIcon");
     if (iconEl) {
-      iconEl.textContent = icon;
+      iconEl.textContent = "🌱";
     }
   }
 
@@ -2328,7 +2480,16 @@
           $("boot").classList.add("hidden");
           $("planContent").classList.remove("hidden");
           initGreeting(p, u);
-          renderDayPlan(0);
+          setupDaysNavTabs();
+          var todayIdx = getTodayDayIndex();
+          renderDayPlan(todayIdx);
+          // توسيط التبويب النشط لليوم بالإبهام
+          var activeTab = document.querySelector('.day-tab[data-day="' + todayIdx + '"]');
+          if (activeTab && activeTab.scrollIntoView) {
+            setTimeout(function() {
+              activeTab.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            }, 100);
+          }
           initTracker(u.uid, p);
         });
       }).catch(function() {
