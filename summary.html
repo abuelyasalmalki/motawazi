@@ -17,6 +17,89 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css?v=20261122b">
+<style>
+  /* شريط التنقل السفلي الذكي للهواتف — مضمن مباشرة لتجاوز كاش المتصفح */
+  .mobile-bottom-nav {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    body {
+      padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    .mobile-bottom-nav {
+      display: flex !important;
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      height: calc(62px + env(safe-area-inset-bottom, 0px)) !important;
+      padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+      background: #ffffff !important;
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      border-top: 1px solid #e2e8f0 !important;
+      box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08) !important;
+      z-index: 99999 !important;
+      justify-content: space-around !important;
+      align-items: center !important;
+      box-sizing: border-box !important;
+    }
+    .mobile-nav-item {
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 3px !important;
+      height: 100% !important;
+      text-decoration: none !important;
+      color: #64748b !important;
+      font-size: 0.78rem !important;
+      font-weight: 700 !important;
+      user-select: none !important;
+      position: relative !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    .mobile-nav-item .nav-icon {
+      font-size: 1.35rem !important;
+      line-height: 1 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .mobile-nav-item .nav-label {
+      line-height: 1.1 !important;
+    }
+  }
+
+  .calc-hero-box {
+    background: linear-gradient(135deg, var(--primary-soft) 0%, #ffffff 100%);
+    border: 1.5px solid var(--primary-border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .macros div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 6px;
+    border-radius: var(--radius-sm);
+  }
+  .macros b {
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+  .macros .small {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+</style>
 </head>
 <body class="app">
 <header class="app-header">
@@ -70,22 +153,39 @@
     <div id="calc" class="card hidden">
       <div class="card__head">
         <span class="card__icon card__icon--accent" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+          🔥
         </span>
-        <h2>احتياجك اليومي التقديري</h2>
+        <div>
+          <h2>احتياجك اليومي التقديري</h2>
+          <p class="muted small" style="margin:2px 0 0;">محسوب بمعادلة علمية دقيقة بناءً على أهدافك ونشاطك</p>
+        </div>
       </div>
-      <p class="kcal"><span id="kcal"></span> <small style="font-size:1rem;font-weight:400">سعرة</small></p>
+      <div class="calc-hero-box">
+        <span style="font-size:0.85rem; color:var(--primary-dark); font-weight:700; display:block; margin-bottom:2px;">هدف السعرات اليومية</span>
+        <div class="kcal" style="margin:0;"><span id="kcal">—</span> <small style="font-size:1.1rem; font-weight:700;">سعرة</small></div>
+      </div>
       <div class="macros">
-        <div><b id="mP"></b><span class="small">جم بروتين</span></div>
-        <div><b id="mC"></b><span class="small">جم كربوهيدرات</span></div>
-        <div><b id="mF"></b><span class="small">جم دهون</span></div>
+        <div><b id="mP">—</b><span class="small">بروتين (جم)</span></div>
+        <div><b id="mC">—</b><span class="small">كارب (جم)</span></div>
+        <div><b id="mF">—</b><span class="small">دهون (جم)</span></div>
       </div>
-      <p class="muted small" style="margin-top:14px">هذا رقم تقديري محسوب من إجاباتك، والأخصائي بيراجعه قبل ما يعتمد جدولك.</p>
+      <p class="muted small" style="margin-top:14px">هذا توزيع تقديري معتمد، يراجعه أخصائي التغذية لضبطه في جدولك بما يناسب ذوقك وأكلات بلدك.</p>
     </div>
 
-    <div id="editBox">
-      <a class="btn ghost" href="/start?edit=1">تعديل بيانات الاستمارة</a>
-      <p class="muted small" style="margin-top:8px" id="editNoticeDesc">تقدر تعدّل إجاباتك، وتحديثها سيعيد إرسالها للأخصائي للمراجعة.</p>
+    <!-- صندوق الإجراءات التالية -->
+    <div class="card" id="actionsCard">
+      <div class="appt-actions">
+        <a class="btn btn--primary hidden" id="btnGoToPlan" href="/plan" style="margin-top:0;">
+          <span>🍽️ استعراض جدولك اليومي الآن</span>
+        </a>
+        <a class="btn btn--outline" id="btnGoToAccount" href="/account" style="margin-top:0;">
+          <span>👤 الانتقال لحسابي</span>
+        </a>
+        <a class="btn ghost" id="btnEditIntake" href="/start?edit=1" style="margin-top:0;">
+          <span>✎ استعراض وتعديل الاستمارة</span>
+        </a>
+      </div>
+      <p class="muted small" style="margin-top:12px; text-align:center;" id="editNoticeDesc">تقدر تعدّل إجاباتك، وتحديثها سيعيد إرسالها للأخصائي للمراجعة.</p>
     </div>
 
     <p class="disclaimer">النتائج تختلف من شخص لآخر حسب الالتزام.</p>
@@ -98,6 +198,22 @@
     <nav aria-label="روابط قانونية"><a href="/terms">الشروط والأحكام</a><a href="/privacy">سياسة الخصوصية</a></nav>
   </div>
 </footer>
+
+<!-- شريط التنقل السفلي للهواتف الذكية -->
+<nav class="mobile-bottom-nav" aria-label="شريط التنقل الرئيسي">
+  <a href="/plan" class="mobile-nav-item">
+    <span class="nav-icon">🍽️</span>
+    <span class="nav-label">جدولي</span>
+  </a>
+  <a href="/track" class="mobile-nav-item">
+    <span class="nav-icon">📊</span>
+    <span class="nav-label">متابعتي</span>
+  </a>
+  <a href="/account" class="mobile-nav-item">
+    <span class="nav-icon">👤</span>
+    <span class="nav-label">حسابي</span>
+  </a>
+</nav>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -139,8 +255,12 @@
       $("mC").textContent = p.calc.macros.carbs;
       $("mF").textContent = p.calc.macros.fat;
     }
-    $("editBox").classList.remove("hidden");
-    if (p.status === "approved" || p.status === "delivered") {
+    var isApproved = (p.status === "approved" || p.status === "delivered");
+    var planBtn = $("btnGoToPlan");
+    if (planBtn) {
+      planBtn.classList.toggle("hidden", !isApproved);
+    }
+    if (isApproved) {
       $("editNoticeDesc").textContent = "ملاحظة: تعديل الاستمارة سيعيد إرسالها للأخصائي لتحديث خطتك بناءً على بياناتك الجديدة.";
     } else {
       $("editNoticeDesc").textContent = "تقدر تعدّل إجاباتك، وتحديثها سيعيد إرسالها للأخصائي للمراجعة.";
