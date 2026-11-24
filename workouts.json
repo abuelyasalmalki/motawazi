@@ -319,7 +319,9 @@
               "sets": 3,
               "reps": "12 تكراراً"
             }
-          ]
+          ],
+          "video": "/img/exercises/seated-overhead-triceps-extension.mp4",
+          "image": "/img/exercises/seated-overhead-triceps-extension.jpg"
         },
         {
           "id": "wall-plank",
@@ -449,7 +451,9 @@
               "sets": 3,
               "reps": "12 تكراراً لكل رجل"
             }
-          ]
+          ],
+          "video": "/img/exercises/supported-reverse-step-tap.mp4",
+          "image": "/img/exercises/supported-reverse-step-tap.jpg"
         },
         {
           "id": "standing-hip-abduction",
@@ -484,7 +488,9 @@
               "sets": 3,
               "reps": "15 تكراراً لكل رجل"
             }
-          ]
+          ],
+          "video": "/img/exercises/standing-hip-abduction.mp4",
+          "image": "/img/exercises/standing-hip-abduction.jpg"
         },
         {
           "id": "standing-hamstring-curl",
