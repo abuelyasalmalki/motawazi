@@ -160,31 +160,6 @@
       next: "ابدأ"
     },
     {
-      id: "contact",
-      title: "الاسم ورقم الواتساب",
-      hint: "لنتمكن من إشعارك فور اعتماد جدولك، ويتواصل معك الأخصائي عند الحاجة.",
-      render: function (box) {
-        box.appendChild(field("الاسم الكريم", el("input", {
-          id: "f_name", type: "text", maxlength: "80", autocomplete: "name",
-          placeholder: "مثال: محمد العتيبي / سارة",
-          value: A.name || "",
-          oninput: function (e) { A.name = e.target.value; }
-        })));
-        box.appendChild(field("رقم الجوال (واتساب)", el("input", {
-          id: "f_phone", type: "tel", inputmode: "tel", maxlength: "20", autocomplete: "tel", dir: "ltr",
-          placeholder: "05xxxxxxxx",
-          value: A.phone || "",
-          oninput: function (e) { A.phone = e.target.value; }
-        })));
-      },
-      check: function () {
-        if (!A.name || A.name.trim().length < 2) return "اكتب اسمك الكريم.";
-        var ph = cleanPhoneStr(A.phone);
-        if (!/^\+?[0-9]{7,16}$/.test(ph)) return "اكتب رقم الجوال بشكل صحيح (مثال: 05xxxxxxxx).";
-        return null;
-      }
-    },
-    {
       id: "country",
       title: "وش دولتك؟",
       hint: "نعرض لك أكلات بلدك الشعبية في جدولك.",
@@ -385,6 +360,36 @@
       check: function () { return A.vegetarian === null ? "جاوب على سؤال النباتي." : null; }
     },
     {
+      id: "contact",
+      title: "خطوة أخيرة لإظهار سعراتك وحفظ ملفك 🎯",
+      hint: "اكتب اسمك ورقم الواتساب لنربط نتيجتك باسمك ونرسل لك إشعار اعتماد الأخصائي لجدولك.",
+      render: function (box) {
+        box.appendChild(field("الاسم الكريم", el("input", {
+          id: "f_name", type: "text", maxlength: "80", autocomplete: "name",
+          placeholder: "مثال: محمد العتيبي / سارة",
+          value: A.name || "",
+          oninput: function (e) { A.name = e.target.value; }
+        })));
+        box.appendChild(field("رقم الجوال (واتساب)", el("input", {
+          id: "f_phone", type: "tel", inputmode: "tel", maxlength: "20", autocomplete: "tel", dir: "ltr",
+          placeholder: "05xxxxxxxx",
+          value: A.phone || "",
+          oninput: function (e) { A.phone = e.target.value; }
+        })));
+        box.appendChild(el("p", {
+          class: "muted small",
+          style: "margin-top:10px; line-height:1.55;",
+          text: "🔒 رقمك سري ويُستخدم فقط لإشعارك باعتماد جدولك ومتابعة الأخصائي معك — بدون أي رسائل تسويقية مزعجة."
+        }));
+      },
+      check: function () {
+        if (!A.name || A.name.trim().length < 2) return "اكتب اسمك الكريم.";
+        var ph = cleanPhoneStr(A.phone);
+        if (!/^\+?[0-9]{7,16}$/.test(ph)) return "اكتب رقم الجوال بشكل صحيح (مثال: 05xxxxxxxx).";
+        return null;
+      }
+    },
+    {
       id: "consent",
       title: "الموافقات",
       render: function (box) {
@@ -435,7 +440,6 @@
   function reviewList() {
     var h = A.health;
     var rows = [
-      ["contact", "الاسم والجوال", (A.name || "").trim() + " · " + cleanPhoneStr(A.phone)],
       ["country", "الدولة", countryName(A.country)],
       ["sexAge", "الجنس والعمر", LBL.sex[A.sex] + "، " + toNum(A.age) + " سنة"],
       ["body", "الطول والوزن", toNum(A.heightCm) + " سم، " + toNum(A.weightKg) + " كجم"],
@@ -452,6 +456,7 @@
     rows.push(["meds", "الحساسية", A.allergies.has ? A.allergies.text : "لا"]);
     rows.push(["prefs", "أكلات ما تحبها", A.dislikes || "—"]);
     rows.push(["prefs", "نباتي", yn(A.vegetarian)]);
+    rows.push(["contact", "الاسم والجوال", (A.name || "").trim() + " · " + cleanPhoneStr(A.phone)]);
 
     var dl = el("dl", { class: "review" });
     rows.forEach(function (r) {
