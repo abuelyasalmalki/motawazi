@@ -55,8 +55,9 @@ cp "$ROOT/functions/countries.json"        "$OUT/config/countries.json"
 cp "$ROOT/functions/meals.sa.json"         "$OUT/config/meals.json"
 cp "$ROOT/config/workouts.json"            "$OUT/config/workouts.json"
 
-# أصول ثابتة عامّة (إن وُجدت لاحقًا: شعار، أيقونات…)
+# أصول ثابتة عامّة وصور وفيديوهات التمارين
 [ -d "$ROOT/assets" ] && cp -R "$ROOT/assets" "$OUT/assets"
+[ -d "$ROOT/img" ]    && cp -R "$ROOT/img"    "$OUT/img"
 
 # حارس أمان: لا يتسرّب إلى dist ما ليس واجهة.
 for forbidden in functions tests .github firestore.rules firebase.json .firebaserc \
