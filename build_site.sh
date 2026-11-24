@@ -31,6 +31,10 @@ PUBLIC_FILES=(
   firebase-config.js
   auth.js
   start.js
+  manifest.json
+  og-image.jpg
+  workouts.json
+  meals.json
   robots.txt
   favicon.svg
 )
@@ -44,11 +48,12 @@ for f in "${PUBLIC_FILES[@]}"; do
   fi
 done
 
-# إعداد الاستمارة والوجبات: نفس الملفات اللي يقرؤها الخادم
+# إعداد الاستمارة والوجبات والتمارين: نفس الملفات اللي يقرؤها الخادم والجدول
 mkdir -p "$OUT/config"
 cp "$ROOT/functions/nutrition.config.json" "$OUT/config/nutrition.json"
 cp "$ROOT/functions/countries.json"        "$OUT/config/countries.json"
 cp "$ROOT/functions/meals.sa.json"         "$OUT/config/meals.json"
+cp "$ROOT/config/workouts.json"            "$OUT/config/workouts.json"
 
 # أصول ثابتة عامّة (إن وُجدت لاحقًا: شعار، أيقونات…)
 [ -d "$ROOT/assets" ] && cp -R "$ROOT/assets" "$OUT/assets"
