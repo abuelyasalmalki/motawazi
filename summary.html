@@ -130,6 +130,157 @@
     color: var(--text-muted);
     font-weight: 700;
   }
+
+  .features-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 20px 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  }
+  .features-card__title {
+    font-size: 1.12rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .feature-icon-box {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    background: #f0fdfa;
+    border: 1px solid #ccfbf1;
+  }
+  .feature-text h4 {
+    margin: 0 0 3px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  .feature-text p {
+    margin: 0;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .approval-notice-box {
+    background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
+    border: 1.5px solid #a7f3d0;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .approval-notice-box strong {
+    font-size: 0.9rem;
+    color: #065f46;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .approval-notice-box p {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #047857;
+    line-height: 1.45;
+  }
+  .guarantee-box {
+    background: #fffbeb;
+    border: 1.5px solid #fde68a;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .guarantee-box strong {
+    font-size: 0.88rem;
+    color: #92400e;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .guarantee-box p {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #b45309;
+    line-height: 1.45;
+  }
+  .plans-cta-card {
+    background: #ffffff;
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: 20px 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(15, 118, 110, 0.08);
+  }
+  .plans-grid-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .plan-preview-item {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 14px;
+    position: relative;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .plan-preview-item.featured {
+    border-color: var(--primary);
+    background: #f0fdfa;
+  }
+  .plan-preview-tag {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    background: var(--accent);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 9px;
+    border-radius: 9999px;
+  }
+  .plan-preview-perks {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+  .plan-preview-perks li {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    line-height: 1.4;
+  }
 </style>
 </head>
 <body class="app">
@@ -201,6 +352,126 @@
         <div><b id="mF">—</b><span class="small">دهون (جم)</span></div>
       </div>
       <p class="muted small" style="margin-top:14px">هذا توزيع تقديري معتمد، يراجعه أخصائي التغذية لضبطه في جدولك بما يناسب ذوقك وأكلات بلدك.</p>
+    </div>
+
+    <!-- كارت مميزات جدولك المتوازي واعتماد الأخصائي -->
+    <div class="features-card" id="planFeaturesCard">
+      <h2 class="features-card__title">
+        <span aria-hidden="true">🌟</span>
+        <span>ماذا ينتظرك في جدولك المتوازي؟</span>
+      </h2>
+      <div class="features-list">
+        <div class="feature-item">
+          <div class="feature-icon-box" aria-hidden="true">🍲</div>
+          <div class="feature-text">
+            <h4>200 وجبة من أكلات بيتك بميزان دقيق + زر «بدّل»</h4>
+            <p>كبسة، جريش، مشاوي، وفطورك المعتاد.. مقادير واضحة بالجرام والملاعق مع تبديل فوري لأي وجبة بنفس السعرات.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box" aria-hidden="true">🏋️</div>
+          <div class="feature-text">
+            <h4>مساران للتمارين (منزلي بدون أجهزة + نادي) بدون تمارين أرض</h4>
+            <p>تمارين مصممة لحماية الركب والمفاصل ومناسبة للمتكممين والأوزان العالية، مع الجولات وتوجيهات الكابتن.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box" aria-hidden="true">📈</div>
+          <div class="feature-text">
+            <h4>متابعة حقيقية تكسر ثبات الوزن</h4>
+            <p>لوحة متابعة يومية للوجبات والماء والتمرين، مع فحص أسبوعي لتعديل حصصك فور ثبات الميزان (في باقتَي المتابعة والمكثفة).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="approval-notice-box">
+        <span style="font-size:1.3rem;" aria-hidden="true">⚡</span>
+        <div>
+          <strong>مراجعة واعتماد سريع في نفس اليوم:</strong>
+          <p>فور اختيار باقتك وتأكيد الاشتراك، يراجع أخصائي التغذية ومدرب اللياقة ملفك الصحي ويعتمدان جدولك في نفس اليوم ليفتح في حسابك مباشرة.</p>
+        </div>
+      </div>
+
+      <div class="guarantee-box">
+        <span style="font-size:1.3rem;" aria-hidden="true">🛡️</span>
+        <div>
+          <strong>ضمان التكييف والتعديل المجاني (أول 7 أيام):</strong>
+          <p>نضبط ونعدّل خيارات وجباتك أو مستوى تمارينك مجاناً خلال أسبوعك الأول حتى تكون خطتك مريحة ومناسبة ليومك 100%.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- كارت اختيار الباقة والاشتراك للعميل الجديد -->
+    <div class="plans-cta-card hidden" id="summaryPlansCard">
+      <div class="card__head" style="margin-bottom:6px;">
+        <span class="card__icon card__icon--accent" aria-hidden="true">⭐</span>
+        <div>
+          <h2 style="font-size:1.15rem; margin:0;">اختر باقتك لبدء مراجعة واعتماد جدولك</h2>
+          <p class="muted small" style="margin:2px 0 0;">اشتراك 30 يوماً بدون أي تجديد تلقائي</p>
+        </div>
+      </div>
+
+      <div class="plans-grid-preview">
+        <!-- الأساسية -->
+        <div class="plan-preview-item">
+          <div>
+            <h3 style="margin:0 0 4px; font-size:1.04rem;">الأساسية</h3>
+            <p class="muted small" style="margin:0 0 8px;">خطة متكاملة وتقييم نهاية الشهر</p>
+            <div style="font-size:1.65rem; font-weight:900; color:var(--primary); margin-bottom:10px;">
+              149 <small style="font-size:0.88rem; color:var(--text); font-weight:700;">ريال / 30 يوماً</small>
+            </div>
+            <ul class="plan-preview-perks">
+              <li><span style="color:var(--primary); font-weight:900;">✓</span><span>جدول الوجبات + زر «بدّل» الفوري</span></li>
+              <li><span style="color:var(--primary); font-weight:900;">✓</span><span>تمارين (منزلي + نادي) بدون أرض</span></li>
+              <li><span style="color:var(--primary); font-weight:900;">✓</span><span>اعتماد مبدئي ومراجعة شهرية</span></li>
+            </ul>
+          </div>
+          <a href="/account#plans" class="btn btn--outline" style="width:100%; text-align:center; padding:10px 14px; margin:0; font-size:0.9rem;">
+            <span>اختر الأساسية</span>
+          </a>
+        </div>
+
+        <!-- المتابعة (الأبرز) -->
+        <div class="plan-preview-item featured">
+          <span class="plan-preview-tag">الأكثر طلباً ⭐</span>
+          <div>
+            <h3 style="margin:0 0 4px; font-size:1.04rem; color:var(--primary-dark);">المتابعة</h3>
+            <p class="muted small" style="margin:0 0 8px;">فحص أسبوعي لكسر ثبات الميزان</p>
+            <div style="font-size:1.65rem; font-weight:900; color:var(--primary); margin-bottom:10px;">
+              249 <small style="font-size:0.88rem; color:var(--text); font-weight:700;">ريال / 30 يوماً</small>
+            </div>
+            <ul class="plan-preview-perks">
+              <li><span style="color:var(--primary); font-weight:900;">✓</span><span>كل مزايا الباقة الأساسية</span></li>
+              <li><span style="color:var(--primary); font-weight:900;">✓</span><span><strong>نقطة تفتيش كل 7 أيام</strong> للميزان</span></li>
+              <li><span style="color:var(--primary); font-weight:900;">✓</span><span><strong>تعديل السعرات</strong> عند الثبات أو العزائم</span></li>
+            </ul>
+          </div>
+          <a href="/account#plans" class="btn btn--primary" style="width:100%; text-align:center; padding:10px 14px; margin:0; font-size:0.9rem;">
+            <span>اشترك واعتمد جدولك</span>
+          </a>
+        </div>
+
+        <!-- المكثفة -->
+        <div class="plan-preview-item">
+          <div>
+            <h3 style="margin:0 0 4px; font-size:1.04rem;">المكثّفة</h3>
+            <p class="muted small" style="margin:0 0 8px;">تواصل مباشر وحالات خاصة</p>
+            <div style="font-size:1.65rem; font-weight:900; color:var(--primary); margin-bottom:10px;">
+              399 <small style="font-size:0.88rem; color:var(--text); font-weight:700;">ريال / 30 يوماً</small>
+            </div>
+            <ul class="plan-preview-perks">
+              <li><span style="color:var(--primary); font-weight:900;">✓</span><span>كل مزايا باقة المتابعة</span></li>
+              <li><span style="color:var(--primary); font-weight:900;">✓</span><span><strong>تواصل واتساب مباشر</strong> للمطاعم والسفر</span></li>
+              <li><span style="color:var(--primary); font-weight:900;">✓</span><span><strong>تخصيص للتكميم والمفاصل</strong> وأولوية</span></li>
+            </ul>
+          </div>
+          <a href="/account#plans" class="btn btn--outline" style="width:100%; text-align:center; padding:10px 14px; margin:0; font-size:0.9rem;">
+            <span>اختر المكثّفة</span>
+          </a>
+        </div>
+      </div>
     </div>
 
     <!-- صندوق الإجراءات التالية -->
@@ -325,6 +596,15 @@
     var planBtn = $("btnGoToPlan");
     if (planBtn) {
       planBtn.classList.toggle("hidden", !isApproved);
+    }
+    var summaryPlansCard = $("summaryPlansCard");
+    if (summaryPlansCard) {
+      var isSub = window.Auth && Auth.isSubscribed;
+      summaryPlansCard.classList.toggle("hidden", !!(isSub || isApproved));
+    }
+    var planFeaturesCard = $("planFeaturesCard");
+    if (planFeaturesCard) {
+      planFeaturesCard.classList.toggle("hidden", !!isApproved);
     }
     if (isApproved) {
       $("editNoticeDesc").textContent = "ملاحظة: تعديل الاستمارة سيعيد إرسالها للأخصائي لتحديث خطتك بناءً على بياناتك الجديدة.";

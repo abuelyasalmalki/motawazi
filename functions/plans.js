@@ -21,24 +21,24 @@ const PLANS = Object.freeze({
   basic: Object.freeze({
     plan: "basic",
     days: 30,
-    amount: null,          // TODO: السعر بالهللات
+    amount: 14900,         // 149 ريالاً (بالهللات)
     label: "الأساسية",
-    desc: "جدول غذائي ورياضي ومتابعة شهرية"
+    desc: "جدول غذائي بميزة بدّل ومسار رياضي آمن مع متابعة شهرية"
   }),
   followup: Object.freeze({
     plan: "followup",
     days: 30,
-    amount: null,          // TODO: السعر بالهللات
+    amount: 24900,         // 249 ريالاً (بالهللات)
     label: "المتابعة",
-    desc: "جدول غذائي ورياضي ومتابعة أسبوعية",
+    desc: "نقطة تفتيش أسبوعية لكسر ثبات الوزن وتعديل الحصص والمناسبات",
     featured: true
   }),
   intensive: Object.freeze({
     plan: "intensive",
     days: 30,
-    amount: null,          // TODO: السعر بالهللات
+    amount: 39900,         // 399 ريالاً (بالهللات)
     label: "المكثّفة",
-    desc: "متابعة أسبوعية وتواصل مباشر مع الأخصائي"
+    desc: "تواصل مباشر مع الأخصائي للمطاعم والمناسبات وتخصيص الحالات الخاصة"
   })
 });
 

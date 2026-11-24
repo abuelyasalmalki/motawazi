@@ -341,12 +341,48 @@
 <script>
 (function () {
   "use strict";
+  var REGION = "me-central2";   // نفس REGION في functions/config.js و start.js
   var $ = function (id) { return document.getElementById(id); };
+  var paying = false;
 
   var PLANS = [
-    { key: "basic",     label: "الأساسية", desc: "جدول غذائي ورياضي ومتابعة شهرية",          price: null, period: "شهرياً" },
-    { key: "followup",  label: "المتابعة", desc: "جدول غذائي ورياضي ومتابعة أسبوعية",        price: null, period: "شهرياً", featured: true },
-    { key: "intensive", label: "المكثّفة", desc: "متابعة أسبوعية وتواصل مباشر مع الأخصائي",   price: null, period: "شهرياً" }
+    {
+      key: "basic",
+      label: "الأساسية",
+      desc: "خطة غذائية ورياضية متكاملة مع تقييم نهاية الشهر",
+      perks: [
+        "جدول أكلات البيت بالميزان + زر «بدّل» الفوري (200 وجبة)",
+        "تمارين (منزلي + نادي) بدون تمارين أرض لحماية المفاصل",
+        "لوحة متابعة يومية وسجل ومنحنى الوزن + مراجعة شهرية"
+      ],
+      price: 149,
+      period: "/ 30 يوماً"
+    },
+    {
+      key: "followup",
+      label: "المتابعة",
+      desc: "رقابة أسبوعية مستمرة لكسر ثبات الميزان أولاً بأول",
+      perks: [
+        "كل مزايا الباقة الأساسية كاملة",
+        "نقطة تفتيش أسبوعية (كل 7 أيام) لفحص الميزان والالتزام",
+        "تعديل السعرات والحصص عند الثبات أو الجوع + مرونة المناسبات"
+      ],
+      price: 249,
+      period: "/ 30 يوماً",
+      featured: true
+    },
+    {
+      key: "intensive",
+      label: "المكثّفة",
+      desc: "تواصل مباشر مع الأخصائي وتخصيص دقيق للحالات الخاصة",
+      perks: [
+        "كل مزايا باقة المتابعة الأسبوعية",
+        "تواصل مباشر (واتساب) للاستفسار في المطاعم والسفر والعزائم",
+        "تخصيص للحالات الخاصة (التكميم والمفاصل) وأولوية الاعتماد"
+      ],
+      price: 399,
+      period: "/ 30 يوماً"
+    }
   ];
   function planLabel(key) {
     for (var i = 0; i < PLANS.length; i++) if (PLANS[i].key === key) return PLANS[i].label;
@@ -366,22 +402,57 @@
       c.className = "card plan" + (p.featured ? " featured" : "");
       if (p.featured) {
         var t = document.createElement("span");
-        t.className = "tag"; t.textContent = "الأبرز";
+        t.className = "tag"; t.textContent = "الأكثر طلباً ⭐";
         c.appendChild(t);
       }
       var h = document.createElement("h2"); h.textContent = p.label; c.appendChild(h);
-      var d = document.createElement("p"); d.className = "muted"; d.style.margin = "0";
+      var d = document.createElement("p"); d.className = "muted"; d.style.margin = "0 0 10px";
       d.textContent = p.desc; c.appendChild(d);
+
+      if (p.perks && p.perks.length) {
+        var ul = document.createElement("ul");
+        ul.style.cssText = "list-style:none; padding:0; margin:0 0 14px; display:flex; flex-direction:column; gap:6px; font-size:0.86rem; color:var(--text);";
+        p.perks.forEach(function (perk) {
+          var li = document.createElement("li");
+          li.style.cssText = "display:flex; align-items:flex-start; gap:6px; line-height:1.45;";
+          li.innerHTML = '<span style="color:var(--primary); font-weight:900; flex-shrink:0;">✓</span><span>' + perk + '</span>';
+          ul.appendChild(li);
+        });
+        c.appendChild(ul);
+      }
+
       var pr = document.createElement("p"); pr.className = "price";
       pr.textContent = p.price == null ? "السعر يُحدَّد قريباً" : (p.price + " ريال " + p.period);
       c.appendChild(pr);
       var b = document.createElement("button");
       b.className = "btn"; b.type = "button";
-      b.textContent = p.price == null ? "قريباً" : (Auth.isSubscribed ? "جدّد بهذي الباقة" : "اشترك");
+      b.textContent = p.price == null ? "قريباً" : (Auth.isSubscribed ? "جدّد بهذه الباقة" : "اشترك الآن");
       b.disabled = p.price == null;
+      b.addEventListener("click", function () { pay(p.key, b); });
       c.appendChild(b);
       box.appendChild(c);
     });
+  }
+
+  function pay(key, btn) {
+    if (paying) return;
+    paying = true;
+    btn.disabled = true;
+    $("payMsg").className = "msg";
+    $("payMsg").textContent = "جاري تجهيز صفحة الدفع الآمنة…";
+    firebase.app().functions(REGION).httpsCallable("createPayment")({ plan: key })
+      .then(function (r) {
+        var url = r && r.data && r.data.url;
+        if (!url || !/^https:\/\//.test(url)) throw new Error("no url");
+        location.href = url;
+      })
+      .catch(function (e) {
+        paying = false;
+        btn.disabled = false;
+        $("payMsg").className = "msg err";
+        $("payMsg").textContent = (e && e.message && e.code && e.code !== "internal")
+          ? e.message : "بوابة الدفع الإلكتروني قيد التفعيل النهائي حالياً — حاول مجدداً قريباً.";
+      });
   }
 
   function renderSub() {
@@ -398,6 +469,63 @@
         ? "ينتهي اشتراكك في " + fmtDate(Auth.subEndsAt) + " (باقي " + Auth.subDaysLeft() + " يوم)"
         : "انتهى اشتراكك في " + fmtDate(Auth.subEndsAt);
     }
+
+    // تكييف نصوص وموقع قسم الباقات حسب حالة الاشتراك
+    var plansSection = $("plans");
+    var plansTitle = plansSection ? plansSection.querySelector(".section-title") : null;
+    var plansDesc = plansSection ? plansSection.querySelector("p.muted") : null;
+    var intakeCard = $("intakeCard");
+
+    if (plansSection && plansTitle) {
+      if (on) {
+        plansTitle.textContent = "تمديد أو ترقية باقتك";
+        if (plansDesc) plansDesc.textContent = "اختر باقة لتمديد مدة اشتراكك الحالي (30 يوماً إضافية) أو ترقية مستوى المتابعة.";
+      } else {
+        plansTitle.textContent = "اختر باقتك المفضلة للبدء";
+        if (plansDesc) plansDesc.textContent = "كل باقة مدتها 30 يوماً بدون تجديد تلقائي — يراجع الأخصائي استمارتك ويعتمد جدولك في نفس اليوم.";
+        if (intakeCard && plansSection.parentNode) {
+          intakeCard.parentNode.insertBefore(plansSection, intakeCard);
+        }
+      }
+    }
+  }
+
+  var watching = false;
+  function watchOrder(uid) {
+    var id = new URLSearchParams(location.search).get("order");
+    if (!id || watching || !/^[A-Za-z0-9\-]{8,64}$/.test(id)) return;
+    watching = true;
+    var box = $("orderBox"), msg = $("orderMsg");
+    if (!box || !msg) return;
+    box.classList.remove("hidden");
+    msg.className = "msg";
+    msg.textContent = "جاري تأكيد عملية الدفع…";
+
+    var stop = function () {};
+    var timer = setTimeout(function () {
+      stop();
+      msg.textContent = "لم يصل تأكيد الدفع بعد. إذا تم الخصم سيتفعّل اشتراكك تلقائياً خلال دقائق — حدّث الصفحة بعد قليل.";
+    }, 90000);
+
+    stop = firebase.firestore().collection("orders").doc(id).onSnapshot(function (snap) {
+      var o = snap.exists ? snap.data() : null;
+      if (!o || o.uid !== uid) return;
+      if (o.status === "paid") {
+        clearTimeout(timer); stop();
+        msg.className = "msg ok";
+        msg.textContent = "تم الدفع وتفعيل اشتراكك بنجاح! يراجع الأخصائي ملفك الآن لاعتماد الجدول.";
+        Auth.refresh();
+        history.replaceState(null, "", "/account");
+      } else if (o.status === "failed") {
+        clearTimeout(timer); stop();
+        msg.className = "msg err";
+        msg.textContent = "لم تكتمل عملية الدفع. يمكنك المحاولة مرة أخرى من الباقات أدناه.";
+        history.replaceState(null, "", "/account#plans");
+      }
+    }, function () {
+      clearTimeout(timer);
+      msg.textContent = "تعذّر التحقق من حالة الطلب — حدّث الصفحة بعد قليل.";
+    });
   }
 
   var STATUS = {
@@ -471,6 +599,7 @@
       renderSub();
       renderPlans();
       renderIntake(u.uid);
+      watchOrder(u.uid);
     });
   }
 
