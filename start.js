@@ -13,7 +13,7 @@
 (function () {
   "use strict";
 
-  var REGION = "me-central2";   // نفس REGION في functions/config.js
+  var REGION = "europe-west1";   // نفس REGION في functions/config.js (يطابق إقليم Firestore eur3)
   var $ = function (id) { return document.getElementById(id); };
 
   var CFG = null;        // nutrition.json

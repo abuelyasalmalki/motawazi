@@ -15,7 +15,10 @@ const admin = require("firebase-admin");
 
 admin.initializeApp();
 
-exports.createPayment = require("./createPayment").createPayment;
-exports.moyasarWebhook = require("./webhook").moyasarWebhook;
+/* دوال الدفع تُصدَّر فور تفعيل ENABLE_MOYASAR=true وضبط مفاتيح ميسر في Secret Manager */
+if (process.env.ENABLE_MOYASAR === "true") {
+  exports.createPayment = require("./createPayment").createPayment;
+  exports.moyasarWebhook = require("./webhook").moyasarWebhook;
+}
 exports.submitIntake = require("./intake").submitIntake;
 exports.approvePlan = require("./approve").approvePlan;

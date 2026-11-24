@@ -34,7 +34,7 @@
 - مشروع جديد خاص بمتوازي، **لا يشارك أي مشروع آخر** (البيانات صحية).
 - **الخدمات:** Authentication + Firestore + Cloud Functions (تحتاج خطة **Blaze**).
   ليست الاستضافة — الاستضافة Cloudflare.
-- **الإقليم:** `me-central2` (الدمّام) — `REGION` في `functions/config.js` و `account.html` و `start.js`
+- **الإقليم:** قاعدة البيانات Firestore في `me-central2` (الدمّام)، والدوال السحابية في `europe-west1` (`REGION` متطابق في `functions/config.js` و `account.html` و `start.js`)
   يطابق إقليم Firestore.
 - **إعداد الويب:** `firebase-config.js`. **القواعد:** `firestore.rules`.
   **الفهرس:** `firestore.indexes.json` (orders: uid ↑، createdAt ↓).

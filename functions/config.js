@@ -14,11 +14,11 @@
 
 const { defineSecret, defineString } = require("firebase-functions/params");
 
-/* المفتاح السرّي لميسر — مصادقة HTTP Basic */
-const MOYASAR_SECRET_KEY = defineSecret("MOYASAR_SECRET_KEY");
-
-/* الرمز السرّي للويب-هوك — تختاره أنت وتضعه في لوحة ميسر بنفس القيمة. */
-const MOYASAR_WEBHOOK_TOKEN = defineSecret("MOYASAR_WEBHOOK_TOKEN");
+/* أسرار ميسر لا تُسجَّل في البيان العام إلا عند تفعيل ENABLE_MOYASAR=true
+   حتى لا يفشل نشر دوال الاستمارة والاعتماد قبل تفعيل Secret Manager */
+const MOYASAR_ENABLED = process.env.ENABLE_MOYASAR === "true";
+const MOYASAR_SECRET_KEY = MOYASAR_ENABLED ? defineSecret("MOYASAR_SECRET_KEY") : { value: () => "" };
+const MOYASAR_WEBHOOK_TOKEN = MOYASAR_ENABLED ? defineSecret("MOYASAR_WEBHOOK_TOKEN") : { value: () => "" };
 
 /* أصل الموقع — منه تُبنى روابط العودة بعد الدفع.
    يُضبط عند اللزوم في functions/.env (مُستبعَد من Git). */
@@ -34,7 +34,7 @@ const RESEND_FROM = defineString("RESEND_FROM", { default: "متوازي <onboar
    الافتراض: الدمّام (me-central2) — البيانات صحية، فإبقاؤها في السعودية أولى.
    ⚠️ وتغييره بعد النشر يُنشئ دالّةً جديدة ويترك القديمة عاملة — احذف
    القديمة يدويًّا، وحدّث REGION في account.html و start.js بنفس القيمة. */
-const REGION = "me-central2";
+const REGION = "europe-west1";
 
 /* أصول متصفّح مسموح لها بنداء الدالّة (CORS):
    الإنتاج motawazi.com، وبيئات معاينة Cloudflare Pages. */
