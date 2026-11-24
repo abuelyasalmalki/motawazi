@@ -23,6 +23,7 @@ PUBLIC_FILES=(
   track.html
   start.html
   summary.html
+  stories.html
   terms.html
   privacy.html
   404.html
