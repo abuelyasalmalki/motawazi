@@ -31,7 +31,7 @@ if (cfgErrors.length) {
 
 /* نسخة نصّ الشروط والخصوصية التي وافق عليها العميل — حدّثها مع أي تعديل
    على terms.html أو privacy.html */
-const CONSENT_VERSION = "draft-2026-11";
+const CONSENT_VERSION = "v1-2026-11";
 
 /* الطلب يُعاد إرساله (تعديل الإجابات) ما دام لم تبدأ مراجعته */
 const EDITABLE_STATUSES = ["received"];

@@ -696,7 +696,7 @@
         consent: {
           terms: true,
           health: true,
-          version: "draft-2026-11",
+          version: "v1-2026-11",
           at: now
         },
         createdAt: now,
