@@ -2646,7 +2646,8 @@
   var ARABIC_DAY_NAMES = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"];
 
   function getTodayDayIndex() {
-    var jsDay = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    var riyadhDate = new Date(Date.now() + 3 * 3600 * 1000);
+    var jsDay = riyadhDate.getUTCDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday (Asia/Riyadh UTC+3)
     return (jsDay + 1) % 7; // Saturday(6) => 0, Sunday(0) => 1, Monday(1) => 2, ..., Friday(5) => 6
   }
 
