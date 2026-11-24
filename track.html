@@ -782,9 +782,15 @@
   var currentUid = null;
 
   function fmtDate(dateObj) {
-    return dateObj.toLocaleDateString("ar-SA-u-ca-gregory-nu-latn", {
-      year: "numeric", month: "long", day: "numeric"
-    });
+    try {
+      return dateObj.toLocaleDateString("ar-SA-u-ca-gregory-nu-latn", {
+        year: "numeric", month: "long", day: "numeric", timeZone: "Asia/Riyadh"
+      });
+    } catch (e) {
+      return dateObj.toLocaleDateString("ar-SA-u-ca-gregory-nu-latn", {
+        year: "numeric", month: "long", day: "numeric"
+      });
+    }
   }
 
   function getStoredWeightsKey(uid) {
@@ -876,18 +882,34 @@
   // ============================================================
   var trackingRecordsMap = {};
 
-  function initCommitmentHistory(uid, profile) {
-    // 1. السلسلة الحالية
-    var streak = (profile && profile.streak) || { count: 0, lastDate: "" };
-    var streakEl = $("historyStreakCount");
-    if (streakEl) streakEl.textContent = streak.count || 0;
+  function getRiyadhParts() {
+    var r = new Date(Date.now() + 3 * 3600 * 1000);
+    var y = r.getUTCFullYear();
+    var m = r.getUTCMonth();
+    var da = r.getUTCDate();
+    var todayStr = y + "-" + String(m + 1).padStart(2, "0") + "-" + String(da).padStart(2, "0");
+    var yest = new Date(Date.now() + 3 * 3600 * 1000 - 24 * 3600 * 1000);
+    var yesterdayStr = yest.getUTCFullYear() + "-" + String(yest.getUTCMonth() + 1).padStart(2, "0") + "-" + String(yest.getUTCDate()).padStart(2, "0");
+    return { year: y, month: m, day: da, todayStr: todayStr, yesterdayStr: yesterdayStr };
+  }
 
-    // 2. عنوان الشهر الحالي
-    var now = new Date();
+  function initCommitmentHistory(uid, profile) {
+    var riyadh = getRiyadhParts();
+
+    // 1. السلسلة الحالية (مقترنة بتوقيت السعودية UTC+3)
+    var streak = (profile && profile.streak) || { count: 0, lastDate: "" };
+    var activeCount = streak.count || 0;
+    if (streak.lastDate && streak.lastDate !== riyadh.todayStr && streak.lastDate !== riyadh.yesterdayStr) {
+      activeCount = 0;
+    }
+    var streakEl = $("historyStreakCount");
+    if (streakEl) streakEl.textContent = activeCount;
+
+    // 2. عنوان الشهر الحالي بتوقيت السعودية
     var months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
     var monthTitle = $("calendarMonthTitle");
     if (monthTitle) {
-      monthTitle.textContent = "تقويم شهر " + months[now.getMonth()] + " " + now.getFullYear();
+      monthTitle.textContent = "تقويم شهر " + months[riyadh.month] + " " + riyadh.year;
     }
 
     // 3. قراءة السجلات المحفوظة من LocalStorage للسرعة
@@ -900,7 +922,7 @@
       }
     }
 
-    renderHistoryUI(now);
+    renderHistoryUI(riyadh);
 
     // 4. جلب كافة سجلات الأيام من Firestore للتزامن الكامل
     firebase.firestore().collection("profiles").doc(uid)
@@ -908,7 +930,7 @@
         querySnap.forEach(function(doc) {
           trackingRecordsMap[doc.id] = doc.data();
         });
-        renderHistoryUI(now);
+        renderHistoryUI(getRiyadhParts());
       }).catch(function(err) {
         console.warn("[متوازي] قراءة سجل الالتزام من فايربيس:", err);
       });
@@ -922,16 +944,12 @@
     }
   }
 
-  function renderHistoryUI(now) {
-    var year = now.getFullYear();
-    var month = now.getMonth();
-    var daysInMonth = new Date(year, month + 1, 0).getDate();
-    var todayStr = (function() {
-      var y = now.getFullYear();
-      var m = String(now.getMonth() + 1).padStart(2, "0");
-      var da = String(now.getDate()).padStart(2, "0");
-      return y + "-" + m + "-" + da;
-    })();
+  function renderHistoryUI(riyadh) {
+    var parts = (riyadh && riyadh.todayStr) ? riyadh : getRiyadhParts();
+    var year = parts.year;
+    var month = parts.month;
+    var daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    var todayStr = parts.todayStr;
 
     var lockedCount = 0;
     var goldenCount = 0;
@@ -960,13 +978,13 @@
     var dayNamesShort = ["أحد", "اثنين", "ثلاثاء", "أربعاء", "خميس", "جمعة", "سبت"];
 
     for (var dayNum = 1; dayNum <= daysInMonth; dayNum++) {
-      var curDate = new Date(year, month, dayNum);
+      var curDate = new Date(Date.UTC(year, month, dayNum));
       var mStr = String(month + 1).padStart(2, "0");
       var dStr = String(dayNum).padStart(2, "0");
       var dateKey = year + "-" + mStr + "-" + dStr;
 
       var isToday = (dateKey === todayStr);
-      var isFuture = (curDate.getTime() > now.getTime() && !isToday);
+      var isFuture = (dateKey > todayStr);
 
       var record = trackingRecordsMap[dateKey];
       var isLocked = record && (record.locked || (record.completedCount && record.completedCount >= 3));
@@ -991,7 +1009,7 @@
         statusBadge = "🔥";
       }
 
-      var dayName = dayNamesShort[curDate.getDay()];
+      var dayName = dayNamesShort[curDate.getUTCDay()];
 
       var cell = document.createElement("div");
       cell.className = cellClass;
