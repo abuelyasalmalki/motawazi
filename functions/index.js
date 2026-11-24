@@ -18,3 +18,4 @@ admin.initializeApp();
 exports.createPayment = require("./createPayment").createPayment;
 exports.moyasarWebhook = require("./webhook").moyasarWebhook;
 exports.submitIntake = require("./intake").submitIntake;
+exports.approvePlan = require("./approve").approvePlan;

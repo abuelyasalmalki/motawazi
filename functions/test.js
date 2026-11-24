@@ -273,6 +273,7 @@ eq("٢٢ دولة عربية", CODES.length, 22);
 
 /* إجابات كاملة سليمة — ثم نغيّر حقلاً واحداً في كل حالة */
 const BASE = Object.freeze({
+  name: "سارة أحمد", phone: "0551234567",
   country: "SA", sex: "female", age: 30, heightCm: 165, weightKg: 80,
   goal: "lose", pace: "moderate", targetKg: 68, activity: "moderate",
   health: { diabetes: false, hypertension: false, heart: false, kidneyLiver: false,
@@ -382,6 +383,37 @@ ok("مؤشر منخفض ⇒ معلّم", tri(withA({ weightKg: 48, targetKg: 46 
 ok("مؤشر عالي جداً ⇒ معلّم", tri(withA({ weightKg: 115, targetKg: 90 })).reasons.indexOf("bmi_high") >= 0);
 ok("وزن مستهدف بمؤشر منخفض ⇒ معلّم", tri(withA({ weightKg: 60, targetKg: 48 })).reasons.indexOf("target_bmi_low") >= 0);
 eq("الرجل لا يُعلَّم بالحمل", tri(withA({ sex: "male", targetKg: 70, health: Object.assign({}, BASE.health, { pregnancy: true }) })).reasons.indexOf("pregnancy"), -1);
+
+/* ============================================================
+   الاسم والجوال وإشعار الاستمارة والتوقيع المشفّر — notify.js
+   ============================================================ */
+const Notify = require("./notify");
+
+group("١٧ · الاسم ورقم الواتساب وتوقيع رابط الاعتماد");
+ok("بلا اسم ⇒ مرفوض", val(withA({ name: "" })).errors.indexOf("name") >= 0);
+ok("بلا جوال ⇒ مرفوض", val(withA({ phone: "" })).errors.indexOf("phone") >= 0);
+ok("جوال قصير جداً ⇒ مرفوض", val(withA({ phone: "12345" })).errors.indexOf("phone") >= 0);
+eq("تحويل الأرقام العربية في الجوال تلقائياً",
+   val(withA({ phone: "٠٥٥ ١٢٣-٤٥٦٧" })).answers.phone, "0551234567");
+ok("رابط واتساب سعودي يبدأ بـ wa.me/9665",
+   Notify.toWhatsAppUrl("0551234567", "SA", "سارة").startsWith("https://wa.me/966551234567?text="));
+ok("رابط واتساب إماراتي يبدأ بـ wa.me/9715",
+   Notify.toWhatsAppUrl("0501234567", "AE", "خالد").startsWith("https://wa.me/971501234567?text="));
+const testSec = "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90";
+const validSig = Notify.signApprovalToken("uid_abc", testSec);
+ok("توقيع HMAC صحيح ⇒ يُقبل", Notify.verifyApprovalToken("uid_abc", validSig, testSec) === true);
+ok("🔴 تغيير معرّف العميل مع نفس التوقيع ⇒ يُرفض", Notify.verifyApprovalToken("uid_xyz", validSig, testSec) === false);
+ok("🔴 تزوير حرف واحد في التوقيع ⇒ يُرفض",
+   Notify.verifyApprovalToken("uid_abc", validSig.slice(0, -1) + (validSig.endsWith("0") ? "1" : "0"), testSec) === false);
+const sampleHtml = Notify.buildIntakeEmailHtml({
+  uid: "u1", email: "test@example.com",
+  answers: val(withA({ name: "<script>alert(1)</script>" })).answers,
+  calc: c1, triage: { flagged: true, reasons: ["surgery"] },
+  countryName: "السعودية", approveUrl: "https://example.com/approve", whatsappUrl: "https://wa.me/966551234567"
+});
+ok("🔴 تعقيم HTML في إيميل الاستمارة ضد XSS", !sampleHtml.includes("<script>") && sampleHtml.includes("&lt;script&gt;"));
+ok("إيميل الاستمارة يتضمن زر الاعتماد وزر الواتساب",
+   sampleHtml.includes("https://example.com/approve") && sampleHtml.includes("https://wa.me/966551234567"));
 
 /* ============================================================ */
 console.log("\n" + "─".repeat(52));

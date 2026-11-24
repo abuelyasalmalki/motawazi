@@ -24,6 +24,11 @@ const MOYASAR_WEBHOOK_TOKEN = defineSecret("MOYASAR_WEBHOOK_TOKEN");
    يُضبط عند اللزوم في functions/.env (مُستبعَد من Git). */
 const SITE_ORIGIN = defineString("SITE_ORIGIN", { default: "https://motawazi.com" });
 
+/* إعدادات إشعار استمارة العميل للأخصائي عبر البريد (Resend) — لا تُعطّل النشر إن كانت فارغة */
+const NOTIFY_EMAIL = defineString("NOTIFY_EMAIL", { default: "abuelyasalmalki@gmail.com" });
+const RESEND_API_KEY = defineString("RESEND_API_KEY", { default: "" });
+const RESEND_FROM = defineString("RESEND_FROM", { default: "متوازي <onboarding@resend.dev>" });
+
 /* 🔴 الإقليم — اجعله **إقليم Firestore نفسه** الذي تختاره عند إنشاء قاعدة
    البيانات، وإلا صارت كل قراءةٍ وكتابةٍ عبورًا بين إقليمين.
    الافتراض: الدمّام (me-central2) — البيانات صحية، فإبقاؤها في السعودية أولى.
@@ -58,6 +63,9 @@ module.exports = {
   MOYASAR_SECRET_KEY,
   MOYASAR_WEBHOOK_TOKEN,
   SITE_ORIGIN,
+  NOTIFY_EMAIL,
+  RESEND_API_KEY,
+  RESEND_FROM,
   REGION,
   ORIGINS,
   RETURN_PATH,

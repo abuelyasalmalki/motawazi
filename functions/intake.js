@@ -19,7 +19,9 @@ const logger = require("firebase-functions/logger");
 const cfg = require("./config");
 const N = require("./nutrition");
 const NCFG = require("./nutrition.config.json");
-const COUNTRY_CODES = require("./countries.json").map((c) => c.code);
+const COUNTRIES = require("./countries.json");
+const COUNTRY_CODES = COUNTRIES.map((c) => c.code);
+const Notify = require("./notify");
 
 /* إعدادٌ خاطئ ⇒ تفشل الدالّة عند التحميل، فيفشل النشر — لا أرقام خاطئة بصمت */
 const cfgErrors = N.validateConfig(NCFG);
@@ -105,6 +107,50 @@ exports.submitIntake = onCall(
     logger.info("استمارة مستلمة", {
       uid: uid, flagged: tri.flagged, reasons: tri.reasons, configVersion: calc.configVersion
     });
+
+    /* ٥ — إرسال ملخص الاستمارة لبريد الإدارة/الأخصائي مع رابط الاعتماد المشفّر وواتساب العميل */
+    try {
+      const apiKey = String(cfg.RESEND_API_KEY.value() || "").trim();
+      const notifyTo = String(cfg.NOTIFY_EMAIL.value() || "abuelyasalmalki@gmail.com").trim();
+      if (apiKey && notifyTo) {
+        const secret = await Notify.getOrCreateApprovalSecret(db);
+        const sig = Notify.signApprovalToken(uid, secret);
+        const projectId = process.env.GCLOUD_PROJECT || "motawazi-prod";
+        const approveUrl = `https://${cfg.REGION}-${projectId}.cloudfunctions.net/approvePlan?uid=${encodeURIComponent(uid)}&sig=${sig}`;
+        const whatsappUrl = Notify.toWhatsAppUrl(a.phone, a.country, a.name);
+        const cObj = COUNTRIES.find((c) => c.code === a.country);
+        const emailAddr = (req.auth && req.auth.token && req.auth.token.email) || "";
+
+        const html = Notify.buildIntakeEmailHtml({
+          uid: uid,
+          email: emailAddr,
+          answers: a,
+          calc: calc,
+          triage: tri,
+          countryName: cObj ? cObj.name : a.country,
+          approveUrl: approveUrl,
+          whatsappUrl: whatsappUrl
+        });
+
+        const flagPrefix = tri.flagged ? "⚠️ [حالة خاصة] " : "📋 ";
+        await Notify.sendResendEmail({
+          apiKey: apiKey,
+          from: String(cfg.RESEND_FROM.value() || "متوازي <onboarding@resend.dev>"),
+          to: notifyTo,
+          subject: `${flagPrefix}استمارة جديدة: ${a.name} (${a.weightKg} كجم)`,
+          html: html
+        });
+        logger.info("تم إرسال بريد الاستمارة للأخصائي", { uid: uid, to: notifyTo });
+      } else {
+        logger.info("تخطّي إرسال بريد الاستمارة (RESEND_API_KEY غير مضبوط بعد)", { uid: uid });
+      }
+    } catch (mailErr) {
+      /* فشل البريد لا يعطّل حفظ استمارة العميل أبداً */
+      logger.error("تعذّر إرسال بريد الاستمارة", {
+        uid: uid,
+        err: String((mailErr && mailErr.message) || mailErr)
+      });
+    }
 
     /* الردّ لا يحمل السعرات — الصفحة تقرؤها من الملف، وتخفيها إن كان معلّماً */
     return result;

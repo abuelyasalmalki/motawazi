@@ -25,6 +25,7 @@
 
   function blank() {
     return {
+      name: "", phone: "",
       country: "", sex: "", age: "", heightCm: "", weightKg: "",
       goal: "", pace: "", targetKg: "", activity: "",
       health: { diabetes: null, hypertension: null, heart: null, kidneyLiver: null,
@@ -36,6 +37,14 @@
       consent: { terms: false, health: false },
       guardian: { name: "", relation: "", phone: "", consent: false }
     };
+  }
+
+  function cleanPhoneStr(v) {
+    return String(v == null ? "" : v)
+      .replace(/[٠-٩]/g, function (d) { return String(d.charCodeAt(0) - 0x0660); })
+      .replace(/[۰-۹]/g, function (d) { return String(d.charCodeAt(0) - 0x06F0); })
+      .replace(/[\s\-()]/g, "")
+      .trim();
   }
 
   /* ===== أدوات ===== */
@@ -149,6 +158,31 @@
       },
       check: function () { return null; },
       next: "ابدأ"
+    },
+    {
+      id: "contact",
+      title: "الاسم ورقم الواتساب",
+      hint: "لنتمكن من إشعارك فور اعتماد جدولك، ويتواصل معك الأخصائي عند الحاجة.",
+      render: function (box) {
+        box.appendChild(field("الاسم الكريم", el("input", {
+          id: "f_name", type: "text", maxlength: "80", autocomplete: "name",
+          placeholder: "مثال: محمد العتيبي / سارة",
+          value: A.name || "",
+          oninput: function (e) { A.name = e.target.value; }
+        })));
+        box.appendChild(field("رقم الجوال (واتساب)", el("input", {
+          id: "f_phone", type: "tel", inputmode: "tel", maxlength: "20", autocomplete: "tel", dir: "ltr",
+          placeholder: "05xxxxxxxx",
+          value: A.phone || "",
+          oninput: function (e) { A.phone = e.target.value; }
+        })));
+      },
+      check: function () {
+        if (!A.name || A.name.trim().length < 2) return "اكتب اسمك الكريم.";
+        var ph = cleanPhoneStr(A.phone);
+        if (!/^\+?[0-9]{7,16}$/.test(ph)) return "اكتب رقم الجوال بشكل صحيح (مثال: 05xxxxxxxx).";
+        return null;
+      }
     },
     {
       id: "country",
@@ -401,6 +435,7 @@
   function reviewList() {
     var h = A.health;
     var rows = [
+      ["contact", "الاسم والجوال", (A.name || "").trim() + " · " + cleanPhoneStr(A.phone)],
       ["country", "الدولة", countryName(A.country)],
       ["sexAge", "الجنس والعمر", LBL.sex[A.sex] + "، " + toNum(A.age) + " سنة"],
       ["body", "الطول والوزن", toNum(A.heightCm) + " سم، " + toNum(A.weightKg) + " كجم"],
@@ -496,6 +531,7 @@
 
   /* ===== الإرسال ===== */
   var ERR_STEP = {
+    name: "contact", phone: "contact",
     country: "country", sex: "sexAge", age: "sexAge", heightCm: "body", weightKg: "body",
     goal: "goal", pace: "goal", targetKg: "target", targetKg_not_lower: "target", activity: "activity",
     "health.diabetes": "health1", "health.hypertension": "health1", "health.heart": "health1",
@@ -508,6 +544,7 @@
   function payload() {
     var h = A.health;
     var out = {
+      name: (A.name || "").trim(), phone: cleanPhoneStr(A.phone),
       country: A.country, sex: A.sex, age: toNum(A.age),
       heightCm: toNum(A.heightCm), weightKg: toNum(A.weightKg),
       goal: A.goal, pace: A.goal === "lose" ? A.pace : null,
@@ -667,7 +704,7 @@
             weightKg: p.weightKg,
             source: "intake",
             date: now
-          });
+          }).catch(function() {});
         })
         .then(function() {
           try { sessionStorage.removeItem(storeKey()); } catch (e) {}
@@ -747,6 +784,10 @@
           startForm(p.answers || null);
         } else {
           startForm(null);
+          if (!A.name && u.displayName && !/@/.test(u.displayName)) {
+            A.name = u.displayName.trim();
+            render();
+          }
         }
       }).catch(function (err) {
         console.error("[متوازي] فشل تحميل الملف الشخصي:", err);

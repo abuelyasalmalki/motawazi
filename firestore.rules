@@ -48,9 +48,16 @@ service cloud.firestore {
 
     // ===== الملف الصحي =====
     // الإجابات والسعرات المحسوبة والفرز وحالة المراجعة.
+    // يمنع على المتصفح منعاً باتاً منح نفسه حالة approved أو تعديل السعرات والفرز.
     match /profiles/{userId} {
-      allow read:  if owns(userId);
-      allow create, update: if owns(userId);
+      allow read: if owns(userId);
+      allow create: if owns(userId)
+        && request.resource.data.get('status', '') == 'received';
+      allow update: if owns(userId)
+        && resource.data.get('status', 'received') == 'received'
+        && request.resource.data.get('status', '') == 'received'
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'calc', 'triage']);
+      allow delete: if false;
     }
 
     // ===== سجل الالتزام اليومي =====
@@ -62,7 +69,7 @@ service cloud.firestore {
     // ===== سجل الوزن =====
     match /weights/{userId}/entries/{entryId} {
       allow read:  if owns(userId);
-      allow create, update: if owns(userId);
+      allow write: if false;
     }
 
     // ===== طلبات الدفع =====

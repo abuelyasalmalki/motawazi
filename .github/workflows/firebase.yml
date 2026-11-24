@@ -27,7 +27,7 @@ env:
   # ما يُنشر. دوال الدفع (createPayment، moyasarWebhook) خارج القائمة حتى
   # تُضبط أسرار ميسر في Secret Manager — بدونها يفشل نشرها.
   # عند تجهيز الدفع: "firestore,functions"
-  DEPLOY_TARGETS: "firestore,functions:submitIntake"
+  DEPLOY_TARGETS: "firestore,functions:submitIntake,functions:approvePlan"
 
 jobs:
   test:

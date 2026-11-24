@@ -90,6 +90,18 @@ function cleanText(v, max) {
   return s.length > max ? null : s;
 }
 
+/* توحيد الأرقام العربية/الفارسية وإزالة المسافات والشرطات للتحقق من الجوال */
+function cleanPhone(v) {
+  if (typeof v !== "string") return null;
+  const s = v
+    .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+    .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
+    .replace(/[\s\-()]/g, "")
+    .trim();
+  if (!/^\+?[0-9]{7,16}$/.test(s)) return null;
+  return s;
+}
+
 /* الأهليّة بالعمر — منفصلة لأن الواجهة تسألها قبل بقيّة الاستمارة */
 function ageEligibility(age, cfg) {
   if (!Number.isInteger(age)) return "invalid";
@@ -103,6 +115,22 @@ function validateAnswers(raw, cfg, countryCodes) {
   const r = raw && typeof raw === "object" ? raw : {};
   const L = cfg.limits;
   const a = {};
+
+  /* الاسم ورقم الواتساب */
+  const cleanName = cleanText(r.name, 80);
+  if (!cleanName || cleanName.length < 2) {
+    errors.push("name");
+    a.name = "";
+  } else {
+    a.name = cleanName;
+  }
+  const normalizedPhone = cleanPhone(r.phone);
+  if (!normalizedPhone) {
+    errors.push("phone");
+    a.phone = "";
+  } else {
+    a.phone = normalizedPhone;
+  }
 
   /* الدولة */
   a.country = typeof r.country === "string" ? r.country : "";
@@ -254,5 +282,5 @@ function triage(a, calc, cfg, eligibility) {
 module.exports = {
   ACTIVITY, PACES, GOALS, SEXES, HEALTH_KEYS,
   validateConfig, validateAnswers, ageEligibility,
-  bmiOf, bmrMifflin, computeCalc, triage
+  bmiOf, bmrMifflin, computeCalc, triage, cleanPhone
 };
