@@ -394,9 +394,12 @@
     } catch (e) { return new Date(ms).toISOString().slice(0, 10); }
   }
 
+  var profileState = { loaded: false, hasIntake: false, isApproved: false, approvedAtMs: 0 };
+
   function renderPlans() {
     var box = $("planList");
     box.innerHTML = "";
+    var hasGift = !Auth.isSubscribed && profileState.hasIntake;
     PLANS.forEach(function (p) {
       var c = document.createElement("div");
       c.className = "card plan" + (p.featured ? " featured" : "");
@@ -422,13 +425,34 @@
       }
 
       var pr = document.createElement("p"); pr.className = "price";
-      pr.textContent = p.price == null ? "السعر يُحدَّد قريباً" : (p.price + " ريال " + p.period);
-      c.appendChild(pr);
       var b = document.createElement("button");
       b.className = "btn"; b.type = "button";
-      b.textContent = p.price == null ? "قريباً" : (Auth.isSubscribed ? "جدّد بهذه الباقة" : "اشترك الآن");
-      b.disabled = p.price == null;
-      b.addEventListener("click", function () { pay(p.key, b); });
+
+      if (hasGift && p.key === "basic") {
+        pr.innerHTML = '<del style="color:#94a3b8; font-size:0.95rem; font-weight:700; margin-left:6px;">149 ريال</del> <span style="color:var(--primary);">مجاناً</span> <small style="font-size:0.82rem; font-weight:700;">(هدية التحديث الجديد)</small>';
+        b.textContent = profileState.isApproved ? "مفعّلة في حسابك ✓" : "مشمولة مجاناً (قيد الاعتماد)";
+        b.disabled = true;
+      } else {
+        pr.textContent = p.price == null ? "السعر يُحدَّد قريباً" : (p.price + " ريال " + p.period);
+        if (p.price == null) {
+          b.textContent = "قريباً";
+          b.disabled = true;
+        } else if (Auth.isSubscribed) {
+          b.textContent = "جدّد بهذه الباقة";
+          b.addEventListener("click", function () { pay(p.key, b); });
+        } else if (!profileState.hasIntake && profileState.loaded) {
+          b.textContent = "ابدأ بالاستمارة أولاً";
+          b.addEventListener("click", function () { location.href = "/start"; });
+        } else if (hasGift) {
+          b.textContent = "ترقية إلى " + p.label;
+          b.addEventListener("click", function () { pay(p.key, b); });
+        } else {
+          b.textContent = "اشترك الآن";
+          b.addEventListener("click", function () { pay(p.key, b); });
+        }
+      }
+
+      c.appendChild(pr);
       c.appendChild(b);
       box.appendChild(c);
     });
@@ -449,43 +473,87 @@
       .catch(function (e) {
         paying = false;
         btn.disabled = false;
-        $("payMsg").className = "msg err";
-        $("payMsg").textContent = (e && e.message && e.code && e.code !== "internal")
-          ? e.message : "بوابة الدفع الإلكتروني قيد التفعيل النهائي حالياً — حاول مجدداً قريباً.";
+        if (!Auth.isSubscribed && profileState.hasIntake) {
+          $("payMsg").className = "msg ok";
+          $("payMsg").textContent = profileState.isApproved
+            ? "باقتك الأساسية مفعّلة مجاناً الآن ✓ — خيار الترقية الإلكترونية لباقات المتابعة مع الأخصائي سيُتاح قريباً."
+            : "شملتك هدية الباقة الأساسية مجاناً ✓ — استمارتك الآن لدى الأخصائي للاعتماد، وستُتاح الترقية لباقات المتابعة قريباً.";
+        } else {
+          $("payMsg").className = "msg err";
+          $("payMsg").textContent = (e && e.message && e.code && e.code !== "internal")
+            ? e.message : "بوابة الدفع الإلكتروني قيد التفعيل النهائي حالياً — حاول مجدداً قريباً.";
+        }
       });
   }
 
   function renderSub() {
     var on = Auth.isSubscribed;
     var badge = $("subBadge");
-    badge.textContent = on ? "مشترك" : "غير مشترك";
-    badge.className = "badge " + (on ? "on" : "off");
-    var lbl = on && planLabel(Auth.plan);
-    $("subPlan").classList.toggle("hidden", !lbl);
-    if (lbl) $("subPlan").textContent = "الباقة: " + lbl;
-    $("subEnds").classList.toggle("hidden", !Auth.subEndsAt);
-    if (Auth.subEndsAt) {
-      $("subEnds").textContent = on
-        ? "ينتهي اشتراكك في " + fmtDate(Auth.subEndsAt) + " (باقي " + Auth.subDaysLeft() + " يوم)"
-        : "انتهى اشتراكك في " + fmtDate(Auth.subEndsAt);
+    var subPlanEl = $("subPlan");
+    var subEndsEl = $("subEnds");
+
+    if (on) {
+      badge.textContent = "مشترك";
+      badge.className = "badge on";
+      var lbl = planLabel(Auth.plan);
+      subPlanEl.classList.toggle("hidden", !lbl);
+      if (lbl) subPlanEl.textContent = "الباقة: " + lbl;
+      subEndsEl.classList.toggle("hidden", !Auth.subEndsAt);
+      if (Auth.subEndsAt) {
+        subEndsEl.textContent = "ينتهي اشتراكك في " + fmtDate(Auth.subEndsAt) + " (باقي " + Auth.subDaysLeft() + " يوم)";
+      }
+    } else if (profileState.hasIntake && profileState.isApproved) {
+      badge.textContent = "مفعّل ✓ — هدية التحديث الجديد";
+      badge.className = "badge on";
+      subPlanEl.classList.remove("hidden");
+      subPlanEl.textContent = "الباقة الأساسية — جدول 30 يوماً بدون متابعة (معفاة من رسوم 149 ريال)";
+      if (profileState.approvedAtMs > 0) {
+        var giftEndsMs = profileState.approvedAtMs + 30 * 86400000;
+        var giftDaysLeft = Math.max(0, Math.ceil((giftEndsMs - Date.now()) / 86400000));
+        subEndsEl.classList.remove("hidden");
+        subEndsEl.textContent = giftDaysLeft > 0
+          ? "صلاحية الهدية حتى " + fmtDate(giftEndsMs) + " (باقي " + giftDaysLeft + " يوم)"
+          : "انتهت مدة الـ 30 يوماً المجانية";
+      } else {
+        subEndsEl.classList.remove("hidden");
+        subEndsEl.textContent = "متاحة لمدة 30 يوماً من تاريخ اعتماد الجدول";
+      }
+    } else if (profileState.hasIntake) {
+      badge.textContent = "🎁 هدية التحديث الجديد";
+      badge.className = "badge on";
+      subPlanEl.classList.remove("hidden");
+      subPlanEl.textContent = "تم إعفاؤك من رسوم الباقة الأساسية (149 ريال) — استمارتك وصلت للأخصائي لاعتماد جدولك مجاناً اليوم (جدول 30 يوماً بدون متابعة).";
+      subEndsEl.classList.add("hidden");
+    } else {
+      badge.textContent = profileState.loaded ? "بانتظار الاستمارة" : "غير مشترك";
+      badge.className = "badge off";
+      if (profileState.loaded) {
+        subPlanEl.classList.remove("hidden");
+        subPlanEl.textContent = "عبّئ الاستمارة الصحية أولاً ليحسب النظام احتياجك ويراجع الأخصائي خطتك.";
+      } else {
+        subPlanEl.classList.add("hidden");
+      }
+      subEndsEl.classList.toggle("hidden", !Auth.subEndsAt);
+      if (Auth.subEndsAt) {
+        subEndsEl.textContent = "انتهى اشتراكك في " + fmtDate(Auth.subEndsAt);
+      }
     }
 
-    // تكييف نصوص وموقع قسم الباقات حسب حالة الاشتراك
+    // تكييف نصوص قسم الباقات حسب حالة العميل
     var plansSection = $("plans");
     var plansTitle = plansSection ? plansSection.querySelector(".section-title") : null;
     var plansDesc = plansSection ? plansSection.querySelector("p.muted") : null;
-    var intakeCard = $("intakeCard");
 
     if (plansSection && plansTitle) {
       if (on) {
         plansTitle.textContent = "تمديد أو ترقية باقتك";
         if (plansDesc) plansDesc.textContent = "اختر باقة لتمديد مدة اشتراكك الحالي (30 يوماً إضافية) أو ترقية مستوى المتابعة.";
+      } else if (profileState.hasIntake) {
+        plansTitle.textContent = "باقات المتابعة الشخصية";
+        if (plansDesc) plansDesc.textContent = "حصلت على الباقة الأساسية (بدون متابعة) مجاناً كهدية التحديث الجديد — ويمكنك لاحقاً الترقية لإضافة متابعة أسبوعية مع الأخصائي.";
       } else {
-        plansTitle.textContent = "اختر باقتك المفضلة للبدء";
-        if (plansDesc) plansDesc.textContent = "كل باقة مدتها 30 يوماً بدون تجديد تلقائي — يراجع الأخصائي استمارتك ويعتمد جدولك في نفس اليوم.";
-        if (intakeCard && plansSection.parentNode) {
-          intakeCard.parentNode.insertBefore(plansSection, intakeCard);
-        }
+        plansTitle.textContent = "باقات الاشتراك";
+        if (plansDesc) plansDesc.textContent = "ابدأ بتعبئة الاستمارة الصحية أولاً، وسيراجع أخصائي التغذية ومدرب اللياقة ملفك في نفس اليوم.";
       }
     }
   }
@@ -544,6 +612,18 @@
       if (snap.exists) {
         var data = snap.data();
         var status = data.status || "received";
+        var isApproved = (status === "approved" || status === "delivered");
+        var appTs = data.approvedAt;
+        var approvedAtMs = (appTs && typeof appTs.toMillis === "function") ? appTs.toMillis()
+                         : (typeof appTs === "number" ? appTs : 0);
+
+        profileState = {
+          loaded: true,
+          hasIntake: true,
+          isApproved: isApproved,
+          approvedAtMs: approvedAtMs
+        };
+
         $("intakeText").textContent = STATUS[status] || "تم استلام استمارتك";
         btn.textContent = "تفاصيل طلبك وسعراتك";
         btn.href = "/summary";
@@ -555,7 +635,6 @@
         }
 
         // قفل الجدول الشرطي: لا يفتح إلا إذا كانت الحالة معتمدة من الأخصائي في فايربيس
-        var isApproved = (status === "approved" || status === "delivered");
         if (isApproved) {
           planBanner.classList.remove("hidden");
           reviewBanner.classList.add("hidden");
@@ -564,6 +643,8 @@
           reviewBanner.classList.remove("hidden");
         }
       } else {
+        profileState = { loaded: true, hasIntake: false, isApproved: false, approvedAtMs: 0 };
+
         $("intakeText").textContent = "لم تقم بتعبئة الاستمارة الصحية بعد. عبّ الاستمارة عشان نحسب احتياجك الفعلي ويبني الأخصائي خطتك.";
         btn.textContent = "ابدأ الاستمارة الآن";
         btn.href = "/start";
@@ -573,6 +654,9 @@
         planBanner.classList.add("hidden");
         reviewBanner.classList.add("hidden");
       }
+
+      renderSub();
+      renderPlans();
     }).catch(function () {
       $("intakeText").textContent = "تعذّر تحميل حالة طلبك.";
     });

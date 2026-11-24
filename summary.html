@@ -319,6 +319,20 @@
       <ol class="stages" id="stages"></ol>
     </div>
 
+    <!-- كارت هدية التحديث الجديد للمنصة -->
+    <div id="welcomeGiftCard" class="card hidden" style="background:linear-gradient(135deg, #f0fdfa 0%, #fffbeb 100%); border:1.5px solid #5eead4; box-shadow:0 6px 20px rgba(15, 118, 110, 0.08);">
+      <div class="card__head" style="margin-bottom:8px;">
+        <span class="card__icon" aria-hidden="true" style="background:#ccfbf1; color:#0f766e; font-size:1.35rem;">🎁</span>
+        <div>
+          <h2 id="welcomeGiftTitle" style="font-size:1.12rem; margin:0; color:#115e59; font-weight:900;">هدية التحديث الجديد للمنصة</h2>
+          <span id="welcomeGiftBadge" style="display:inline-block; margin-top:4px; font-size:0.78rem; font-weight:800; color:#0f766e; background:#ffffff; border:1px solid #99f6e4; padding:2px 10px; border-radius:999px;">شملتك الهدية مجاناً ✓</span>
+        </div>
+      </div>
+      <p id="welcomeGiftBody" style="margin:0; font-size:0.95rem; line-height:1.65; color:#1e293b; font-weight:600;">
+        تم إعفاؤك من رسوم الباقة الأساسية (<del style="color:#94a3b8; font-weight:700;">149 ريال</del> <strong style="color:#0f766e;">مجاناً</strong>) — استمارتك وصلت للأخصائي لاعتماد جدولك مجاناً اليوم (جدول 30 يوماً بدون متابعة).
+      </p>
+    </div>
+
     <!-- ملف معلّم: الأخصائي يتولى الحالة ولا نعرض سعرات -->
     <div id="flagged" class="card hidden">
       <div class="card__head">
@@ -390,7 +404,7 @@
         <span style="font-size:1.3rem;" aria-hidden="true">⚡</span>
         <div>
           <strong>مراجعة واعتماد سريع في نفس اليوم:</strong>
-          <p>فور اختيار باقتك وتأكيد الاشتراك، يراجع أخصائي التغذية ومدرب اللياقة ملفك الصحي ويعتمدان جدولك في نفس اليوم ليفتح في حسابك مباشرة.</p>
+          <p>استمارتك وصلت الآن إلى أخصائي التغذية ومدرب اللياقة، وسيتم مراجعة ملفك الصحي واعتماد جدولك مجاناً اليوم ليفتح في حسابك مباشرة.</p>
         </div>
       </div>
 
@@ -593,14 +607,27 @@
       $("mF").textContent = p.calc.macros.fat;
     }
     var isApproved = (p.status === "approved" || p.status === "delivered");
+    var isSub = !!(window.Auth && Auth.isSubscribed);
     var planBtn = $("btnGoToPlan");
     if (planBtn) {
       planBtn.classList.toggle("hidden", !isApproved);
     }
+    var welcomeGiftCard = $("welcomeGiftCard");
+    if (welcomeGiftCard) {
+      welcomeGiftCard.classList.toggle("hidden", isSub);
+      if (!isSub && isApproved) {
+        var badgeEl = $("welcomeGiftBadge");
+        var bodyEl = $("welcomeGiftBody");
+        if (badgeEl) badgeEl.textContent = "مفعّلة في حسابك ✓";
+        if (bodyEl) {
+          bodyEl.innerHTML = 'تم تفعيل الباقة الأساسية مجاناً (<del style="color:#94a3b8; font-weight:700;">149 ريال</del> <strong style="color:#0f766e;">مجاناً</strong>) — جدولك الغذائي والرياضي (30 يوماً بدون متابعة) مفتوح في حسابك الآن.';
+        }
+      }
+    }
     var summaryPlansCard = $("summaryPlansCard");
     if (summaryPlansCard) {
-      var isSub = window.Auth && Auth.isSubscribed;
-      summaryPlansCard.classList.toggle("hidden", !!(isSub || isApproved));
+      // في مرحلة هدية التحديث الجديد نخفي مطالبة الدفع المسبقة حتى لا يرتبك العميل
+      summaryPlansCard.classList.add("hidden");
     }
     var planFeaturesCard = $("planFeaturesCard");
     if (planFeaturesCard) {

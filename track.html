@@ -563,8 +563,8 @@
   <p class="msg" id="boot" role="status">جاري تحميل بيانات المتابعة…</p>
 
   <div id="trackApp" class="hidden track-grid">
-    <!-- كارت الموعد القادم مع الأخصائي -->
-    <div class="appt-card">
+    <!-- كارت الموعد القادم مع الأخصائي (يظهر فقط لباقات المتابعة الأسبوعية والمكثفة) -->
+    <div class="appt-card hidden" id="specialistApptCard">
       <div class="appt-head">
         <h2 class="appt-title">
           <span>🩺</span>
@@ -1089,6 +1089,12 @@
         location.replace("/login?next=/track");
         return;
       }
+      var hasFollowupPlan = !!(Auth.isSubscribed && (Auth.plan === "followup" || Auth.plan === "intensive"));
+      var apptCard = $("specialistApptCard");
+      if (apptCard) {
+        apptCard.classList.toggle("hidden", !hasFollowupPlan);
+      }
+
       firebase.firestore().collection("profiles").doc(u.uid).get().then(function(snap) {
         $("boot").classList.add("hidden");
         $("trackApp").classList.remove("hidden");

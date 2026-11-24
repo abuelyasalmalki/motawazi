@@ -101,6 +101,7 @@ exports.approvePlan = onRequest(
 
       const patch = {
         status: "approved",
+        freeGrant: true,
         approvedAt: FieldValue.serverTimestamp(),
         updatedAt: FieldValue.serverTimestamp()
       };
@@ -121,7 +122,7 @@ exports.approvePlan = onRequest(
 
       const waNotifyUrl = a.phone ? (() => {
         const base = toWhatsAppUrl(a.phone, a.country, a.name).split("?")[0];
-        const msg = "أهلاً " + (a.name || "بك") + " 🌟\nتم مراجعة واعتماد جدولك الغذائي والرياضي في منصة متوازي! يمكنك تصفحه الآن مباشرة من حسابك:\nhttps://motawazi.com/plan";
+        const msg = "أهلاً " + (a.name || "بك") + " 🌟\nتمت مراجعة استمارتك واعتماد جدولك الغذائي والرياضي (هدية التحديث الجديد — الباقة الأساسية لمدة 30 يوماً) في منصة متوازي! يمكنك تصفحه والبدء الآن مباشرة من حسابك:\nhttps://motawazi.com/plan";
         return base + "?text=" + encodeURIComponent(msg);
       })() : "";
 
