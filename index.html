@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="/style.css?v=20261124a">
+  <link rel="stylesheet" href="/style.css?v=20261124b">
 </head>
 <body>
 
@@ -132,24 +132,42 @@
             <div class="parallel-tracks">
               <!-- المسار الأول: الغذائي -->
               <div class="track-card track-card--nutrition" id="nutritionCard">
-                <div class="track-card__head">
+                <div class="track-card__head" style="flex-wrap:wrap; gap:6px;">
                   <span class="track-card__label">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
                     المسار الغذائي · وجبة الغداء
                   </span>
-                  <button type="button" class="btn-swap-demo" id="btnSwapDemo" title="اضغط لتجربة ميزة التبديل">
-                    <span>بدّل الوجبة</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-                  </button>
-                </div>
-                <h4 class="track-card__title" id="mealTitle">كبسة لحم مع خضار مشوية</h4>
-                <p class="track-card__desc" id="mealDesc">150 جم رز بسمتي حبة طويلة + 120 جم لحم طازج + سلطة خضراء طازجة</p>
-                <div class="track-card__footer">
-                  <div class="track-card__metrics">
-                    <span class="metric-pill" id="mealKcal">🔥 520 سعرة</span>
-                    <span class="metric-pill" id="mealProtein">🥩 38 جم بروتين</span>
-                    <span class="metric-pill" id="mealCarbs">🌾 48 جم كارب</span>
+                  <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                    <button type="button" class="btn-swap-demo" id="btnPrepDemo" style="border-color:#cbd5e1; color:var(--text-dark);" title="اضغط لعرض طريقة التحضير">
+                      <span id="btnPrepDemoLabel">👨‍🍳 طريقة التحضير</span>
+                    </button>
+                    <button type="button" class="btn-swap-demo" id="btnSwapDemo" title="اضغط لتجربة ميزة التبديل">
+                      <span>بدّل الوجبة</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    </button>
                   </div>
+                </div>
+                <h4 class="track-card__title" id="mealTitle">كبسة دجاج نجدية بحصص موزونة</h4>
+                <p class="track-card__desc" id="mealDesc" style="margin-bottom:7px;">كوب رز + ربع دجاجة صدر مشوية بدون جلد + صحن سلطة خضراء بليمون</p>
+                <div id="mealScaleBox" style="margin:0 0 10px; font-size:0.77rem; font-weight:600; color:#0f766e; background:#ffffff; border:1px solid #99f6e4; padding:5px 10px; border-radius:8px; display:inline-flex; align-items:center; gap:5px; line-height:1.45;">
+                  <span style="flex-shrink:0;">⚖️ وزن الميزان:</span>
+                  <strong id="mealScaleText">150 جم صدر دجاج مشوي + 150 جم رز كبسة مطبوخ (كوب) + 100 جم سلطة</strong>
+                </div>
+                <div class="track-card__footer">
+                  <div class="track-card__metrics" style="flex-wrap:wrap;">
+                    <span class="metric-pill" id="mealKcal">🔥 520 سعرة</span>
+                    <span class="metric-pill" id="mealProtein">🥩 42 جم بروتين</span>
+                    <span class="metric-pill" id="mealCarbs">🌾 50 جم كارب</span>
+                    <span class="metric-pill" id="mealFat">🥑 17 جم دهون</span>
+                  </div>
+                </div>
+                <div id="mealPrepDemoPanel" style="display:none; margin-top:10px; padding:10px 12px; background:#ffffff; border:1px solid #ccfbf1; border-radius:10px; font-size:0.8rem; color:var(--text);">
+                  <div id="mealPrepTime" style="font-weight:800; color:var(--primary); margin-bottom:6px; font-size:0.78rem;">⏱️ مدة التحضير والطهي: 35 دقيقة</div>
+                  <ol id="mealPrepSteps" style="margin:0; padding-inline-start:18px; display:flex; flex-direction:column; gap:4px; line-height:1.55;">
+                    <li>اسلق صدر الدجاج منزوع الجلد مع البهارات الصحيحة والطماطم والبصل 20 دقيقة، ثم أزل الدهون الطافية.</li>
+                    <li>حمّر الدجاج في القلاية الهوائية أو الفرن 8 دقائق، واطبخ الرز المغسول في المرق الخفيف 15 دقيقة.</li>
+                    <li>قدّم كوب الرز النثري مع ربع الدجاجة المشوي والسلطة الخضراء بالليمون.</li>
+                  </ol>
                 </div>
               </div>
 
@@ -160,15 +178,15 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"></path></svg>
                     المسار الرياضي · تمرين اليوم
                   </span>
-                  <span class="metric-pill" style="background:#ffffff; color:var(--accent);">منزلي خفيف</span>
+                  <span class="metric-pill" style="background:#ffffff; color:var(--accent);">منزلي أو نادي · بدون تمارين أرض</span>
                 </div>
-                <h4 class="track-card__title">تمارين مقاومة خفيفة + مشي 20 دقيقة</h4>
-                <p class="track-card__desc">تمارين تنشيط لكامل الجسم بدون أجهزة معقدة، متدرجة ومناسبة لمستوى لياقتك الحالي.</p>
+                <h4 class="track-card__title">مقاومة لكامل الجسم بدون نزول للأرض + مشي</h4>
+                <p class="track-card__desc">تمارين آمنة للمفاصل والركب (سكوات الكرسي، ضغط الجدار، إطالات) مشروحة بالفيديو وتوجيه الكابتن.</p>
                 <div class="track-card__footer">
-                  <div class="track-card__metrics">
-                    <span class="metric-pill">⏱️ 30 دقيقة</span>
-                    <span class="metric-pill">⚡ ~230 سعرة محروقة</span>
-                    <span class="metric-pill">💪 مستوى مبتدئ</span>
+                  <div class="track-card__metrics" style="flex-wrap:wrap;">
+                    <span class="metric-pill">⏱️ 25 دقيقة</span>
+                    <span class="metric-pill">⚡ ~210 سعرة محروقة</span>
+                    <span class="metric-pill">▶️ فيديو توضيحي لكل تمرين</span>
                   </div>
                 </div>
               </div>
@@ -740,58 +758,119 @@
     </div>
   </footer>
 
-  <!-- سكربت تجربة ميزة "بدّل" التفاعلية -->
+  <!-- سكربت تجربة ميزة "بدّل" وطريقة التحضير التفاعلية -->
   <script>
     (function () {
       "use strict";
       var demoMeals = [
         {
-          title: "كبسة لحم مع خضار مشوية",
-          desc: "150 جم رز بسمتي حبة طويلة + 120 جم لحم طازج + سلطة خضراء طازجة",
+          title: "كبسة دجاج نجدية بحصص موزونة",
+          desc: "كوب رز + ربع دجاجة صدر مشوية بدون جلد + صحن سلطة خضراء بليمون",
+          scale: "150 جم صدر دجاج مشوي + 150 جم رز كبسة مطبوخ (كوب) + 100 جم سلطة",
           kcal: "🔥 520 سعرة",
-          protein: "🥩 38 جم بروتين",
-          carbs: "🌾 48 جم كارب"
-        },
-        {
-          title: "دجاج شواية مع رز بخاري وسلطة",
-          desc: "140 جم صدر دجاج مشوي + 150 جم رز بخاري ببهارات خفيفة + سلطة حارة",
-          kcal: "🔥 515 سعرة",
           protein: "🥩 42 جم بروتين",
-          carbs: "🌾 46 جم كارب"
+          carbs: "🌾 50 جم كارب",
+          fat: "🥑 17 جم دهون",
+          prepTime: "⏱️ مدة التحضير والطهي: 35 دقيقة",
+          steps: [
+            "اسلق صدر الدجاج منزوع الجلد مع البهارات الصحيحة والطماطم والبصل 20 دقيقة، ثم أزل الدهون الطافية.",
+            "حمّر الدجاج في القلاية الهوائية أو الفرن 8 دقائق، واطبخ الرز المغسول في المرق الخفيف 15 دقيقة.",
+            "قدّم كوب الرز النثري مع ربع الدجاجة المشوي والسلطة الخضراء بالليمون."
+          ]
         },
         {
-          title: "مطبق لحم خفيف بالفرن مع سلطة",
-          desc: "مطبق بيتي محضر بالفرن مع حشوة لحم مفروم قليل الدهن + خضار ورقية",
+          title: "رز بخاري مع دجاج شواية وسلطة حارة",
+          desc: "كوب رز بخاري بالجزر والحمص + ربع دجاجة شواية بدون جلد + دقوس وسلطة",
+          scale: "150 جم دجاج شواية مشوي + 150 جم رز بخاري بالجزر والحمص (كوب) + 80 جم سلطة ودقوس",
+          kcal: "🔥 515 سعرة",
+          protein: "🥩 41 جم بروتين",
+          carbs: "🌾 52 جم كارب",
+          fat: "🥑 16 جم دهون",
+          prepTime: "⏱️ مدة التحضير والطهي: 35 دقيقة",
+          steps: [
+            "تبّل ربع الدجاجة منزوع الجلد بالكمون والبابريكا واشوها في القلاية الهوائية أو الفرن على 200 درجة لمدة 22 دقيقة.",
+            "شوّح الجزر المبشور والبصل مع مسحة زيت خفيفة والحمص وعصير الطماطم، ثم أضف الرز والماء ليُطهى 18 دقيقة.",
+            "قدّم كوب الرز البخاري مع الدجاج المشوي وسلطة الدقوس الحارة."
+          ]
+        },
+        {
+          title: "مضغوط لحم هبرة مع رز أحمر وخيار باللبن",
+          desc: "كوب رز مضغوط + قطعة لحم هبرة بحجم كف اليد + زبدية خيار بالزبادي قليل الدسم",
+          scale: "120 جم لحم هبرة قليل الشحم + 140 جم رز مضغوط مطبوخ + 120 جم زبادي بخيار",
+          kcal: "🔥 525 سعرة",
+          protein: "🥩 38 جم بروتين",
+          carbs: "🌾 47 جم كارب",
+          fat: "🥑 20 جم دهون",
+          prepTime: "⏱️ مدة التحضير والطهي: 45 دقيقة",
+          steps: [
+            "اطبخ قطع اللحم الهبرة في قدر الضغط مع البصل والطماطم وبهارات المضغوط دون زيت زائد لمدة 25 دقيقة.",
+            "أضف الرز المغسول إلى المرق بعد إزالة أي دهون طافية، واضغطه 12 دقيقة حتى ينضج الرز تماماً.",
+            "قدّم كوب الرز مع قطعة اللحم بجانب زبدية خيار بالزبادي قليل الدسم."
+          ]
+        },
+        {
+          title: "مرقوق باللحم والقرع والكوسا المشكلة",
+          desc: "زبدية مرقوق بر متوسطة بالخضار المشكلة (قرع، كوسا، باذنجان) مع قطع لحم هبرة",
+          scale: "120 جم لحم هبرة مطبوخ + 280 جم مرقوق بر بالخضار (400 جم إجمالي الزبدية)",
           kcal: "🔥 510 سعرة",
           protein: "🥩 36 جم بروتين",
-          carbs: "🌾 50 جم كارب"
+          carbs: "🌾 54 جم كارب",
+          fat: "🥑 16 جم دهون",
+          prepTime: "⏱️ مدة التحضير والطهي: 45 دقيقة",
+          steps: [
+            "اطبخ قطع اللحم الهبرة مع البصل والطماطم واللومي والبهارات في قدر الضغط لمدة 20 دقيقة حتى تلين.",
+            "أضف الخضار المقطعة (القرع، الكوسا، الباذنجان) ورقائق عجينة البر المفرودة على دفعات في المرق المغلي.",
+            "اترك المرقوق على نار هادئة 15 دقيقة حتى ينضج العجين والخضار، وقدّمه ساخناً."
+          ]
         }
       ];
 
       var currentIdx = 0;
       var btnSwap = document.getElementById("btnSwapDemo");
+      var btnPrep = document.getElementById("btnPrepDemo");
+      var btnPrepLabel = document.getElementById("btnPrepDemoLabel");
+      var prepPanel = document.getElementById("mealPrepDemoPanel");
+      var prepTimeEl = document.getElementById("mealPrepTime");
+      var prepStepsEl = document.getElementById("mealPrepSteps");
       var titleEl = document.getElementById("mealTitle");
       var descEl = document.getElementById("mealDesc");
+      var scaleEl = document.getElementById("mealScaleText");
       var kcalEl = document.getElementById("mealKcal");
       var proteinEl = document.getElementById("mealProtein");
       var carbsEl = document.getElementById("mealCarbs");
+      var fatEl = document.getElementById("mealFat");
       var nutritionCard = document.getElementById("nutritionCard");
+
+      if (btnPrep && prepPanel) {
+        btnPrep.addEventListener("click", function () {
+          var isOpen = prepPanel.style.display !== "none";
+          prepPanel.style.display = isOpen ? "none" : "block";
+          if (btnPrepLabel) {
+            btnPrepLabel.textContent = isOpen ? "👨‍🍳 طريقة التحضير" : "إخفاء الخطوات ✕";
+          }
+        });
+      }
 
       if (btnSwap && titleEl && descEl) {
         btnSwap.addEventListener("click", function () {
           currentIdx = (currentIdx + 1) % demoMeals.length;
           var meal = demoMeals[currentIdx];
 
-          // تأثير بصري خفيف للتبديل
           nutritionCard.style.opacity = "0.4";
           nutritionCard.style.transform = "scale(0.98)";
 
           setTimeout(function () {
             titleEl.textContent = meal.title;
             descEl.textContent = meal.desc;
+            if (scaleEl) scaleEl.textContent = meal.scale;
             kcalEl.textContent = meal.kcal;
             proteinEl.textContent = meal.protein;
             carbsEl.textContent = meal.carbs;
+            if (fatEl) fatEl.textContent = meal.fat;
+            if (prepTimeEl) prepTimeEl.textContent = meal.prepTime;
+            if (prepStepsEl && meal.steps) {
+              prepStepsEl.innerHTML = meal.steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
+            }
 
             nutritionCard.style.opacity = "1";
             nutritionCard.style.transform = "scale(1)";
