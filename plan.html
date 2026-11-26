@@ -519,21 +519,24 @@
   }
   .exercise-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 6px;
+    gap: 6px;
+    margin-bottom: 8px;
   }
   .exercise-num-title {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 8px;
+    width: 100%;
+    min-width: 0;
   }
   .exercise-num {
     background: #ffedd5;
     color: #c2410c;
     width: 22px;
     height: 22px;
+    margin-top: 2px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -547,15 +550,22 @@
     font-weight: 800;
     color: var(--text-dark);
     margin: 0;
+    line-height: 1.45;
+    min-width: 0;
+    overflow-wrap: break-word;
   }
   .exercise-muscle-tag {
     font-size: 0.76rem;
-    color: #64748b;
+    color: #475569;
     background: #f1f5f9;
-    padding: 2px 8px;
-    border-radius: 4px;
-    white-space: nowrap;
-    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 6px;
+    white-space: normal;
+    line-height: 1.38;
+    font-weight: 700;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-inline-start: 30px;
   }
   .exercise-metrics {
     display: flex;
@@ -3151,7 +3161,7 @@
           '<div class="exercise-header">' +
             '<div class="exercise-num-title">' +
               '<div class="exercise-num">' + (i + 1) + '</div>' +
-              '<h5 class="exercise-name">' + ex.name + '</h5>' +
+              '<h5 class="exercise-name">' + String(ex.name || "").replace(/(\([A-Za-z0-9\s\/',.&\-]+\))/g, '<bdi dir="ltr" style="display:inline-block; font-weight:700; color:#475569; font-size:0.9em;">$1</bdi>') + '</h5>' +
             '</div>' +
             (ex.targetMuscle ? '<span class="exercise-muscle-tag">' + ex.targetMuscle + '</span>' : '') +
           '</div>' +
@@ -3665,6 +3675,36 @@
     return y + "-" + m + "-" + day;
   }
 
+  function prevDateKey(yyyyMmDd) {
+    var p = String(yyyyMmDd || "").split("-");
+    if (p.length !== 3) return "";
+    var dt = new Date(Date.UTC(Number(p[0]), Number(p[1]) - 1, Number(p[2]) - 1));
+    return dt.getUTCFullYear() + "-" + String(dt.getUTCMonth() + 1).padStart(2, "0") + "-" + String(dt.getUTCDate()).padStart(2, "0");
+  }
+
+  function isDayDoneRecord(rec) {
+    return !!(rec && (rec.locked || (rec.completedCount && rec.completedCount >= 3)));
+  }
+
+  function computeActiveStreak() {
+    var startKey = "";
+    if (isDayDoneRecord(weekTrackingCache[todayKey])) startKey = todayKey;
+    else if (isDayDoneRecord(weekTrackingCache[yesterdayKey])) startKey = yesterdayKey;
+    else return 0;
+    var cnt = 0;
+    var cur = startKey;
+    while (cur && isDayDoneRecord(weekTrackingCache[cur]) && cnt < 3660) {
+      cnt++;
+      cur = prevDateKey(cur);
+    }
+    return cnt;
+  }
+
+  function refreshStreakBadge() {
+    var streakEl = $("streakCount");
+    if (streakEl) streakEl.textContent = computeActiveStreak();
+  }
+
   var todayKey = getTodayKey();
   var yesterdayKey = getYesterdayKey();
 
@@ -3816,28 +3856,8 @@
     todayTracking.completedCount = completed;
     todayTracking.percent = Math.round((completed / keys.length) * 100);
 
-    // فحص وتحديث السلسلة (Streak)
-    var streak = (currentProfileData && currentProfileData.streak) || { count: 0, lastDate: "" };
-    if (streak.lastDate !== todayKey) {
-      if (streak.lastDate === yesterdayKey) {
-        streak.count = (streak.count || 0) + 1;
-      } else {
-        streak.count = 1;
-      }
-      streak.lastDate = todayKey;
-      if (currentProfileData) currentProfileData.streak = streak;
-
-      var streakEl = $("streakCount");
-      if (streakEl) streakEl.textContent = streak.count;
-
-      firebase.firestore().collection("profiles").doc(currentUserId).set({
-        streak: streak
-      }, { merge: true }).catch(function(err) {
-        console.warn("[متوازي] تعذر تحديث السلسلة:", err);
-      });
-    }
-
     weekTrackingCache[todayKey] = Object.assign({}, todayTracking);
+    refreshStreakBadge();
 
     try {
       localStorage.setItem("motawazi_trk_" + currentUserId + "_" + todayKey, JSON.stringify(todayTracking));
@@ -3858,6 +3878,7 @@
     delete todayTracking.lockedAt;
 
     weekTrackingCache[todayKey] = Object.assign({}, todayTracking);
+    refreshStreakBadge();
 
     try {
       localStorage.setItem("motawazi_trk_" + currentUserId + "_" + todayKey, JSON.stringify(todayTracking));
@@ -3907,46 +3928,46 @@
     var dateLabel = $("trackerDateText");
     if (dateLabel) dateLabel.textContent = getArabicDateText();
 
-    // استرجاع السلسلة
-    var streak = profile.streak || { count: 0, lastDate: "" };
-    if (streak.lastDate && streak.lastDate !== todayKey && streak.lastDate !== yesterdayKey) {
-      // انقطعت السلسلة
-      streak.count = 0;
-    }
-    var streakEl = $("streakCount");
-    if (streakEl) streakEl.textContent = streak.count || 0;
-
-    // استرجاع بيانات اليوم من LocalStorage أولاً لسرعة العرض
-    var hadCached = false;
+    // استرجاع كافة أيام الالتزام المحلية فوراً لحساب السلسلة بدقة
     try {
-      var cached = localStorage.getItem("motawazi_trk_" + uid + "_" + todayKey);
-      if (cached) {
-        var parsed = JSON.parse(cached);
-        Object.assign(todayTracking, parsed);
-        hadCached = true;
+      for (var k in localStorage) {
+        if (k.indexOf("motawazi_trk_" + uid + "_") === 0) {
+          var dKey = k.replace("motawazi_trk_" + uid + "_", "");
+          weekTrackingCache[dKey] = JSON.parse(localStorage.getItem(k));
+        }
       }
     } catch(e) {}
-    if (!hadCached) {
+
+    if (weekTrackingCache[todayKey]) {
+      Object.assign(todayTracking, weekTrackingCache[todayKey]);
+    } else {
       resetTodayTracking();
     }
+    refreshStreakBadge();
     updateTrackerUI();
 
-    // استرجاع من فايربيس لتحديث بيانات اليوم
+    // استرجاع سجل الالتزام من فايربيس لتحديث بيانات اليوم وحساب السلسلة المتتالية بدقة
     firebase.firestore().collection("profiles").doc(uid)
-      .collection("tracking").doc(todayKey).get().then(function(docSnap) {
-        if (docSnap.exists) {
-          var remoteData = docSnap.data();
-          Object.assign(todayTracking, remoteData);
-          try {
-            localStorage.setItem("motawazi_trk_" + uid + "_" + todayKey, JSON.stringify(todayTracking));
-          } catch(e) {}
-        } else {
-          // اليوم جديد: تصفير المهام لتبدأ نظيفة وجديدة تلقائياً
+      .collection("tracking").get().then(function(querySnap) {
+        var foundToday = false;
+        querySnap.forEach(function(doc) {
+          var d = doc.data();
+          weekTrackingCache[doc.id] = d;
+          if (doc.id === todayKey) {
+            foundToday = true;
+            Object.assign(todayTracking, d);
+            try {
+              localStorage.setItem("motawazi_trk_" + uid + "_" + todayKey, JSON.stringify(todayTracking));
+            } catch(e) {}
+          }
+        });
+        if (!foundToday) {
           resetTodayTracking();
         }
+        refreshStreakBadge();
         updateTrackerUI();
       }).catch(function(e) {
-        console.warn("[متوازي] قراءة تتبع اليوم من فايربيس:", e);
+        console.warn("[متوازي] قراءة تتبع الأيام من فايربيس:", e);
       });
 
     // ربط نقر الأزرار (مرة واحدة فقط لمنع التكرار عند انقلاب منتصف الليل)

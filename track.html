@@ -608,7 +608,7 @@
         <div class="streak-stat-box highlight">
           <div style="font-size:1.4rem; margin-bottom:2px;">🔥</div>
           <b id="historyStreakCount">0</b>
-          <span>السلسلة الحالية</span>
+          <span>أيام متتالية بلا انقطاع</span>
         </div>
         <div class="streak-stat-box">
           <div style="font-size:1.4rem; margin-bottom:2px;">🏆</div>
@@ -673,17 +673,32 @@
       </div>
 
       <!-- خانة تسجيل وزن جديد -->
-      <div class="log-weight-form">
-        <h3 style="font-size:0.95rem; font-weight:800; margin-bottom:10px; color:var(--text-dark);">
+      <div class="log-weight-form" id="weightFormWrap">
+        <h3 style="font-size:0.95rem; font-weight:800; margin-bottom:8px; color:var(--text-dark);">
           + سجّل وزنك لهذا الأسبوع
         </h3>
+        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:10px 12px; margin-bottom:12px; font-size:0.8rem; line-height:1.55; color:#92400e;">
+          <strong>⚖️ تنبيه الدقة (قراءة نهائية):</strong> يُفضّل القياس صباحاً قبل الأكل والشرب. بمجرد اعتماد الوزن يُثبّت في سجلك السحابي <strong>ولا يمكن تعديله أو حذفه</strong>، وتُقفل خانة التسجيل لمدة 7 أيام.
+        </div>
         <form id="weightForm">
-          <div class="log-weight-inputs">
+          <div class="log-weight-inputs" style="margin-bottom:10px;">
             <input type="number" id="inWeight" step="0.1" min="30" max="300" placeholder="الوزن بالكيلو (مثال: 78.5)" required dir="ltr">
-            <button type="submit" class="btn" style="width:auto; margin:0; padding:10px 20px;">حفظ</button>
+            <button type="submit" id="btnSaveWeight" class="btn" disabled style="width:auto; margin:0; padding:10px 18px; opacity:0.55;">اعتماد الوزن</button>
           </div>
+          <label for="chkWeightConfirm" style="display:flex; align-items:flex-start; gap:8px; font-size:0.82rem; font-weight:700; color:var(--text-dark); cursor:pointer; line-height:1.45; margin-bottom:6px; user-select:none;">
+            <input type="checkbox" id="chkWeightConfirm" style="width:18px; height:18px; margin-top:2px; accent-color:var(--primary); flex-shrink:0;">
+            <span>أقرّ بأن الوزن المسجّل دقيق، وأعلم أنه لا يمكن تعديله أو حذفه بعد الحفظ.</span>
+          </label>
           <p class="msg" id="weightMsg" style="margin:0;"></p>
         </form>
+      </div>
+
+      <!-- رسالة قفل تسجيل الوزن الأسبوعي (7 أيام بعد الاعتماد) -->
+      <div id="weightLockedBox" class="hidden" style="background:#f0fdfa; border:1.5px solid #99f6e4; border-radius:var(--radius-md); padding:14px 16px; margin-bottom:18px;">
+        <div style="font-weight:800; color:#0f766e; font-size:0.93rem; margin-bottom:4px;">✓ تم اعتماد وتثبيت وزنك لهذا الأسبوع بنجاح</div>
+        <p id="weightNextDateText" style="margin:0; font-size:0.82rem; color:#115e59; line-height:1.55;">
+          يتاح تسجيل قراءتك الأسبوعية القادمة بعد مرور 7 أيام لضمان قياس النزول الفعلي بدقة بعيداً عن تذبذب السوائل اليومي.
+        </p>
       </div>
 
       <!-- سجل القراءات المسجلة -->
@@ -780,6 +795,10 @@
 
   var userWeights = [];
   var currentUid = null;
+  var cachedStartWeight = null;
+  var cachedTargetWeight = null;
+  var savingWeight = false;
+  var WEEK_LOCK_MS = 7 * 86400000;
 
   function fmtDate(dateObj) {
     try {
@@ -794,47 +813,141 @@
   }
 
   function getStoredWeightsKey(uid) {
-    return "mtz_weights_" + uid;
+    return "mtz_weights_v2_" + uid;
+  }
+
+  function updateWeightBtnState() {
+    var val = parseFloat($("inWeight") && $("inWeight").value);
+    var chk = $("chkWeightConfirm") && $("chkWeightConfirm").checked;
+    var btn = $("btnSaveWeight");
+    if (!btn) return;
+    var ok = !savingWeight && chk && !isNaN(val) && val >= 30 && val <= 300;
+    btn.disabled = !ok;
+    btn.style.opacity = ok ? "1" : "0.55";
+  }
+
+  if ($("inWeight")) $("inWeight").addEventListener("input", updateWeightBtnState);
+  if ($("chkWeightConfirm")) $("chkWeightConfirm").addEventListener("change", updateWeightBtnState);
+
+  function applyWeeklyWeightLockState() {
+    var lastWeeklyMs = 0;
+    userWeights.forEach(function (item) {
+      if (!item.isStart && item.timestamp && item.timestamp > lastWeeklyMs) {
+        lastWeeklyMs = item.timestamp;
+      }
+    });
+    var wrap = $("weightFormWrap");
+    var lockedBox = $("weightLockedBox");
+    var nextTxt = $("weightNextDateText");
+    if (!wrap || !lockedBox) return;
+
+    var unlockAtMs = lastWeeklyMs + WEEK_LOCK_MS;
+    if (lastWeeklyMs > 0 && unlockAtMs > Date.now()) {
+      wrap.classList.add("hidden");
+      lockedBox.classList.remove("hidden");
+      if (nextTxt) {
+        nextTxt.textContent = "تم حفظ قراءتك الأسبوعية في سجلك السحابي — يتاح تسجيل قراءتك القادمة ابتداءً من يوم " + fmtDate(new Date(unlockAtMs)) + " لضمان دقة قياس النزول الفعلي.";
+      }
+    } else {
+      wrap.classList.remove("hidden");
+      lockedBox.classList.add("hidden");
+      updateWeightBtnState();
+    }
   }
 
   function loadWeights(uid, initialWeight, targetWeight) {
     currentUid = uid;
-    var localKey = getStoredWeightsKey(uid);
-    var saved = [];
-    try {
-      saved = JSON.parse(localStorage.getItem(localKey) || "[]");
-    } catch(e) {}
+    if (initialWeight != null) cachedStartWeight = initialWeight;
+    if (targetWeight != null) cachedTargetWeight = targetWeight;
 
-    // إذا لم يكن لديه سجلات، نضع وزن البداية من الاستمارة
-    if (!saved.length && initialWeight) {
-      saved.push({
-        weight: Number(initialWeight),
-        date: fmtDate(new Date()),
-        timestamp: Date.now(),
+    var localKey = getStoredWeightsKey(uid);
+    var cached = [];
+    try {
+      cached = JSON.parse(localStorage.getItem(localKey) || "[]");
+    } catch (e) {}
+
+    if (cached.length) {
+      userWeights = cached;
+      renderWeightsUI();
+    } else if (cachedStartWeight) {
+      userWeights = [{
+        weight: Number(cachedStartWeight),
+        date: "وزن البداية",
+        timestamp: 0,
         isStart: true
-      });
-      localStorage.setItem(localKey, JSON.stringify(saved));
+      }];
+      renderWeightsUI();
     }
-    userWeights = saved;
-    renderWeightsUI(initialWeight, targetWeight);
+
+    // مزامنة القراءات المعتمدة من قاعدة البيانات السحابية Firestore
+    firebase.firestore().collection("weights").doc(uid).collection("entries").get()
+      .then(function (qSnap) {
+        var entries = [];
+        var hasStart = false;
+        qSnap.forEach(function (doc) {
+          var d = doc.data() || {};
+          var wVal = Number(d.weightKg);
+          if (!wVal || isNaN(wVal)) return;
+          var ts = (d.date && typeof d.date.toMillis === "function") ? d.date.toMillis()
+                 : (typeof d.clientMs === "number" ? d.clientMs : 0);
+          var isIntake = (doc.id === "intake" || d.source === "intake");
+          if (isIntake) hasStart = true;
+          entries.push({
+            id: doc.id,
+            weight: wVal,
+            date: ts ? fmtDate(new Date(ts)) : "مسجّل",
+            timestamp: ts,
+            isStart: isIntake
+          });
+        });
+
+        if (!hasStart && cachedStartWeight) {
+          entries.push({
+            id: "intake",
+            weight: Number(cachedStartWeight),
+            date: "وزن البداية",
+            timestamp: 0,
+            isStart: true
+          });
+        }
+
+        entries.sort(function (a, b) {
+          if (a.isStart && !b.isStart) return -1;
+          if (!a.isStart && b.isStart) return 1;
+          return (a.timestamp || 0) - (b.timestamp || 0);
+        });
+
+        userWeights = entries;
+        try { localStorage.setItem(localKey, JSON.stringify(entries)); } catch (e) {}
+        renderWeightsUI();
+      })
+      .catch(function (err) {
+        console.warn("[متوازي] قراءة سجل الوزن من فايربيس:", err);
+        renderWeightsUI();
+      });
   }
 
-  function renderWeightsUI(startW, targetW) {
+  function renderWeightsUI() {
     var listEl = $("weightHistoryList");
     listEl.innerHTML = "";
 
+    applyWeeklyWeightLockState();
+
     if (!userWeights.length) {
       listEl.innerHTML = '<li class="weight-history-item"><span class="weight-history-date">لا توجد قراءات مسجلة بعد</span></li>';
+      $("startWeight").textContent = (cachedStartWeight || "—") + (cachedStartWeight ? " كجم" : "");
+      $("currentWeight").textContent = (cachedStartWeight || "—") + (cachedStartWeight ? " كجم" : "");
+      $("targetWeight").textContent = (cachedTargetWeight || "—") + (cachedTargetWeight ? " كجم" : "");
       return;
     }
 
     // عرض القراءات من الأحدث للأقدم
     var sorted = userWeights.slice().reverse();
-    sorted.forEach(function(item) {
+    sorted.forEach(function (item) {
       var li = document.createElement("li");
       li.className = "weight-history-item";
       li.innerHTML =
-        '<span class="weight-history-date">' + item.date + (item.isStart ? ' (وزن البداية)' : '') + '</span>' +
+        '<span class="weight-history-date">' + item.date + (item.isStart ? ' (وزن البداية)' : ' (قراءة معتمدة ✓)') + '</span>' +
         '<span class="weight-history-val">' + item.weight + ' كجم</span>';
       listEl.appendChild(li);
     });
@@ -842,39 +955,68 @@
     var latest = userWeights[userWeights.length - 1];
     var first = userWeights[0];
 
-    $("startWeight").textContent = (first ? first.weight : (startW || "—")) + " كجم";
+    $("startWeight").textContent = (first ? first.weight : (cachedStartWeight || "—")) + " كجم";
     $("currentWeight").textContent = (latest ? latest.weight : "—") + " كجم";
-    $("targetWeight").textContent = (targetW ? targetW : "—") + " كجم";
+    $("targetWeight").textContent = cachedTargetWeight ? (cachedTargetWeight + " كجم") : "—";
   }
 
-  // إضافة وزن جديد
-  $("weightForm").addEventListener("submit", function(e) {
+  // إضافة واعتماد وزن أسبوعي جديد
+  $("weightForm").addEventListener("submit", function (e) {
     e.preventDefault();
-    var val = parseFloat($("inWeight").value);
+    if (savingWeight || !currentUid) return;
+
+    var val = Math.round(parseFloat($("inWeight").value) * 10) / 10;
+    var confirmed = $("chkWeightConfirm") && $("chkWeightConfirm").checked;
+
     if (isNaN(val) || val < 30 || val > 300) {
       $("weightMsg").className = "msg err";
-      $("weightMsg").textContent = "اكتب وزناً صحيحاً بالكيلو.";
+      $("weightMsg").textContent = "اكتب وزناً صحيحاً بين 30 و 300 كجم.";
+      return;
+    }
+    if (!confirmed) {
+      $("weightMsg").className = "msg err";
+      $("weightMsg").textContent = "يرجى وضع علامة صح للإقرار بدقة الوزن قبل الاعتماد.";
       return;
     }
 
-    var newEntry = {
-      weight: val,
-      date: fmtDate(new Date()),
-      timestamp: Date.now()
-    };
-    userWeights.push(newEntry);
-    if (currentUid) {
-      localStorage.setItem(getStoredWeightsKey(currentUid), JSON.stringify(userWeights));
-    }
+    savingWeight = true;
+    updateWeightBtnState();
+    $("weightMsg").className = "msg";
+    $("weightMsg").textContent = "جاري تثبيت وحفظ قراءتك الأسبوعية…";
 
-    $("inWeight").value = "";
-    $("weightMsg").className = "msg ok";
-    $("weightMsg").textContent = "تم تسجيل وزنك الجديد بنجاح!";
-    renderWeightsUI();
+    var nowMs = Date.now();
+    var docId = "w_" + nowMs;
 
-    setTimeout(function() {
+    firebase.firestore().collection("weights").doc(currentUid).collection("entries").doc(docId).set({
+      weightKg: val,
+      source: "weekly",
+      confirmedAccuracy: true,
+      clientMs: nowMs,
+      date: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function () {
+      savingWeight = false;
+      userWeights.push({
+        id: docId,
+        weight: val,
+        date: fmtDate(new Date(nowMs)),
+        timestamp: nowMs,
+        isStart: false
+      });
+      try {
+        localStorage.setItem(getStoredWeightsKey(currentUid), JSON.stringify(userWeights));
+      } catch (err) {}
+
+      $("inWeight").value = "";
+      if ($("chkWeightConfirm")) $("chkWeightConfirm").checked = false;
       $("weightMsg").textContent = "";
-    }, 4000);
+      renderWeightsUI();
+    }).catch(function (err) {
+      savingWeight = false;
+      updateWeightBtnState();
+      console.warn("[متوازي] حفظ الوزن فشل:", err);
+      $("weightMsg").className = "msg err";
+      $("weightMsg").textContent = "تعذّر حفظ الوزن حالياً، تأكد من الاتصال وحاول مجدداً.";
+    });
   });
 
   // ============================================================
@@ -893,26 +1035,42 @@
     return { year: y, month: m, day: da, todayStr: todayStr, yesterdayStr: yesterdayStr };
   }
 
+  function prevDateKey(yyyyMmDd) {
+    var p = String(yyyyMmDd || "").split("-");
+    if (p.length !== 3) return "";
+    var dt = new Date(Date.UTC(Number(p[0]), Number(p[1]) - 1, Number(p[2]) - 1));
+    return dt.getUTCFullYear() + "-" + String(dt.getUTCMonth() + 1).padStart(2, "0") + "-" + String(dt.getUTCDate()).padStart(2, "0");
+  }
+
+  function isDayDone(rec) {
+    return !!(rec && (rec.locked || (rec.completedCount && rec.completedCount >= 3)));
+  }
+
+  function computeStreakFromRecords(parts) {
+    var startKey = "";
+    if (isDayDone(trackingRecordsMap[parts.todayStr])) startKey = parts.todayStr;
+    else if (isDayDone(trackingRecordsMap[parts.yesterdayStr])) startKey = parts.yesterdayStr;
+    else return 0;
+    var cnt = 0;
+    var cur = startKey;
+    while (cur && isDayDone(trackingRecordsMap[cur]) && cnt < 3660) {
+      cnt++;
+      cur = prevDateKey(cur);
+    }
+    return cnt;
+  }
+
   function initCommitmentHistory(uid, profile) {
     var riyadh = getRiyadhParts();
 
-    // 1. السلسلة الحالية (مقترنة بتوقيت السعودية UTC+3)
-    var streak = (profile && profile.streak) || { count: 0, lastDate: "" };
-    var activeCount = streak.count || 0;
-    if (streak.lastDate && streak.lastDate !== riyadh.todayStr && streak.lastDate !== riyadh.yesterdayStr) {
-      activeCount = 0;
-    }
-    var streakEl = $("historyStreakCount");
-    if (streakEl) streakEl.textContent = activeCount;
-
-    // 2. عنوان الشهر الحالي بتوقيت السعودية
+    // عنوان الشهر الحالي بتوقيت السعودية
     var months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
     var monthTitle = $("calendarMonthTitle");
     if (monthTitle) {
       monthTitle.textContent = "تقويم شهر " + months[riyadh.month] + " " + riyadh.year;
     }
 
-    // 3. قراءة السجلات المحفوظة من LocalStorage للسرعة
+    // قراءة السجلات المحفوظة من LocalStorage للسرعة
     for (var k in localStorage) {
       if (k.indexOf("motawazi_trk_" + uid + "_") === 0) {
         var dKey = k.replace("motawazi_trk_" + uid + "_", "");
@@ -924,7 +1082,7 @@
 
     renderHistoryUI(riyadh);
 
-    // 4. جلب كافة سجلات الأيام من Firestore للتزامن الكامل
+    // جلب كافة سجلات الأيام من Firestore للتزامن الكامل
     firebase.firestore().collection("profiles").doc(uid)
       .collection("tracking").get().then(function(querySnap) {
         querySnap.forEach(function(doc) {
@@ -957,7 +1115,7 @@
     // حساب الإحصائيات الشاملة
     for (var dKey in trackingRecordsMap) {
       var item = trackingRecordsMap[dKey];
-      if (item && (item.locked || (item.completedCount && item.completedCount >= 3))) {
+      if (isDayDone(item)) {
         lockedCount++;
         if (item.completedCount === 6) {
           goldenCount++;
@@ -965,6 +1123,8 @@
       }
     }
 
+    var streakEl = $("historyStreakCount");
+    if (streakEl) streakEl.textContent = computeStreakFromRecords(parts);
     var elLocked = $("historyLockedDays");
     if (elLocked) elLocked.textContent = lockedCount;
     var elGolden = $("historyGoldenDays");

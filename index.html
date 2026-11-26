@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="/style.css?v=20261124b">
+  <link rel="stylesheet" href="/style.css?v=20261125c">
 </head>
 <body>
 
@@ -67,9 +67,9 @@
           <li><a href="#plans" class="nav__link">الباقات</a></li>
           <li><a href="#faq" class="nav__link">الأسئلة الشائعة</a></li>
         </ul>
-        <div class="nav__actions">
-          <a href="/login" class="btn btn--ghost">تسجيل الدخول</a>
-          <a href="/start" class="btn btn--primary">ابدأ الآن</a>
+        <div class="nav__actions" id="homeNavActions">
+          <a href="/login" class="btn btn--ghost" id="navLoginBtn">تسجيل الدخول</a>
+          <a href="/start" class="btn btn--primary" id="navPrimaryBtn">ابدأ الآن</a>
         </div>
       </nav>
     </div>
@@ -80,9 +80,9 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero__inner">
         <div class="hero__content">
-          <div class="hero__badge">
+          <div class="hero__badge" id="heroWelcomeBadge">
             <span class="hero__badge-pulse" aria-hidden="true"></span>
-            <span>جدول أكل وجدول رياضة بمراجعة مختصين</span>
+            <span id="heroBadgeText">جدول أكل وجدول رياضة بمراجعة مختصين</span>
           </div>
 
           <h1 id="hero-title" class="hero__title">
@@ -94,15 +94,15 @@
             بدون حرمان من أكلات ديرتك المحبوبة، وبدون تمارين قاسية تعجزك. نظام ذكي يبني خطتك بحصص موزونة، ويراجعها أخصائي تغذية ومدرب لياقة معتمد قبل ما تبدأ.
           </p>
 
-          <div class="hero__actions">
-            <a href="/start" class="btn btn--primary btn--lg">
-              <span>ابدأ رحلتك الآن</span>
+          <div class="hero__actions" id="heroActionsWrap">
+            <a href="/start" class="btn btn--primary btn--lg" id="heroPrimaryCta">
+              <span id="heroPrimaryCtaText">ابدأ رحلتك الآن</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
               </svg>
             </a>
-            <a href="#how-it-works" class="btn btn--outline btn--lg">شاهد كيف نعمل</a>
+            <a href="#how-it-works" class="btn btn--outline btn--lg" id="heroSecondaryCta">شاهد كيف نعمل</a>
           </div>
 
           <div class="hero__trust" aria-label="مزايا الثقة">
@@ -878,6 +878,88 @@
         });
       }
     })();
+  </script>
+
+  <!-- تخصيص الواجهة تلقائياً للعميل المسجّل دخوله مسبقاً -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script defer src="/firebase-config.js"></script>
+  <script defer src="/auth.js"></script>
+  <script>
+    window.addEventListener("load", function () {
+      if (!window.Auth || !Auth.ready) return;
+      Auth.onChange(function (u) {
+        if (!u) return;
+        var navLoginBtn = document.getElementById("navLoginBtn");
+        var navPrimaryBtn = document.getElementById("navPrimaryBtn");
+        var heroBadgeText = document.getElementById("heroBadgeText");
+        var heroPrimaryCta = document.getElementById("heroPrimaryCta");
+        var heroPrimaryCtaText = document.getElementById("heroPrimaryCtaText");
+        var heroSecondaryCta = document.getElementById("heroSecondaryCta");
+
+        function applyMemberUI(firstName, hasIntake, isApproved) {
+          var greet = firstName ? ("أهلاً بعودتك، " + firstName + " 👋") : "أهلاً بعودتك في متوازي 👋";
+          if (navLoginBtn) {
+            navLoginBtn.href = "/account";
+            navLoginBtn.textContent = "حسابي";
+          }
+          if (isApproved) {
+            if (navPrimaryBtn) {
+              navPrimaryBtn.href = "/plan";
+              navPrimaryBtn.textContent = "جدولي اليومي";
+            }
+            if (heroBadgeText) heroBadgeText.textContent = greet + " · خطتك اليومية جاهزة ونشطة";
+            if (heroPrimaryCta) heroPrimaryCta.href = "/plan";
+            if (heroPrimaryCtaText) heroPrimaryCtaText.textContent = "افتح جدولي اليومي الآن";
+            if (heroSecondaryCta) {
+              heroSecondaryCta.href = "/track";
+              heroSecondaryCta.textContent = "📈 متابعتي وسجل وزني";
+            }
+          } else if (hasIntake) {
+            if (navPrimaryBtn) {
+              navPrimaryBtn.href = "/summary";
+              navPrimaryBtn.textContent = "متابعة طلبي";
+            }
+            if (heroBadgeText) heroBadgeText.textContent = greet + " · استمارتك قيد الاعتماد لدى الأخصائي";
+            if (heroPrimaryCta) heroPrimaryCta.href = "/summary";
+            if (heroPrimaryCtaText) heroPrimaryCtaText.textContent = "استعراض حالة طلبي وسعراتي";
+            if (heroSecondaryCta) {
+              heroSecondaryCta.href = "/account";
+              heroSecondaryCta.textContent = "👤 الانتقال لحسابي";
+            }
+          } else {
+            if (navPrimaryBtn) {
+              navPrimaryBtn.href = "/start";
+              navPrimaryBtn.textContent = "أكمل استمارتك";
+            }
+            if (heroBadgeText) heroBadgeText.textContent = greet + " · أكمل استمارتك لبناء جدولك";
+            if (heroPrimaryCta) heroPrimaryCta.href = "/start";
+            if (heroPrimaryCtaText) heroPrimaryCtaText.textContent = "أكمل استمارتك الصحية الآن";
+            if (heroSecondaryCta) {
+              heroSecondaryCta.href = "/account";
+              heroSecondaryCta.textContent = "👤 حسابي";
+            }
+          }
+        }
+
+        var fallbackName = (u.displayName && /[\u0600-\u06FF]/.test(u.displayName)) ? u.displayName.trim().split(/\s+/)[0] : "";
+        applyMemberUI(fallbackName, false, false);
+
+        firebase.firestore().collection("profiles").doc(u.uid).get().then(function (snap) {
+          if (!snap.exists) {
+            applyMemberUI(fallbackName, false, false);
+            return;
+          }
+          var p = snap.data() || {};
+          var rawName = (p.answers && p.answers.name) || u.displayName || "";
+          var arFirst = /[\u0600-\u06FF]/.test(rawName) ? rawName.trim().split(/\s+/)[0] : fallbackName;
+          var st = p.status || "received";
+          var isApp = (st === "approved" || st === "delivered");
+          applyMemberUI(arFirst, true, isApp);
+        }).catch(function () {});
+      });
+    });
   </script>
 </body>
 </html>

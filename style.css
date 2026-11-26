@@ -1878,6 +1878,24 @@ textarea {
   }
 }
 
+@media (max-width: 560px) {
+  .header .logo__tagline {
+    display: none;
+  }
+  .header .logo__text {
+    white-space: nowrap;
+    font-size: 1.35rem;
+  }
+  .nav__actions {
+    gap: 6px;
+  }
+  .nav__actions .btn {
+    padding: 8px 13px;
+    font-size: 0.84rem;
+    white-space: nowrap;
+  }
+}
+
 
 /* ============================================================
    هيكل صفحات التطبيق: الدخول، الحساب، الاستمارة، الملخص، القانونية، 404

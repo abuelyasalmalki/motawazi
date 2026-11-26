@@ -67,9 +67,18 @@ service cloud.firestore {
     }
 
     // ===== سجل الوزن =====
+    // قراءة البداية intake تكتبها دالة الاستمارة فقط.
+    // القراءات الأسبوعية يضيفها العميل بإقرار الدقة (create فقط) وممنوع تعديلها أو حذفها أبداً.
     match /weights/{userId}/entries/{entryId} {
       allow read:  if owns(userId);
-      allow write: if false;
+      allow create: if owns(userId)
+        && entryId != 'intake'
+        && request.resource.data.get('source', '') == 'weekly'
+        && request.resource.data.get('confirmedAccuracy', false) == true
+        && request.resource.data.get('weightKg', 0) is number
+        && request.resource.data.weightKg >= 30
+        && request.resource.data.weightKg <= 300;
+      allow update, delete: if false;
     }
 
     // ===== طلبات الدفع =====
