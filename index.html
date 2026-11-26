@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/style.css?v=20261126b">
+  <link rel="stylesheet" href="/style.css?v=20261126c">
 </head>
 <body class="home-page">
 
@@ -120,17 +120,35 @@
             <div class="parallel-bridge__row">
               <div class="parallel-bridge__rails">
                 <div class="parallel-rail parallel-rail--nutrition">
-                  <span class="parallel-rail__tag">🍽️ أكل بيتك موزون</span>
+                  <span class="parallel-rail__tag">
+                    <span class="half-logo-inline" aria-hidden="true">
+                      <svg width="15" height="15" viewBox="0 0 32 32" fill="none">
+                        <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#0F766E" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="21" cy="9" r="3" fill="#0F766E"/>
+                        <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#cbd5e1" stroke-width="2.4" stroke-dasharray="2.5 3" stroke-linecap="round" opacity="0.55"/>
+                      </svg>
+                    </span>
+                    <span>أكل بيتك موزون</span>
+                  </span>
                   <div class="parallel-rail__line" aria-hidden="true"><span class="parallel-rail__pulse"></span></div>
                 </div>
                 <div class="parallel-rail parallel-rail--fitness">
-                  <span class="parallel-rail__tag">💪 حركة بدون أرض</span>
+                  <span class="parallel-rail__tag">
+                    <span class="half-logo-inline" aria-hidden="true">
+                      <svg width="15" height="15" viewBox="0 0 32 32" fill="none">
+                        <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#cbd5e1" stroke-width="2.4" stroke-dasharray="2.5 3" stroke-linecap="round" opacity="0.55"/>
+                        <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#F97316" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="25" cy="13" r="3" fill="#F97316"/>
+                      </svg>
+                    </span>
+                    <span>حركة بدون أرض</span>
+                  </span>
                   <div class="parallel-rail__line" aria-hidden="true"><span class="parallel-rail__pulse"></span></div>
                 </div>
               </div>
               <div class="parallel-bridge__goal">
                 🎯 نزول ثابت
-                <span>بدون جوع ولا إجهاد</span>
+                <span>باتحاد المسارين</span>
               </div>
             </div>
           </div>
@@ -183,11 +201,17 @@
             </div>
 
             <div class="parallel-tracks">
-              <!-- المسار الأول: الغذائي -->
+              <!-- المسار الأول: الغذائي (يحمل النصف الأخضر من الشعار) -->
               <div class="track-card track-card--nutrition" id="nutritionCard">
                 <div class="track-card__head" style="flex-wrap:wrap; gap:6px;">
                   <span class="track-card__label">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                    <span class="half-logo-inline" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+                        <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#0F766E" stroke-width="3.8" stroke-linecap="round"/>
+                        <circle cx="21" cy="9" r="2.8" fill="#0F766E"/>
+                        <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#94a3b8" stroke-width="2.2" stroke-dasharray="2.5 3" stroke-linecap="round" opacity="0.4"/>
+                      </svg>
+                    </span>
                     المسار الغذائي · وجبة الغداء
                   </span>
                   <div style="display:flex; gap:5px; align-items:center; flex-wrap:wrap;">
@@ -225,22 +249,30 @@
                 </div>
               </div>
 
-              <!-- رابط التناغم المتوازي بين المسارين -->
+              <!-- رابط التناغم المتوازي بين المسارين (اتحاد الشعار الكامل) -->
               <div class="parallel-sync-connector" aria-hidden="true">
                 <span class="parallel-sync-pill">
-                  <span class="parallel-sync-dots">
-                    <i style="background:#0f766e;"></i>
-                    <i style="background:#f97316;"></i>
-                  </span>
-                  <span>يمشيان بتوازي في نفس اليوم ⚡</span>
+                  <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
+                    <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#0F766E" stroke-width="3.8" stroke-linecap="round"/>
+                    <circle cx="21" cy="9" r="2.8" fill="#0F766E"/>
+                    <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#F97316" stroke-width="3.8" stroke-linecap="round"/>
+                    <circle cx="25" cy="13" r="2.8" fill="#F97316"/>
+                  </svg>
+                  <span>اتحاد المسارين في متوازي</span>
                 </span>
               </div>
 
-              <!-- المسار الثاني: الرياضي -->
+              <!-- المسار الثاني: الرياضي (يحمل النصف البرتقالي من الشعار) -->
               <div class="track-card track-card--fitness" id="fitnessDemoCard">
                 <div class="track-card__head" style="flex-wrap:wrap; gap:6px;">
                   <span class="track-card__label">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"></path></svg>
+                    <span class="half-logo-inline" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+                        <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#94a3b8" stroke-width="2.2" stroke-dasharray="2.5 3" stroke-linecap="round" opacity="0.4"/>
+                        <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#F97316" stroke-width="3.8" stroke-linecap="round"/>
+                        <circle cx="25" cy="13" r="2.8" fill="#F97316"/>
+                      </svg>
+                    </span>
                     المسار الرياضي · تمرين اليوم
                   </span>
                   <div class="workout-mode-mini-switch" role="group" aria-label="اختيار بيئة التمرين">
@@ -346,30 +378,74 @@
         </header>
 
         <div class="parallel-sim-wrap">
-          <!-- أزرار المحاكاة الثلاثة -->
+          <!-- أزرار المحاكاة الثلاثة بتشريح الشعار (اتحاد النصفيْن في متوازي) -->
           <div class="parallel-sim-tabs" role="tablist" aria-label="قارن بين أنماط نزول الوزن">
             <button type="button" class="parallel-sim-tab is-active" role="tab" aria-selected="true" data-sim="parallel">
-              <span>✨ نظام «متوازي»</span>
+              <span class="sim-logo-chip" aria-hidden="true">
+                <svg width="21" height="21" viewBox="0 0 32 32" fill="none">
+                  <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#0F766E" stroke-width="3.8" stroke-linecap="round"/>
+                  <circle cx="21" cy="9" r="2.8" fill="#0F766E"/>
+                  <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#F97316" stroke-width="3.8" stroke-linecap="round"/>
+                  <circle cx="25" cy="13" r="2.8" fill="#F97316"/>
+                </svg>
+              </span>
+              <span>نظام «متوازي»</span>
             </button>
             <button type="button" class="parallel-sim-tab" role="tab" aria-selected="false" data-sim="diet">
-              <span>🍽️ الأكل لوحده</span>
+              <span class="sim-logo-chip" aria-hidden="true">
+                <svg width="21" height="21" viewBox="0 0 32 32" fill="none">
+                  <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#0F766E" stroke-width="3.8" stroke-linecap="round"/>
+                  <circle cx="21" cy="9" r="2.8" fill="#0F766E"/>
+                  <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#cbd5e1" stroke-width="2.3" stroke-dasharray="2.5 3" stroke-linecap="round" opacity="0.65"/>
+                </svg>
+              </span>
+              <span>الأكل لوحده</span>
             </button>
             <button type="button" class="parallel-sim-tab" role="tab" aria-selected="false" data-sim="gym">
-              <span>💪 التمرين لوحده</span>
+              <span class="sim-logo-chip" aria-hidden="true">
+                <svg width="21" height="21" viewBox="0 0 32 32" fill="none">
+                  <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#cbd5e1" stroke-width="2.3" stroke-dasharray="2.5 3" stroke-linecap="round" opacity="0.65"/>
+                  <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#F97316" stroke-width="3.8" stroke-linecap="round"/>
+                  <circle cx="25" cy="13" r="2.8" fill="#F97316"/>
+                </svg>
+              </span>
+              <span>التمرين لوحده</span>
             </button>
           </div>
 
           <!-- منصة العرض البصري الحي -->
           <div class="parallel-sim-stage" id="parallelSimStage" role="tabpanel" aria-live="polite">
             <div>
-              <span class="sim-verdict-badge" id="simVerdictBadge">✅ التناغم المثالي المستدام</span>
+              <div class="sim-union-head">
+                <div class="sim-live-logo mode-parallel" id="simLiveLogo" aria-hidden="true">
+                  <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
+                    <g id="simLogoNutriGroup">
+                      <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#0F766E" stroke-width="3.6" stroke-linecap="round"/>
+                      <circle cx="21" cy="9" r="2.6" fill="#0F766E"/>
+                    </g>
+                    <g id="simLogoFitGroup">
+                      <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#F97316" stroke-width="3.6" stroke-linecap="round"/>
+                      <circle cx="25" cy="13" r="2.6" fill="#F97316"/>
+                    </g>
+                  </svg>
+                </div>
+                <div>
+                  <span class="sim-verdict-badge" id="simVerdictBadge" style="margin-bottom:0;">✅ اتحاد المسارين في شعار واحد</span>
+                </div>
+              </div>
               <h3 class="sim-stage-title" id="simStageTitle">المساران يمشيان معاً.. حرق مستمر بدون جوع ولا إرهاق</h3>
               <p class="sim-stage-desc" id="simStageDesc">عندما تُبنى سعرات أكلك على حجم حركتك اليومية، يحرق جسمك الدهون المخزّنة مع الحفاظ على عضلاتك ونشاطك طوال اليوم.</p>
 
               <div class="sim-meters">
                 <div class="sim-meter-row">
                   <div class="sim-meter-head">
-                    <span style="color:var(--primary);">🍽️ مسار التغذية الموزونة</span>
+                    <span style="color:var(--primary); display:inline-flex; align-items:center; gap:6px;">
+                      <svg width="16" height="16" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                        <path d="M7 23C7 15.268 13.268 9 21 9" stroke="#0F766E" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="21" cy="9" r="3" fill="#0F766E"/>
+                      </svg>
+                      <span>مسار التغذية (النصف الأول)</span>
+                    </span>
                     <span id="simNutriLabel" style="color:var(--primary);">مفصّل على سعراتك 100%</span>
                   </div>
                   <div class="sim-meter-bar">
@@ -379,7 +455,13 @@
 
                 <div class="sim-meter-row">
                   <div class="sim-meter-head">
-                    <span style="color:var(--accent);">💪 مسار الحركة الآمنة</span>
+                    <span style="color:var(--accent); display:inline-flex; align-items:center; gap:6px;">
+                      <svg width="16" height="16" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                        <path d="M11 27C11 19.268 17.268 13 25 13" stroke="#F97316" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="25" cy="13" r="3" fill="#F97316"/>
+                      </svg>
+                      <span>مسار الرياضة (النصف الثاني)</span>
+                    </span>
                     <span id="simFitLabel" style="color:var(--accent);">متدرج ومناسب لمفاصلك 100%</span>
                   </div>
                   <div class="sim-meter-bar">
@@ -1142,7 +1224,7 @@
       var SIM_STATES = {
         parallel: {
           warn: false,
-          badge: "✅ التناغم المثالي المستدام",
+          badge: "✅ اتحاد المسارين في شعار واحد",
           title: "المساران يمشيان معاً.. حرق مستمر بدون جوع ولا إرهاق",
           desc: "عندما تُبنى سعرات أكلك على حجم حركتك اليومية، يحرق جسمك الدهون المخزّنة مع الحفاظ على عضلاتك ونشاطك طوال اليوم.",
           nutriLabel: "مفصّل على سعراتك 100%",
@@ -1166,7 +1248,7 @@
         },
         diet: {
           warn: true,
-          badge: "⚠️ مسار واحد ناقص (بدون حركة موزونة)",
+          badge: "⚠️ نصف الشعار فقط (ينقصه مسار الحركة)",
           title: "تنتبه لأكلك لوحده.. فيتباطأ الحرق ويثبت الميزان سريعاً",
           desc: "تقليل الأكل بدون حركة مدروسة يدفع الجسم لخفض معدل الحرق اليومي، فيتوقف النزول بعد أسابيع قليلة مع شعور بالخمول.",
           nutriLabel: "اجتهاد غذائي منفرد (65%)",
@@ -1190,7 +1272,7 @@
         },
         gym: {
           warn: true,
-          badge: "⚠️ مسار واحد ناقص (مجهود بدون خطة أكل)",
+          badge: "⚠️ نصف الشعار فقط (ينقصه مسار التغذية)",
           title: "تتمرن بجد.. لكن غياب الميزان الغذائي يضيع تعبك",
           desc: "التمرين القوي يفتح الشهية؛ وبدون حصص وسعرات محسوبة يعوّض الجسم ما حرقته في وجبة واحدة، فيتسلل الإحباط وتترك التمرين.",
           nutriLabel: "عشوائي غير محسوب السعرات (20%)",
@@ -1216,6 +1298,7 @@
 
       var simTabs = document.querySelectorAll("[data-sim]");
       var simStage = document.getElementById("parallelSimStage");
+      var simLiveLogo = document.getElementById("simLiveLogo");
       var simVerdictBadge = document.getElementById("simVerdictBadge");
       var simStageTitle = document.getElementById("simStageTitle");
       var simStageDesc = document.getElementById("simStageDesc");
@@ -1243,6 +1326,7 @@
           tab.setAttribute("aria-selected", "true");
 
           if (simStage) simStage.classList.toggle("is-warn", !!st.warn);
+          if (simLiveLogo) simLiveLogo.className = "sim-live-logo mode-" + key;
           if (simVerdictBadge) simVerdictBadge.textContent = st.badge;
           if (simStageTitle) simStageTitle.textContent = st.title;
           if (simStageDesc) simStageDesc.textContent = st.desc;

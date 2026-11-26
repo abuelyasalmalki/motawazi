@@ -3133,16 +3133,98 @@ input[type="radio"] {
 }
 
 .parallel-sim-tab.is-active[data-sim="parallel"] {
-  background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+  background: linear-gradient(135deg, #0f766e 0%, #0d9488 65%, #0f766e 100%);
+  border-color: #0f766e;
   color: #ffffff;
-  box-shadow: 0 6px 18px rgba(15, 118, 110, 0.25);
+  box-shadow: 0 8px 22px rgba(15, 118, 110, 0.26);
 }
 
-.parallel-sim-tab.is-active[data-sim="diet"],
+.parallel-sim-tab.is-active[data-sim="diet"] {
+  background: #f0fdfa;
+  border-color: #14b8a6;
+  color: #0f766e;
+  box-shadow: 0 4px 14px rgba(15, 118, 110, 0.10);
+}
+
 .parallel-sim-tab.is-active[data-sim="gym"] {
   background: #fff7ed;
-  border-color: #fdba74;
-  color: #9a3412;
+  border-color: #fb923c;
+  color: #c2410c;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.12);
+}
+
+/* شارة الشعار النصفي والمكتمل داخل التبويبات ومنصة المحاكاة */
+.sim-logo-chip {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+  transition: transform 0.22s ease, border-color 0.22s ease;
+}
+
+.parallel-sim-tab.is-active .sim-logo-chip {
+  transform: scale(1.06);
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
+.parallel-sim-tab.is-active[data-sim="diet"] .sim-logo-chip {
+  border-color: #99f6e4;
+}
+
+.parallel-sim-tab.is-active[data-sim="gym"] .sim-logo-chip {
+  border-color: #fed7aa;
+}
+
+.sim-union-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.sim-live-logo {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sim-live-logo g {
+  transition: opacity 0.32s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sim-live-logo.mode-diet #simLogoFitGroup {
+  opacity: 0.15;
+  transform: translate(2px, 2px);
+}
+
+.sim-live-logo.mode-gym #simLogoNutriGroup {
+  opacity: 0.15;
+  transform: translate(-2px, -2px);
+}
+
+.half-logo-inline {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .parallel-sim-stage {
