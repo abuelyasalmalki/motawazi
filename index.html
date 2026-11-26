@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/style.css?v=20261126c">
+  <link rel="stylesheet" href="/style.css?v=20261126d">
 </head>
 <body class="home-page">
 
@@ -62,7 +62,6 @@
         <ul class="nav__links">
           <li><a href="#philosophy" class="nav__link">ليش متوازي؟</a></li>
           <li><a href="#how-it-works" class="nav__link">طريقة العمل</a></li>
-          <li><a href="#features" class="nav__link">المميزات</a></li>
           <li><a href="/stories" class="nav__link" style="color:var(--primary); font-weight:800;">قصص النجاح ⭐</a></li>
           <li><a href="#plans" class="nav__link">الباقات</a></li>
           <li><a href="#faq" class="nav__link">الأسئلة الشائعة</a></li>
@@ -164,7 +163,7 @@
             <button type="button" class="btn btn--accent btn--lg hidden" id="btnWatchDemoHero">
               <span>▶️ شاهد المنصة في 90 ثانية</span>
             </button>
-            <a href="#philosophy" class="btn btn--outline btn--lg" id="heroSecondaryCta">⚡ جرّب فرق التوازي</a>
+            <a href="#philosophy" class="btn btn--outline btn--lg" id="heroSecondaryCta">⚡ شوف فرق التوازي</a>
           </div>
 
           <div class="hero__trust" aria-label="مزايا الثقة">
@@ -321,48 +320,25 @@
       </div>
     </section>
 
-    <!-- شريط الأرقام والمؤشرات -->
-    <section class="stats-strip" aria-label="حقائق عن متوازي">
+    <!-- شريط الأرقام السريع (بدون حشو أو تكرار) -->
+    <section class="stats-strip stats-strip--compact" aria-label="أرقام متوازي">
       <div class="container">
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-item__icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            </div>
-            <div>
-              <h3 class="stat-item__title">100% مخصص لبياناتك</h3>
-              <p class="stat-item__desc">محسوب حسب وزنك، طولك، نشاطك الفعلي، وتاريخك الصحي.</p>
-            </div>
+        <div class="stats-numbers-grid">
+          <div class="stat-num-card">
+            <span class="stat-num-card__val">+200</span>
+            <span class="stat-num-card__lbl">وجبة بيتية موزونة</span>
           </div>
-
-          <div class="stat-item">
-            <div class="stat-item__icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path><path d="M12 6v6l4 2"></path></svg>
-            </div>
-            <div>
-              <h3 class="stat-item__title">أكلات ديرتك المحبوبة</h3>
-              <p class="stat-item__desc">كبسة، مرقوق، جريش، سلطات — بمقادير البيت والميزان وبدون حرمان.</p>
-            </div>
+          <div class="stat-num-card">
+            <span class="stat-num-card__val">49</span>
+            <span class="stat-num-card__lbl">تمريناً مصوراً بالفيديو</span>
           </div>
-
-          <div class="stat-item">
-            <div class="stat-item__icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            </div>
-            <div>
-              <h3 class="stat-item__title">اعتماد مختصين مزدوج</h3>
-              <p class="stat-item__desc">أخصائي تغذية مرخص ومدرب معتمد يراجعان كل جدول قبل اعتماده.</p>
-            </div>
+          <div class="stat-num-card">
+            <span class="stat-num-card__val">5 دقائق</span>
+            <span class="stat-num-card__lbl">لتعبئة الاستمارة مجاناً</span>
           </div>
-
-          <div class="stat-item">
-            <div class="stat-item__icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-            </div>
-            <div>
-              <h3 class="stat-item__title">مرونة زر «بدّل» الفوري</h3>
-              <p class="stat-item__desc">ما ناسبتك الوجبة؟ بضغطة واحدة تختار بديلاً مطابقاً لسعراتك فوراً.</p>
-            </div>
+          <div class="stat-num-card">
+            <span class="stat-num-card__val">+40</span>
+            <span class="stat-num-card__lbl">تجربة موثقة منذ 2015</span>
           </div>
         </div>
       </div>
@@ -519,106 +495,45 @@
       </div>
     </section>
 
-    <!-- قسم كيف يعمل متوازي (بخط التوازي المزدوج) -->
+    <!-- قسم كيف يعمل متوازي (أربع خطوات برقيّة مختصرة) -->
     <section id="how-it-works" class="section" aria-labelledby="how-title">
       <div class="container">
         <header class="section__header">
           <span class="section__badge">سهل وبسيط</span>
-          <h2 id="how-title" class="section__title">كيف تبدأ رحلتك في متوازي؟</h2>
-          <p class="section__subtitle">أربع خطوات واضحة يسير فيها مساراك الغذائي والرياضي معاً منذ اللحظة الأولى.</p>
+          <h2 id="how-title" class="section__title">أربع خطوات وتنطلق خطتك</h2>
+          <p class="section__subtitle">مسار واضح ومباشر من أول دقيقة حتى وصول جدولك لجوالك.</p>
         </header>
 
         <div class="steps-container steps-container--parallel">
           <div class="step-card">
             <div class="step-card__num step-card__num--dual">1</div>
-            <h3 class="step-card__title">املأ الاستمارة الصحية</h3>
-            <p class="step-card__desc">تستغرق 5 دقائق فقط: طولك، وزنك الحالي، نشاطك، تاريخك الصحي، ومكان تمرينك المفضل.</p>
+            <h3 class="step-card__title">عبّئ استمارتك</h3>
+            <p class="step-card__desc">قياساتك، هدفك، وحالتك الصحية مجاناً في 5 دقائق.</p>
           </div>
 
           <div class="step-card">
             <div class="step-card__num step-card__num--dual">2</div>
-            <h3 class="step-card__title">بناء المسارين بتوازي</h3>
-            <p class="step-card__desc">النظام يحسب احتياجك الفعلي بمعادلات علمية معتمدة وينسّق حصص وجباتك مع شدة تمرينك.</p>
+            <h3 class="step-card__title">تفصيل المسارين</h3>
+            <p class="step-card__desc">نحسب احتياجك وننسّق وجباتك مع مستوى تمرينك.</p>
           </div>
 
           <div class="step-card">
             <div class="step-card__num step-card__num--dual">3</div>
-            <h3 class="step-card__title">اعتماد الأخصائي والمدرب</h3>
-            <p class="step-card__desc">أخصائي تغذية مرخص ومدرب معتمد يدققان كل وجبة وتمرين لضمان أمانها ومناسبتها لك.</p>
+            <h3 class="step-card__title">تدقيق المختصين</h3>
+            <p class="step-card__desc">مراجعة الأخصائي والمدرب قبل تفعيل خطتك رسمياً.</p>
           </div>
 
           <div class="step-card">
             <div class="step-card__num step-card__num--dual">4</div>
-            <h3 class="step-card__title">التزام مرن ومتابعة ذكية</h3>
-            <p class="step-card__desc">جدولك التفاعلي على جوالك مع زر «بدّل»، مؤقت التمارين، ومنحنى نزول وزنك الأسبوعي.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- قسم المميزات -->
-    <section id="features" class="section section--alt" aria-labelledby="features-title">
-      <div class="container">
-        <header class="section__header">
-          <span class="section__badge">مزايا حصرية</span>
-          <h2 id="features-title" class="section__title">ما الذي يجعل متوازي مختلفاً عن أي برنامج آخر؟</h2>
-          <p class="section__subtitle">صممنا متوازي ليتناسب مع واقعنا وثقافتنا اليومية، بدون تعقيدات أو اشتراطات غير واقعية.</p>
-        </header>
-
-        <div class="features-grid">
-          <div class="feature-box">
-            <div class="feature-box__icon" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path><path d="M12 6v6l4 2"></path></svg>
-            </div>
-            <h3>أكلات بلدك بمقادير البيت والميزان</h3>
-            <p>كبسة، مطبق، جريش، سليق، مسخن.. كل وجبة موضحة بالجرام وبمقاييس البيت البسيطة (كوب، كف، ملعقة) مع طريقة تحضير صحية سريعة.</p>
-          </div>
-
-          <div class="feature-box">
-            <div class="feature-box__icon" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-            </div>
-            <h3>زر «بدّل على ذوقك»</h3>
-            <p>ما ناسبتك وجبة اليوم؟ اضغط «بدّل» وتلقائياً تختار بديلاً مطابقاً لسعراتك ويُحفظ اختيارك في جدولك لتأكل ما تحب وتبقى ضمن خطتك.</p>
-          </div>
-
-          <div class="feature-box">
-            <div class="feature-box__icon" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            </div>
-            <h3>أخصائي مرخص ومدرب معتمد</h3>
-            <p>لا نتركك لنتائج برمجية صماء؛ كل جدول يمر على خبير بشري مرخص يعتمده، وأي حالة صحية خاصة يتولاها الأخصائي بعناية شخصية.</p>
-          </div>
-
-          <div class="feature-box">
-            <div class="feature-box__icon" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"></path></svg>
-            </div>
-            <h3>تمارين بالفيديو بدون نزول للأرض</h3>
-            <p>مساران متكاملان (منزلي ونادي) خاليان تماماً من تمارين الأرض لحماية الركب والمفاصل، مع شرح فيديو ومؤقت راحة تفاعلي لكل تمرين.</p>
-          </div>
-
-          <div class="feature-box">
-            <div class="feature-box__icon" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
-            </div>
-            <h3>منحنى وزن وتقويم التزام حي</h3>
-            <p>وثّق وزنك الأسبوعي وتابع منحنى تقدمك نحو الهدف مع تقويم التزام شهري يحفّزك على بناء سلسلة أيامك الناجحة.</p>
-          </div>
-
-          <div class="feature-box">
-            <div class="feature-box__icon" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-            </div>
-            <h3>تجربة تطبيق فاخرة على شاشة جوالك</h3>
-            <p>أضف متوازي لشاشة جوالك الرئيسية بضغطة واحدة ليفتح كتطبيق فوري فائق السرعة دون استهلاك مساحة هاتفك.</p>
+            <h3 class="step-card__title">تابع إنجازك يومياً</h3>
+            <p class="step-card__desc">تطبيق فوري على جوالك مع سجل الالتزام ومنحنى الوزن.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- قسم الإثبات الاجتماعي وقصص النجاح -->
-    <section id="testimonials" class="section" aria-labelledby="testimonials-title">
+    <section id="testimonials" class="section section--alt" aria-labelledby="testimonials-title">
       <div class="container">
         <header class="section__header">
           <span class="section__badge">مسيرة خبرة وتجارب موثقة منذ 2015م</span>
@@ -738,7 +653,7 @@
     </section>
 
     <!-- قسم الباقات -->
-    <section id="plans" class="section section--alt" aria-labelledby="plans-title">
+    <section id="plans" class="section" aria-labelledby="plans-title">
       <div class="container">
         <header class="section__header">
           <span class="section__badge">الباقات</span>
@@ -845,53 +760,43 @@
       </div>
     </section>
 
-    <!-- قسم الأسئلة الشائعة -->
-    <section id="faq" class="section" aria-labelledby="faq-title">
+    <!-- قسم الأسئلة الشائعة (الأسئلة الشرائية الحاسمة دون تكرار) -->
+    <section id="faq" class="section section--alt" aria-labelledby="faq-title">
       <div class="container">
         <header class="section__header">
-          <span class="section__badge">إجابات واضحة</span>
-          <h2 id="faq-title" class="section__title">الأسئلة الشائعة</h2>
-          <p class="section__subtitle">كل ما تود معرفته عن طريقة عمل متوازي والاشتراك.</p>
+          <span class="section__badge">إجابات سريعة</span>
+          <h2 id="faq-title" class="section__title">الأسئلة الشائعة قبل البدء</h2>
+          <p class="section__subtitle">إجابات مختصرة وواضحة لأهم ما يدور في ذهنك.</p>
         </header>
 
         <div class="faq-wrap">
           <details class="faq-item" open>
             <summary class="faq-question">
-              <span>هل البرنامج فيه حرمان من الأكل أو وجبات صعبة؟</span>
+              <span>متى تتفعّل خطتي بعد تعبئة الاستمارة الصحية؟</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
             <div class="faq-answer">
-              لا إطلاقاً. فلسفة متوازي قائمة على الأكل المتوازن من أكلات بيتك وديرتك (كبسة، جريش، مرقوق، سلطات..). لا نجبرك على أكلات غير مألوفة، والحصص موزونة ومحسوبة بالجرام وبمقاييس البيت البسيطة (كوب، كف، ملعقة)، ومعك زر «بدّل» لتغيير أي وجبة فوراً.
+              فور إرسال الاستمارة تُحسب مؤشراتك وتصل للأخصائي للمراجعة والتدقيق، وبمجرد اعتمادها تتفعّل خطتك كاملة على حسابك ويصلك إشعار عبر الواتساب.
             </div>
           </details>
 
           <details class="faq-item">
             <summary class="faq-question">
-              <span>هل أحتاج الذهاب إلى نادي رياضي (جيم) للتمرين؟</span>
+              <span>عندي حالة صحية (سكري، ضغط، غدة، تكميم) أو أدوية، هل يناسبني؟</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
             <div class="faq-answer">
-              ليس بالضرورة. تحصل في خطتك على المسارين معاً (منزلي بدون أجهزة + نادي)، وكلاهما مصمم بدون أي تمارين أرضية لحماية الركب والمفاصل، ومشروح بالفيديو ومؤقت الراحة.
+              نعم، سلامتك أولويتنا؛ الاستمارة تفرز أي حالة صحية خاصة تلقائياً (سكري، ضغط، كلى، حمل ورضاعة، أو عمليات سابقة) ليتولى الأخصائي ضبط خطتك بما يلائم وضعك الصحي بأمان.
             </div>
           </details>
 
           <details class="faq-item">
             <summary class="faq-question">
-              <span>ما الذي يفرق متوازي عن تطبيقات الحمية والذكاء الاصطناعي الأخرى؟</span>
+              <span>لو انعزمت أو أكلت خارج البيت أو ما ناسبني طبق اليوم كيف أتصرف؟</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
             <div class="faq-answer">
-              الفرق الجوهري هو <strong>«التوازي والإشراف البشري المرخص»</strong>. التطبيقات الأخرى تقدم جداول آلية عشوائية لا تراعي خصوصيتك، وتفصل الرياضة عن التغذية. في متوازي، المساران يمشون معاً، وكل جدول يراجعه ويعتمده أخصائي تغذية مرخص ومدرب لياقة قبل أن يوصلك.
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-question">
-              <span>عندي حالة صحية خاصة أو أتناول أدوية معينة، هل أستطيع الاشتراك؟</span>
-              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </summary>
-            <div class="faq-answer">
-              سلامتك هي أولويتنا القصوى. الاستمارة الصحية تحتوي على فحص دقيق؛ وأي مشترك لديه حالة صحية خاصة (كالسكري، الضغط، الكلى، الحمل والرضاعة، أو عمليات سابقة) يتم تحويل ملفه فوراً للأخصائي ليتولى حالته بنفسه ويبني له جدولاً آمناً يتوافق مع وضعه الصحي.
+              بضغطة على زر «بدّل» تختار فوراً بديلاً يناسبك بنفس سعراتك من بين +200 خيار، وفي باقتَي المتابعة والمكثفة نساعدك في موازنة أيام المناسبات والمطاعم دون إفساد أسبوعك.
             </div>
           </details>
 
@@ -901,7 +806,7 @@
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
             <div class="faq-answer">
-              لا يوجد أي سحب أو تجديد تلقائي نهائياً. كل اشتراك مدته 30 يوماً مستقلة وبشفافية تامة، ولك كامل الحرية في التجديد متى رغبت.
+              لا يوجد أي سحب أو تجديد تلقائي نهائياً. كل باقة مدتها 30 يوماً مستقلة تماماً، ولك مطلق الحرية في التجديد متى رغبت.
             </div>
           </details>
         </div>
@@ -1000,9 +905,8 @@
       <div class="mobile-sheet-links">
         <a href="#philosophy" class="mobile-sheet-link" data-sheet-close><span>⚡</span> <span>ليش متوازي؟</span></a>
         <a href="#how-it-works" class="mobile-sheet-link" data-sheet-close><span>🗺️</span> <span>طريقة العمل</span></a>
-        <a href="#features" class="mobile-sheet-link" data-sheet-close><span>✨</span> <span>المميزات</span></a>
         <a href="#plans" class="mobile-sheet-link" data-sheet-close><span>💎</span> <span>الباقات والأسعار</span></a>
-        <a href="#faq" class="mobile-sheet-link" data-sheet-close style="grid-column: 1 / -1;"><span>❓</span> <span>الأسئلة الشائعة والضمانات الطبية</span></a>
+        <a href="#faq" class="mobile-sheet-link" data-sheet-close><span>❓</span> <span>الأسئلة الشائعة</span></a>
         <a href="/stories" class="mobile-sheet-link mobile-sheet-link--gold"><span>⭐</span> <span>قصص النجاح الموثقة (40 تجربة)</span></a>
       </div>
       <div style="display:flex; gap:8px;">
