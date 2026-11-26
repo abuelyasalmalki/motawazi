@@ -10,134 +10,163 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="متوازي">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>طلبك — متوازي</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=20261122b">
+<link rel="stylesheet" href="/style.css?v=20261126a">
 <style>
-  /* شريط التنقل السفلي الذكي للهواتف — تصميم أيقونات SVG الفخمة */
-  .mobile-bottom-nav {
-    display: none;
-  }
-  @media (max-width: 768px) {
-    body {
-      padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
-    }
-    .mobile-bottom-nav {
-      display: flex !important;
-      position: fixed !important;
-      bottom: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-      height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
-      padding-bottom: env(safe-area-inset-bottom, 0px) !important;
-      background: rgba(255, 255, 255, 0.94) !important;
-      backdrop-filter: blur(20px) !important;
-      -webkit-backdrop-filter: blur(20px) !important;
-      border-top: 1px solid rgba(226, 232, 240, 0.9) !important;
-      box-shadow: 0 -4px 25px rgba(15, 23, 42, 0.06) !important;
-      z-index: 99999 !important;
-      justify-content: space-around !important;
-      align-items: center !important;
-      box-sizing: border-box !important;
-    }
-    .mobile-nav-item {
-      flex: 1 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 3px !important;
-      height: 100% !important;
-      text-decoration: none !important;
-      color: #64748b !important;
-      font-size: 0.74rem !important;
-      font-weight: 700 !important;
-      user-select: none !important;
-      position: relative !important;
-      -webkit-tap-highlight-color: transparent !important;
-      transition: color 0.18s ease !important;
-    }
-    .nav-icon-wrap {
-      width: 40px !important;
-      height: 28px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      border-radius: 14px !important;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-    .nav-svg {
-      transition: transform 0.2s ease, stroke 0.2s ease !important;
-    }
-    .mobile-nav-item .nav-label {
-      line-height: 1.1 !important;
-      font-size: 0.73rem !important;
-      transition: color 0.18s ease, font-weight 0.18s ease !important;
-    }
-    .mobile-nav-item:active .nav-icon-wrap {
-      transform: scale(0.92) !important;
-    }
-    .mobile-nav-item.active {
-      color: #0f766e !important;
-      font-weight: 800 !important;
-    }
-    .mobile-nav-item.active .nav-icon-wrap {
-      background: #f0fdfa !important;
-      color: #0f766e !important;
-    }
-    .mobile-nav-item.active .nav-svg {
-      stroke: #0f766e !important;
-      transform: scale(1.08) !important;
-    }
-    .mobile-nav-item.active::after {
-      content: "" !important;
-      position: absolute !important;
-      bottom: 5px !important;
-      width: 4px !important;
-      height: 4px !important;
-      background: #0f766e !important;
-      border-radius: 9999px !important;
-    }
+  @keyframes stepPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.35); }
+    50% { box-shadow: 0 0 0 8px rgba(249, 115, 22, 0); }
   }
 
-  .calc-hero-box {
-    background: linear-gradient(135deg, var(--primary-soft) 0%, #ffffff 100%);
-    border: 1.5px solid var(--primary-border);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    text-align: center;
-    margin-bottom: 14px;
+  /* شريط مراحل الطلب والاعتماد البصري الحيّ */
+  .summary-stepper-card {
+    background: #ffffff;
+    border: 1.5px solid #ccfbf1;
+    border-radius: 22px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 20px rgba(15, 118, 110, 0.05);
+    position: relative;
+    overflow: hidden;
   }
-  .macros div {
+  .summary-stepper-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--primary), var(--accent));
+  }
+  .stages-modern {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0 0;
     display: flex;
     flex-direction: column;
+    gap: 10px;
+  }
+  .stages-modern li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #64748b;
+  }
+  .stages-modern li .stage-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #64748b;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 6px;
-    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 900;
+    flex-shrink: 0;
   }
-  .macros b {
-    font-size: 1.25rem;
+  .stages-modern li.done {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #065f46;
     font-weight: 800;
   }
-  .macros .small {
-    font-size: 0.78rem;
+  .stages-modern li.done .stage-dot {
+    background: #10b981;
+    color: #ffffff;
+  }
+  .stages-modern li.now {
+    background: #fffbeb;
+    border-color: #fcd34d;
+    color: #92400e;
+    font-weight: 800;
+  }
+  .stages-modern li.now .stage-dot {
+    background: #f59e0b;
+    color: #ffffff;
+    animation: stepPulse 1.8s infinite;
+  }
+
+  /* لوحة السعرات والماكروز التقديرية بحلقة SVG */
+  .calc-modern-card {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 22px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+  }
+  .calc-hero-box {
+    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);
+    border: 1.5px solid #ccfbf1;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .calc-ring-svg {
+    width: 58px;
+    height: 58px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .calc-ring-svg svg {
+    width: 58px;
+    height: 58px;
+    transform: rotate(-90deg);
+  }
+  .calc-ring-emoji {
+    position: absolute;
+    font-size: 1.25rem;
+  }
+  .macros-modern-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .macro-modern-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .macro-modern-box b {
+    display: block;
+    font-size: 1.22rem;
+    font-weight: 900;
+    color: var(--text-dark);
+  }
+  .macro-modern-box span {
+    font-size: 0.75rem;
     color: var(--text-muted);
     font-weight: 700;
   }
 
   .features-card {
     background: #ffffff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
+    border: 1.5px solid #e2e8f0;
+    border-radius: 22px;
     padding: 20px 18px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
   }
   .features-card__title {
     font-size: 1.12rem;
@@ -159,10 +188,10 @@
     gap: 12px;
   }
   .feature-icon-box {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -185,7 +214,7 @@
   .approval-notice-box {
     background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
     border: 1.5px solid #a7f3d0;
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 12px 14px;
     margin-top: 16px;
     display: flex;
@@ -207,7 +236,7 @@
   .guarantee-box {
     background: #fffbeb;
     border: 1.5px solid #fde68a;
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 12px 14px;
     margin-top: 12px;
     display: flex;
@@ -229,61 +258,14 @@
   .plans-cta-card {
     background: #ffffff;
     border: 2px solid var(--primary);
-    border-radius: var(--radius-md);
+    border-radius: 20px;
     padding: 20px 18px;
     margin-bottom: 16px;
     box-shadow: 0 4px 16px rgba(15, 118, 110, 0.08);
   }
-  .plans-grid-preview {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
-    gap: 12px;
-    margin-top: 14px;
-  }
-  .plan-preview-item {
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 14px;
-    position: relative;
-    background: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .plan-preview-item.featured {
-    border-color: var(--primary);
-    background: #f0fdfa;
-  }
-  .plan-preview-tag {
-    position: absolute;
-    top: -10px;
-    left: 12px;
-    background: var(--accent);
-    color: #ffffff;
-    font-size: 0.72rem;
-    font-weight: 800;
-    padding: 2px 9px;
-    border-radius: 9999px;
-  }
-  .plan-preview-perks {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    font-size: 0.8rem;
-    color: var(--text);
-  }
-  .plan-preview-perks li {
-    display: flex;
-    align-items: flex-start;
-    gap: 5px;
-    line-height: 1.4;
-  }
 </style>
 </head>
-<body class="app">
+<body class="app has-bottom-nav">
 <header class="app-header">
   <div class="app-header__inner">
     <a href="/" class="logo" aria-label="متوازي — الرئيسية">
@@ -299,28 +281,44 @@
 </header>
 
 <main class="wrap">
-  <p class="msg" id="boot" role="status">جاري التحميل…</p>
+  <!-- تحميل هيكلي ناعم (Skeleton Shimmer) -->
+  <div class="skeleton-boot" id="boot" role="status" aria-label="جاري التحميل…">
+    <div class="skel-card">
+      <div class="skel-bar lg"></div>
+      <div class="skel-box" style="height:48px;"></div>
+      <div class="skel-box" style="height:48px;"></div>
+    </div>
+    <div class="skel-card">
+      <div class="skel-grid-3">
+        <div class="skel-box"></div>
+        <div class="skel-box"></div>
+        <div class="skel-box"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- ما عنده طلب -->
-  <div id="none" class="card hidden">
+  <div id="none" class="card hidden" style="border-radius:20px; text-align:center; padding:32px 20px;">
+    <div style="font-size:2.6rem; margin-bottom:10px;">📋</div>
     <h1 class="step-title">ما عندك طلب للحين</h1>
-    <p>عبّ الاستمارة الصحية عشان نبدأ.</p>
-    <a class="btn" href="/start">ابدأ الاستمارة</a>
+    <p class="muted">عبّئ الاستمارة الصحية في ٣ دقائق لنحسب احتياجك ونبني خطتك المتوازية.</p>
+    <a class="btn" href="/start">ابدأ الاستمارة الآن</a>
   </div>
 
   <div id="app" class="hidden">
-    <div class="card">
-      <div class="card__head">
+    <!-- كارت مراحل الطلب الحيّ -->
+    <div class="summary-stepper-card">
+      <div class="card__head" style="margin-bottom:4px;">
         <span class="card__icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </span>
-        <h1 class="step-title" id="statusTitle" style="margin:0"></h1>
+        <h1 class="step-title" id="statusTitle" style="margin:0; font-size:1.15rem;"></h1>
       </div>
-      <ol class="stages" id="stages"></ol>
+      <ol class="stages-modern" id="stages"></ol>
     </div>
 
     <!-- كارت هدية التحديث الجديد للمنصة -->
-    <div id="welcomeGiftCard" class="card hidden" style="background:linear-gradient(135deg, #f0fdfa 0%, #fffbeb 100%); border:1.5px solid #5eead4; box-shadow:0 6px 20px rgba(15, 118, 110, 0.08);">
+    <div id="welcomeGiftCard" class="card hidden" style="border-radius:22px; background:linear-gradient(135deg, #f0fdfa 0%, #fffbeb 100%); border:1.5px solid #5eead4; box-shadow:0 6px 20px rgba(15, 118, 110, 0.08);">
       <div class="card__head" style="margin-bottom:8px;">
         <span class="card__icon" aria-hidden="true" style="background:#ccfbf1; color:#0f766e; font-size:1.35rem;">🎁</span>
         <div>
@@ -328,44 +326,62 @@
           <span id="welcomeGiftBadge" style="display:inline-block; margin-top:4px; font-size:0.78rem; font-weight:800; color:#0f766e; background:#ffffff; border:1px solid #99f6e4; padding:2px 10px; border-radius:999px;">شملتك الهدية مجاناً ✓</span>
         </div>
       </div>
-      <p id="welcomeGiftBody" style="margin:0; font-size:0.95rem; line-height:1.65; color:#1e293b; font-weight:600;">
+      <p id="welcomeGiftBody" style="margin:0; font-size:0.94rem; line-height:1.65; color:#1e293b; font-weight:600;">
         تم إعفاؤك من رسوم الباقة الأساسية (<del style="color:#94a3b8; font-weight:700;">149 ريال</del> <strong style="color:#0f766e;">مجاناً</strong>) — استمارتك وصلت للأخصائي لاعتماد جدولك مجاناً اليوم (جدول 30 يوماً بدون متابعة).
       </p>
     </div>
 
     <!-- ملف معلّم: الأخصائي يتولى الحالة ولا نعرض سعرات -->
-    <div id="flagged" class="card hidden">
+    <div id="flagged" class="card hidden" style="border-radius:22px;">
       <div class="card__head">
         <span class="card__icon card__icon--accent" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </span>
-        <h2>الأخصائي بيراجع حالتك</h2>
+        <h2>الأخصائي بيراجع حالتك بعناية خاصة</h2>
       </div>
-      <p>بناءً على إجاباتك، أخصائي التغذية بيراجع حالتك بنفسه ويتواصل معك قريباً، عشان يبني لك جدول يناسبك.</p>
-      <p class="muted small">ما بنعرض لك سعرات تلقائية في هالحالة، لأن الأخصائي هو اللي يحددها لك.</p>
+      <p>بناءً على إجاباتك الصحية، أخصائي التغذية يراجع حالتك بنفسه ويتواصل معك قريباً لبناء جدول يناسبك بدقة وأمان.</p>
+      <p class="muted small">لا نعرض سعرات تلقائية في هذه الحالة لأن الأخصائي هو من يحددها لك شخصياً.</p>
     </div>
 
-    <!-- ملف عادي: السعرات التقديرية -->
-    <div id="calc" class="card hidden">
-      <div class="card__head">
-        <span class="card__icon card__icon--accent" aria-hidden="true">
-          🔥
-        </span>
+    <!-- ملف عادي: السعرات والماكروز التقديرية -->
+    <div id="calc" class="calc-modern-card hidden">
+      <div class="card__head" style="margin-bottom:14px;">
+        <span class="card__icon card__icon--accent" aria-hidden="true">🔥</span>
         <div>
-          <h2>احتياجك اليومي التقديري</h2>
-          <p class="muted small" style="margin:2px 0 0;">محسوب بمعادلة علمية دقيقة بناءً على أهدافك ونشاطك</p>
+          <h2 style="margin:0; font-size:1.12rem;">احتياجك اليومي الموزون</h2>
+          <p class="muted small" style="margin:2px 0 0;">محسوب بمعادلة علمية دقيقة بناءً على قياساتك ونشاطك</p>
         </div>
       </div>
+
       <div class="calc-hero-box">
-        <span style="font-size:0.85rem; color:var(--primary-dark); font-weight:700; display:block; margin-bottom:2px;">هدف السعرات اليومية</span>
-        <div class="kcal" style="margin:0;"><span id="kcal">—</span> <small style="font-size:1.1rem; font-weight:700;">سعرة</small></div>
+        <div class="calc-ring-svg" aria-hidden="true">
+          <svg viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="24" fill="none" stroke="#ccfbf1" stroke-width="5.5"></circle>
+            <circle cx="30" cy="30" r="24" fill="none" stroke="#0f766e" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="18"></circle>
+          </svg>
+          <span class="calc-ring-emoji">🎯</span>
+        </div>
+        <div>
+          <span style="font-size:0.8rem; color:var(--primary-dark); font-weight:800; display:block;">هدف السعرات اليومية</span>
+          <div class="kcal" style="margin:0; line-height:1.15;"><span id="kcal">—</span> <small style="font-size:1rem; font-weight:800;">سعرة</small></div>
+        </div>
       </div>
-      <div class="macros">
-        <div><b id="mP">—</b><span class="small">بروتين (جم)</span></div>
-        <div><b id="mC">—</b><span class="small">كارب (جم)</span></div>
-        <div><b id="mF">—</b><span class="small">دهون (جم)</span></div>
+
+      <div class="macros-modern-grid">
+        <div class="macro-modern-box">
+          <b id="mP">—</b>
+          <span>🥩 بروتين (جم)</span>
+        </div>
+        <div class="macro-modern-box">
+          <b id="mC">—</b>
+          <span>🌾 كارب (جم)</span>
+        </div>
+        <div class="macro-modern-box">
+          <b id="mF">—</b>
+          <span>🥑 دهون (جم)</span>
+        </div>
       </div>
-      <p class="muted small" style="margin-top:14px">هذا توزيع تقديري معتمد، يراجعه أخصائي التغذية لضبطه في جدولك بما يناسب ذوقك وأكلات بلدك.</p>
+      <p class="muted small" style="margin:12px 0 0;">هذا التوزيع يراجعه أخصائي التغذية لضبطه في جدولك اليومي بما يناسب ذوقك وأكلات بيتك.</p>
     </div>
 
     <!-- كارت مميزات جدولك المتوازي واعتماد الأخصائي -->
@@ -379,23 +395,23 @@
           <div class="feature-icon-box" aria-hidden="true">🍲</div>
           <div class="feature-text">
             <h4>200 وجبة من أكلات بيتك بميزان دقيق + زر «بدّل»</h4>
-            <p>كبسة، جريش، مشاوي، وفطورك المعتاد.. مقادير واضحة بالجرام والملاعق مع تبديل فوري لأي وجبة بنفس السعرات.</p>
+            <p>كبسة، جريش، مشاوي، وفطورك المعتاد.. مقادير واضحة بالجرام مع تبديل فوري وحفظ تلقائي لذوقك.</p>
           </div>
         </div>
 
         <div class="feature-item">
           <div class="feature-icon-box" aria-hidden="true">🏋️</div>
           <div class="feature-text">
-            <h4>مساران للتمارين (منزلي بدون أجهزة + نادي) بدون تمارين أرض</h4>
-            <p>تمارين مصممة لحماية الركب والمفاصل ومناسبة للمتكممين والأوزان العالية، مع الجولات وتوجيهات الكابتن.</p>
+            <h4>مساران للتمارين (منزلي + نادي) بالفيديو ومؤقت راحة بدون أرض</h4>
+            <p>تمارين مصورة خطوة بخطوة لحماية الركب والمفاصل، مع مؤقت راحة حيّ وشطب تفاعلي للتمارين.</p>
           </div>
         </div>
 
         <div class="feature-item">
           <div class="feature-icon-box" aria-hidden="true">📈</div>
           <div class="feature-text">
-            <h4>متابعة حقيقية تكسر ثبات الوزن</h4>
-            <p>لوحة متابعة يومية للوجبات والماء والتمرين، مع فحص أسبوعي لتعديل حصصك فور ثبات الميزان (في باقتَي المتابعة والمكثفة).</p>
+            <h4>منحنى وزن وتقويم التزام يومي</h4>
+            <p>لوحة متابعة يومية للوجبات والماء والتمرين، مع رسم بياني لمنحنى وزنك الأسبوعي.</p>
           </div>
         </div>
       </div>
@@ -404,7 +420,7 @@
         <span style="font-size:1.3rem;" aria-hidden="true">⚡</span>
         <div>
           <strong>مراجعة واعتماد سريع في نفس اليوم:</strong>
-          <p>استمارتك وصلت الآن إلى أخصائي التغذية ومدرب اللياقة، وسيتم مراجعة ملفك الصحي واعتماد جدولك مجاناً اليوم ليفتح في حسابك مباشرة.</p>
+          <p>استمارتك وصلت الآن إلى أخصائي التغذية ومدرب اللياقة، وسيتم اعتماد جدولك مجاناً اليوم ليفتح في حسابك مباشرة.</p>
         </div>
       </div>
 
@@ -412,87 +428,19 @@
         <span style="font-size:1.3rem;" aria-hidden="true">🛡️</span>
         <div>
           <strong>ضمان التكييف والتعديل المجاني (أول 7 أيام):</strong>
-          <p>نضبط ونعدّل خيارات وجباتك أو مستوى تمارينك مجاناً خلال أسبوعك الأول حتى تكون خطتك مريحة ومناسبة ليومك 100%.</p>
+          <p>نضبط ونعدّل خيارات وجباتك أو مستوى تمارينك مجاناً خلال أسبوعك الأول حتى تكون خطتك مريحة ليومك 100%.</p>
         </div>
       </div>
     </div>
 
-    <!-- كارت اختيار الباقة والاشتراك للعميل الجديد -->
-    <div class="plans-cta-card hidden" id="summaryPlansCard">
-      <div class="card__head" style="margin-bottom:6px;">
-        <span class="card__icon card__icon--accent" aria-hidden="true">⭐</span>
-        <div>
-          <h2 style="font-size:1.15rem; margin:0;">اختر باقتك لبدء مراجعة واعتماد جدولك</h2>
-          <p class="muted small" style="margin:2px 0 0;">اشتراك 30 يوماً بدون أي تجديد تلقائي</p>
-        </div>
-      </div>
-
-      <div class="plans-grid-preview">
-        <!-- الأساسية -->
-        <div class="plan-preview-item">
-          <div>
-            <h3 style="margin:0 0 4px; font-size:1.04rem;">الأساسية</h3>
-            <p class="muted small" style="margin:0 0 8px;">خطة متكاملة وتقييم نهاية الشهر</p>
-            <div style="font-size:1.65rem; font-weight:900; color:var(--primary); margin-bottom:10px;">
-              149 <small style="font-size:0.88rem; color:var(--text); font-weight:700;">ريال / 30 يوماً</small>
-            </div>
-            <ul class="plan-preview-perks">
-              <li><span style="color:var(--primary); font-weight:900;">✓</span><span>جدول الوجبات + زر «بدّل» الفوري</span></li>
-              <li><span style="color:var(--primary); font-weight:900;">✓</span><span>تمارين (منزلي + نادي) بدون أرض</span></li>
-              <li><span style="color:var(--primary); font-weight:900;">✓</span><span>اعتماد مبدئي ومراجعة شهرية</span></li>
-            </ul>
-          </div>
-          <a href="/account#plans" class="btn btn--outline" style="width:100%; text-align:center; padding:10px 14px; margin:0; font-size:0.9rem;">
-            <span>اختر الأساسية</span>
-          </a>
-        </div>
-
-        <!-- المتابعة (الأبرز) -->
-        <div class="plan-preview-item featured">
-          <span class="plan-preview-tag">الأكثر طلباً ⭐</span>
-          <div>
-            <h3 style="margin:0 0 4px; font-size:1.04rem; color:var(--primary-dark);">المتابعة</h3>
-            <p class="muted small" style="margin:0 0 8px;">فحص أسبوعي لكسر ثبات الميزان</p>
-            <div style="font-size:1.65rem; font-weight:900; color:var(--primary); margin-bottom:10px;">
-              249 <small style="font-size:0.88rem; color:var(--text); font-weight:700;">ريال / 30 يوماً</small>
-            </div>
-            <ul class="plan-preview-perks">
-              <li><span style="color:var(--primary); font-weight:900;">✓</span><span>كل مزايا الباقة الأساسية</span></li>
-              <li><span style="color:var(--primary); font-weight:900;">✓</span><span><strong>نقطة تفتيش كل 7 أيام</strong> للميزان</span></li>
-              <li><span style="color:var(--primary); font-weight:900;">✓</span><span><strong>تعديل السعرات</strong> عند الثبات أو العزائم</span></li>
-            </ul>
-          </div>
-          <a href="/account#plans" class="btn btn--primary" style="width:100%; text-align:center; padding:10px 14px; margin:0; font-size:0.9rem;">
-            <span>اشترك واعتمد جدولك</span>
-          </a>
-        </div>
-
-        <!-- المكثفة -->
-        <div class="plan-preview-item">
-          <div>
-            <h3 style="margin:0 0 4px; font-size:1.04rem;">المكثّفة</h3>
-            <p class="muted small" style="margin:0 0 8px;">تواصل مباشر وحالات خاصة</p>
-            <div style="font-size:1.65rem; font-weight:900; color:var(--primary); margin-bottom:10px;">
-              399 <small style="font-size:0.88rem; color:var(--text); font-weight:700;">ريال / 30 يوماً</small>
-            </div>
-            <ul class="plan-preview-perks">
-              <li><span style="color:var(--primary); font-weight:900;">✓</span><span>كل مزايا باقة المتابعة</span></li>
-              <li><span style="color:var(--primary); font-weight:900;">✓</span><span><strong>تواصل واتساب مباشر</strong> للمطاعم والسفر</span></li>
-              <li><span style="color:var(--primary); font-weight:900;">✓</span><span><strong>تخصيص للتكميم والمفاصل</strong> وأولوية</span></li>
-            </ul>
-          </div>
-          <a href="/account#plans" class="btn btn--outline" style="width:100%; text-align:center; padding:10px 14px; margin:0; font-size:0.9rem;">
-            <span>اختر المكثّفة</span>
-          </a>
-        </div>
-      </div>
-    </div>
+    <!-- كارت مخفي لاختيار الباقات -->
+    <div class="plans-cta-card hidden" id="summaryPlansCard"></div>
 
     <!-- صندوق الإجراءات التالية -->
-    <div class="card" id="actionsCard">
+    <div class="card" id="actionsCard" style="border-radius:22px;">
       <div class="appt-actions">
         <a class="btn btn--primary hidden" id="btnGoToPlan" href="/plan" style="margin-top:0;">
-          <span>🍽️ استعراض جدولك اليومي الآن</span>
+          <span>🍽️ افتح جدولك اليومي الآن</span>
         </a>
         <a class="btn btn--outline" id="btnGoToAccount" href="/account" style="margin-top:0;">
           <span>👤 الانتقال لحسابي</span>
@@ -560,44 +508,36 @@
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
 
-  /* مراحل الطلب والاعتماد */
   var STAGES = [
-    { key: "received",     label: "تم استلام استمارتك الصحية" },
-    { key: "under_review", label: "جاري المراجعة والتدقيق من الأخصائي" },
-    { key: "approved",     label: "تم اعتماد وتفعيل جدولك" }
+    { key: "received",     label: "تم استلام استمارتك الصحية بنجاح" },
+    { key: "under_review", label: "مراجعة وتدقيق الأخصائي لخطتك" },
+    { key: "approved",     label: "اعتماد وتفعيل جدولك المتوازي" }
   ];
 
   function render(p) {
     var isApproved = (p.status === "approved" || p.status === "delivered");
-    var cur = 0;
-    if (isApproved) {
-      cur = 2;
-    } else if (p.status === "under_review") {
-      cur = 1;
-    } else {
-      cur = 0;
-    }
+    var cur = isApproved ? 2 : 1; // بمجرد استلام الاستمارة تبدأ مرحلة المراجعة البصرية الحيّة!
 
     if (isApproved) {
       $("statusTitle").textContent = "تم اعتماد وتفعيل جدولك بنجاح ✓";
     } else {
-      $("statusTitle").textContent = STAGES[cur].label;
+      $("statusTitle").textContent = "استمارتك وصلت وجاري اعتماد جدولك";
     }
 
     var ol = $("stages");
     ol.innerHTML = "";
     STAGES.forEach(function (s, i) {
       var li = document.createElement("li");
-      li.textContent = s.label;
-      if (isApproved) {
-        li.className = "done";
-      } else {
-        li.className = i < cur ? "done" : i === cur ? "done now" : "";
-      }
+      var isDone = isApproved || (i < cur);
+      var isNow = !isApproved && (i === cur);
+      li.className = isDone ? "done" : (isNow ? "now" : "");
+      li.innerHTML =
+        '<span class="stage-dot">' + (isDone ? "✓" : (i + 1)) + '</span>' +
+        '<span>' + s.label + '</span>';
       ol.appendChild(li);
     });
 
-    var flagged = !p.triage || p.triage.flagged !== false;   // غياب الفرز ⇒ نتعامل كمعلّم (الأحوط)
+    var flagged = !p.triage || p.triage.flagged !== false;
     $("flagged").classList.toggle("hidden", !flagged);
     $("calc").classList.toggle("hidden", flagged || !p.calc);
     if (!flagged && p.calc) {
@@ -606,7 +546,7 @@
       $("mC").textContent = p.calc.macros.carbs;
       $("mF").textContent = p.calc.macros.fat;
     }
-    var isApproved = (p.status === "approved" || p.status === "delivered");
+
     var isSub = !!(window.Auth && Auth.isSubscribed);
     var planBtn = $("btnGoToPlan");
     if (planBtn) {
@@ -626,7 +566,6 @@
     }
     var summaryPlansCard = $("summaryPlansCard");
     if (summaryPlansCard) {
-      // في مرحلة هدية التحديث الجديد نخفي مطالبة الدفع المسبقة حتى لا يرتبك العميل
       summaryPlansCard.classList.add("hidden");
     }
     var planFeaturesCard = $("planFeaturesCard");

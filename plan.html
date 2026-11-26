@@ -10,13 +10,13 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="متوازي">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>جدولي — متوازي</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=20261125c">
+<link rel="stylesheet" href="/style.css?v=20261126a">
 <style>
   /* شريط التنقل السفلي الذكي للهواتف — تصميم أيقونات SVG الفخمة */
   .mobile-bottom-nav {
@@ -1768,7 +1768,7 @@
   .print-only-title { display: none; }
 </style>
 </head>
-<body class="app">
+<body class="app has-bottom-nav">
 <header class="app-header">
   <div class="app-header__inner">
     <a href="/" class="logo" aria-label="متوازي — الرئيسية">
@@ -1784,7 +1784,29 @@
 </header>
 
 <main class="wrap">
-  <p class="msg" id="boot" role="status">جاري التحقق من حالة الجدول…</p>
+  <div class="skeleton-boot" id="boot" role="status" aria-label="جاري التحقق من حالة الجدول…">
+    <div class="skel-card">
+      <div class="skel-row">
+        <div class="skel-avatar"></div>
+        <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+          <div class="skel-bar lg"></div>
+          <div class="skel-bar sm"></div>
+        </div>
+      </div>
+    </div>
+    <div class="skel-card">
+      <div class="skel-bar md"></div>
+      <div class="skel-grid-3">
+        <div class="skel-box"></div>
+        <div class="skel-box"></div>
+        <div class="skel-box"></div>
+      </div>
+    </div>
+    <div class="skel-card">
+      <div class="skel-bar lg"></div>
+      <div class="skel-box" style="height:110px;"></div>
+    </div>
+  </div>
 
   <!-- كارت يظهر إذا لم يتم اعتماد الجدول بعد من الأخصائي في فايربيس -->
   <div id="lockedPlanState" class="card hidden" style="text-align:center; padding:36px 20px;">

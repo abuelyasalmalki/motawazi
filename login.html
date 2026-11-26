@@ -10,15 +10,171 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="متوازي">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>تسجيل الدخول — متوازي</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=20261122b">
+<link rel="stylesheet" href="/style.css?v=20261126a">
+<style>
+  body.auth-page {
+    background:
+      radial-gradient(circle at 85% 12%, rgba(15, 118, 110, 0.08) 0%, transparent 45%),
+      radial-gradient(circle at 12% 85%, rgba(249, 115, 22, 0.07) 0%, transparent 45%),
+      #f8fafc;
+  }
+  .auth-modern-card {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 28px 24px 24px;
+    box-shadow: 0 18px 40px -12px rgba(15, 23, 42, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .auth-modern-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+  }
+  .auth-brand-badge {
+    width: 54px;
+    height: 54px;
+    margin: 0 auto 12px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #f0fdfa, #fff7ed);
+    border: 1.5px solid #ccfbf1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.08);
+  }
+  .auth-head {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .auth-head h1 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    margin: 0 0 4px;
+  }
+  .auth-head p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  /* محول التبويب العلوي (تسجيل الدخول | إنشاء حساب) */
+  .auth-mode-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 18px;
+  }
+  .auth-tab-btn {
+    border: none;
+    background: transparent;
+    padding: 9px 10px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .auth-tab-btn.active {
+    background: #ffffff;
+    color: var(--primary-dark);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  }
+
+  .btn--google-modern {
+    width: 100%;
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    color: var(--text-dark);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+  }
+  .btn--google-modern:hover {
+    border-color: var(--primary);
+    background: #f8fafc;
+  }
+
+  .pw-field-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .pw-field-wrap input {
+    width: 100%;
+    padding-right: 44px;
+  }
+  .btn-pw-eye {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: color 0.15s ease;
+  }
+  .btn-pw-eye:hover {
+    color: var(--primary);
+  }
+
+  .auth-trust-strip {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: #64748b;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  @media (max-width: 520px) {
+    .auth-modern-card {
+      padding: 24px 18px 20px;
+      border-radius: 22px;
+    }
+  }
+</style>
 </head>
-<body class="app">
+<body class="app auth-page">
 <header class="app-header">
   <div class="app-header__inner">
     <a href="/" class="logo" aria-label="متوازي — الرئيسية">
@@ -34,39 +190,60 @@
 </header>
 
 <main class="wrap wrap--narrow">
-  <div class="card auth-card">
-    <div class="auth-head">
-      <h1 id="title">تسجيل الدخول</h1>
-      <p>تابع طلبك وجدولك مع متوازي</p>
+  <div class="auth-modern-card">
+    <div class="auth-brand-badge" aria-hidden="true">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M7 23C7 15.268 13.268 9 21 9" stroke="#0F766E" stroke-width="3.5" stroke-linecap="round"/><path d="M11 27C11 19.268 17.268 13 25 13" stroke="#F97316" stroke-width="3.5" stroke-linecap="round"/><circle cx="21" cy="9" r="2.5" fill="#0F766E"/><circle cx="25" cy="13" r="2.5" fill="#F97316"/></svg>
     </div>
 
-    <button class="btn ghost btn--google" id="google" type="button">
-      <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
-      <span>الدخول بحساب Google</span>
+    <div class="auth-head">
+      <h1 id="title">تسجيل الدخول</h1>
+      <p id="subtitle">تابع جدولك اليومي ومنحنى تقدمك مع متوازي</p>
+    </div>
+
+    <!-- محول سريع بين الدخول وإنشاء حساب -->
+    <div class="auth-mode-tabs" role="tablist" aria-label="اختر نوع الدخول">
+      <button type="button" class="auth-tab-btn active" id="tabSignIn" role="tab" aria-selected="true">تسجيل الدخول</button>
+      <button type="button" class="auth-tab-btn" id="tabSignUp" role="tab" aria-selected="false">إنشاء حساب جديد</button>
+    </div>
+
+    <button class="btn--google-modern" id="google" type="button">
+      <svg width="19" height="19" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+      <span id="googleText">المتابعة السريعة بحساب Google</span>
     </button>
 
-    <div class="divider">أو بالبريد</div>
+    <div class="divider">أو بالبريد الإلكتروني</div>
 
     <form id="form" novalidate>
       <div id="nameRow" class="hidden">
-        <label for="name">الاسم</label>
-        <input id="name" type="text" autocomplete="name" maxlength="80">
+        <label for="name">الاسم الكريم</label>
+        <input id="name" type="text" autocomplete="name" maxlength="80" placeholder="مثال: محمد المالكي" style="border-radius:12px;">
       </div>
 
       <label for="email">البريد الإلكتروني</label>
-      <input id="email" type="email" autocomplete="email" inputmode="email" required dir="ltr">
+      <input id="email" type="email" autocomplete="email" inputmode="email" required dir="ltr" placeholder="name@example.com" style="border-radius:12px;">
 
       <label for="pw">كلمة المرور</label>
-      <input id="pw" type="password" autocomplete="current-password" minlength="6" required dir="ltr">
+      <div class="pw-field-wrap">
+        <input id="pw" type="password" autocomplete="current-password" minlength="6" required dir="ltr" placeholder="••••••••" style="border-radius:12px;">
+        <button type="button" class="btn-pw-eye" id="btnTogglePw" aria-label="إظهار أو إخفاء كلمة المرور" title="إظهار / إخفاء كلمة المرور">
+          <svg id="eyeIconOpen" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg id="eyeIconClosed" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
+      </div>
 
-      <button class="btn" id="submit" type="submit">دخول</button>
+      <button class="btn" id="submit" type="submit" style="border-radius:14px; margin-top:18px;">دخول</button>
     </form>
 
     <p class="msg" id="msg" role="status" aria-live="polite"></p>
 
     <div class="auth-links small">
-      <button class="link-btn" id="toggle" type="button">ما عندك حساب؟ أنشئ حساباً</button>
+      <button class="link-btn" id="toggle" type="button">ما عندك حساب؟ أنشئ حساباً جديداً</button>
       <button class="link-btn" id="forgot" type="button">نسيت كلمة المرور؟</button>
+    </div>
+
+    <div class="auth-trust-strip">
+      <span>🔒</span>
+      <span>اتصال آمن ومشفّر · خصوصية تامة لبياناتك الصحية</span>
     </div>
   </div>
 </main>
@@ -87,10 +264,9 @@
 (function () {
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
-  var mode = "in";   // in | up
+  var mode = "in";
   var busy = false;
 
-  /* وجهة ما بعد الدخول: مسار داخلي فقط (منع إعادة التوجيه لموقع خارجي) */
   function nextUrl() {
     var n = new URLSearchParams(location.search).get("next") || "";
     return /^\/[a-z0-9\-\/#?=&]*$/i.test(n) && n.indexOf("//") !== 0 ? n : "/account";
@@ -106,28 +282,49 @@
     "auth/invalid-email": "البريد غير صحيح.",
     "auth/missing-password": "اكتب كلمة المرور.",
     "auth/weak-password": "كلمة المرور قصيرة — ٦ أحرف على الأقل.",
-    "auth/email-already-in-use": "هذا البريد مسجّل — جرّب تسجيل الدخول.",
+    "auth/email-already-in-use": "هذا البريد مسجّل مسبقاً — انتقل لتبويب «تسجيل الدخول».",
     "auth/invalid-credential": "البريد أو كلمة المرور غير صحيحة.",
     "auth/wrong-password": "البريد أو كلمة المرور غير صحيحة.",
     "auth/user-not-found": "البريد أو كلمة المرور غير صحيحة.",
-    "auth/too-many-requests": "محاولات كثيرة — انتظر شوي وجرّب مرة ثانية.",
-    "auth/popup-closed-by-user": "انقفلت نافذة Google قبل ما يكتمل الدخول.",
-    "auth/popup-blocked": "المتصفح منع نافذة Google — اسمح بالنوافذ المنبثقة وجرّب مرة ثانية.",
+    "auth/too-many-requests": "محاولات كثيرة — انتظر قليلاً وجرّب مرة ثانية.",
+    "auth/popup-closed-by-user": "انقفلت نافذة Google قبل اكتمال الدخول.",
+    "auth/popup-blocked": "المتصفح منع نافذة Google — اسمح بالنوافذ المنبثقة وجرّب مجدداً.",
     "auth/unauthorized-domain": "هذا الدومين غير مضاف في إعدادات الدخول بـ Firebase.",
-    "auth/operation-not-allowed": "طريقة الدخول هذي غير مفعّلة حالياً.",
+    "auth/operation-not-allowed": "طريقة الدخول هذه غير مفعّلة حالياً.",
     "auth/network-request-failed": "تعذّر الاتصال — تأكد من الإنترنت."
   };
-  function errText(e) { return ERRORS[e && e.code] || "صار خطأ، حاول مرة ثانية."; }
+  function errText(e) { return ERRORS[e && e.code] || "حدث خطأ غير متوقع، حاول مرة ثانية."; }
 
   function setMode(m) {
     mode = m;
     var up = m === "up";
-    $("title").textContent = up ? "إنشاء حساب" : "تسجيل الدخول";
-    $("submit").textContent = up ? "إنشاء الحساب" : "دخول";
+    $("title").textContent = up ? "إنشاء حساب جديد" : "تسجيل الدخول";
+    $("subtitle").textContent = up ? "خطوة سريعة لحفظ استمارتك واستلام جدولك المتوازي" : "تابع جدولك اليومي ومنحنى تقدمك مع متوازي";
+    $("submit").textContent = up ? "إنشاء الحساب والمتابعة" : "دخول";
     $("nameRow").classList.toggle("hidden", !up);
     $("pw").setAttribute("autocomplete", up ? "new-password" : "current-password");
-    $("toggle").textContent = up ? "عندك حساب؟ سجّل دخولك" : "ما عندك حساب؟ أنشئ حساباً";
+    $("toggle").textContent = up ? "عندك حساب؟ سجّل دخولك" : "ما عندك حساب؟ أنشئ حساباً جديداً";
+
+    var tabIn = $("tabSignIn"), tabUp = $("tabSignUp");
+    if (tabIn && tabUp) {
+      tabIn.classList.toggle("active", !up);
+      tabIn.setAttribute("aria-selected", !up ? "true" : "false");
+      tabUp.classList.toggle("active", up);
+      tabUp.setAttribute("aria-selected", up ? "true" : "false");
+    }
     say("");
+  }
+
+  // زر إظهار / إخفاء كلمة المرور
+  var pwInput = $("pw");
+  var btnTogglePw = $("btnTogglePw");
+  if (btnTogglePw && pwInput) {
+    btnTogglePw.addEventListener("click", function () {
+      var show = pwInput.type === "password";
+      pwInput.type = show ? "text" : "password";
+      $("eyeIconOpen").style.display = show ? "none" : "block";
+      $("eyeIconClosed").style.display = show ? "block" : "none";
+    });
   }
 
   function guard() {
@@ -151,6 +348,13 @@
   }
 
   $("toggle").addEventListener("click", function () { setMode(mode === "in" ? "up" : "in"); });
+  $("tabSignIn").addEventListener("click", function () { setMode("in"); });
+  $("tabSignUp").addEventListener("click", function () { setMode("up"); });
+
+  // إذا كان الزائر قادماً لبدء الاستمارة لأول مرة، نفتح تبويب الحساب الجديد افتراضياً لتسهيل انطلاقته
+  if (nextUrl().indexOf("/start") === 0 && nextUrl().indexOf("edit=1") === -1) {
+    setMode("up");
+  }
 
   $("google").addEventListener("click", function () {
     if (!guard()) return;
@@ -165,7 +369,7 @@
     if (!email || !pw) { say("اكتب البريد وكلمة المرور.", "err"); return; }
     if (mode === "up") {
       var name = $("name").value.trim();
-      if (!name) { say("اكتب اسمك.", "err"); return; }
+      if (!name) { say("اكتب اسمك الكريم.", "err"); return; }
       run(Auth.signUpEmail(name, email, pw));
     } else {
       run(Auth.signInEmail(email, pw));
@@ -175,17 +379,15 @@
   $("forgot").addEventListener("click", function () {
     if (!guard()) return;
     var email = $("email").value.trim();
-    if (!email) { say("اكتب بريدك أولاً ثم اضغط «نسيت كلمة المرور».", "err"); return; }
+    if (!email) { say("اكتب بريدك الإلكتروني أولاً ثم اضغط «نسيت كلمة المرور».", "err"); return; }
     Auth.resetPassword(email).then(function () {
-      say("إذا كان البريد مسجّلاً، بيوصلك رابط لتعيين كلمة مرور جديدة.", "ok");
+      say("إذا كان البريد مسجّلاً، سيصلك رابط لتعيين كلمة مرور جديدة.", "ok");
     }).catch(function (e) { say(errText(e), "err"); });
   });
 
-  /* مسجّل دخول أصلاً ⇒ مباشرة للوجهة */
   Auth.onChange(function (u) {
     if (u && !busy) location.replace(nextUrl());
   });
-  /* auth.js يتهيّأ عند DOMContentLoaded — نفحص الجاهزية بعده */
   window.addEventListener("load", function () {
     if (!Auth.ready) say("الدخول غير متاح حالياً.", "err");
   });

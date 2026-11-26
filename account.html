@@ -10,120 +10,136 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="متوازي">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>حسابي — متوازي</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=20261122b">
+<link rel="stylesheet" href="/style.css?v=20261126a">
 <style>
-  /* شريط التنقل السفلي الذكي للهواتف — تصميم أيقونات SVG الفخمة */
-  .mobile-bottom-nav {
-    display: none;
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  @media (max-width: 768px) {
-    body {
-      padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
-    }
-    .mobile-bottom-nav {
-      display: flex !important;
-      position: fixed !important;
-      bottom: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-      height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
-      padding-bottom: env(safe-area-inset-bottom, 0px) !important;
-      background: rgba(255, 255, 255, 0.94) !important;
-      backdrop-filter: blur(20px) !important;
-      -webkit-backdrop-filter: blur(20px) !important;
-      border-top: 1px solid rgba(226, 232, 240, 0.9) !important;
-      box-shadow: 0 -4px 25px rgba(15, 23, 42, 0.06) !important;
-      z-index: 99999 !important;
-      justify-content: space-around !important;
-      align-items: center !important;
-      box-sizing: border-box !important;
-    }
-    .mobile-nav-item {
-      flex: 1 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 3px !important;
-      height: 100% !important;
-      text-decoration: none !important;
-      color: #64748b !important;
-      font-size: 0.74rem !important;
-      font-weight: 700 !important;
-      user-select: none !important;
-      position: relative !important;
-      -webkit-tap-highlight-color: transparent !important;
-      transition: color 0.18s ease !important;
-    }
-    .nav-icon-wrap {
-      width: 40px !important;
-      height: 28px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      border-radius: 14px !important;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-    .nav-svg {
-      transition: transform 0.2s ease, stroke 0.2s ease !important;
-    }
-    .mobile-nav-item .nav-label {
-      line-height: 1.1 !important;
-      font-size: 0.73rem !important;
-      transition: color 0.18s ease, font-weight 0.18s ease !important;
-    }
-    .mobile-nav-item:active .nav-icon-wrap {
-      transform: scale(0.92) !important;
-    }
-    .mobile-nav-item.active {
-      color: #0f766e !important;
-      font-weight: 800 !important;
-    }
-    .mobile-nav-item.active .nav-icon-wrap {
-      background: #f0fdfa !important;
-      color: #0f766e !important;
-    }
-    .mobile-nav-item.active .nav-svg {
-      stroke: #0f766e !important;
-      transform: scale(1.08) !important;
-    }
-    .mobile-nav-item.active::after {
-      content: "" !important;
-      position: absolute !important;
-      bottom: 5px !important;
-      width: 4px !important;
-      height: 4px !important;
-      background: #0f766e !important;
-      border-radius: 9999px !important;
-    }
+  @keyframes stepPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.35); }
+    50% { box-shadow: 0 0 0 7px rgba(249, 115, 22, 0); }
   }
 
-  /* كارت الجدول اليومي البارز في صفحة الحساب */
-  .plan-banner-card {
-    background: linear-gradient(135deg, var(--primary-soft) 0%, #ffffff 100%);
-    border: 2px solid var(--primary-border);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    margin-bottom: 20px;
+  /* بطاقة الملف الشخصي العصرية (Profile Hero Card) */
+  .profile-hero-card {
+    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 55%, #fff7ed 100%);
+    border: 1.5px solid #ccfbf1;
+    border-radius: 22px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 20px rgba(15, 118, 110, 0.06);
     position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+  }
+  .profile-hero-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--primary), var(--accent));
+  }
+  .profile-hero-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .profile-user-row {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+  }
+  .avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #0f766e, #0d9488);
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+  }
+  .profile-user-info h1 {
+    font-size: 1.28rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    margin: 0 0 2px;
+  }
+  .profile-user-info p {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .profile-sub-box {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 12px 14px;
+  }
+  .profile-sub-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+  .profile-sub-label {
+    font-size: 0.84rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  .sub-days-bar-wrap {
+    margin-top: 8px;
+  }
+  .sub-days-track {
+    width: 100%;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .sub-days-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), #10b981);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+
+  /* كارت الجدول اليومي البارز */
+  .plan-banner-card {
+    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);
+    border: 2px solid #99f6e4;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(15, 118, 110, 0.06);
   }
   .plan-banner-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    gap: 8px;
+    margin-bottom: 10px;
   }
   .plan-banner-title {
-    font-size: 1.25rem;
+    font-size: 1.18rem;
     font-weight: 900;
     color: var(--primary-dark);
     margin: 0;
@@ -133,50 +149,219 @@
   }
   .plan-banner-desc {
     color: var(--text-muted);
-    font-size: 0.94rem;
+    font-size: 0.9rem;
     line-height: 1.6;
-    margin-bottom: 18px;
+    margin: 0 0 14px;
   }
   .plan-banner-meta {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
   .plan-banner-pill {
     background: #ffffff;
-    border: 1px solid var(--border);
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.82rem;
+    border: 1px solid #cbd5e1;
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-size: 0.8rem;
     font-weight: 700;
     color: var(--text-dark);
   }
   .btn-open-plan {
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, #0f766e, #0d9488);
     color: #ffffff;
-    padding: 12px 24px;
-    border-radius: var(--radius-full);
-    font-size: 1rem;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 0.96rem;
     font-weight: 800;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+    box-shadow: 0 4px 14px rgba(15, 118, 110, 0.25);
     transition: all 0.2s ease;
     width: 100%;
+    box-sizing: border-box;
   }
   .btn-open-plan:hover {
-    background: var(--primary-hover);
+    transform: translateY(-1px);
     color: #ffffff;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
+  }
+
+  /* شريط مراحل المراجعة الحيّ (Visual Review Stepper) */
+  .review-stepper-card {
+    background: #ffffff;
+    border: 1.5px solid #fde68a;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(217, 119, 6, 0.05);
+  }
+  .visual-stepper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 14px 0 16px;
+  }
+  .v-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 13px;
+    border-radius: 13px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+  }
+  .v-step.done {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+  }
+  .v-step.active {
+    background: #fffbeb;
+    border-color: #fcd34d;
+  }
+  .v-step-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 900;
+    flex-shrink: 0;
+    background: #e2e8f0;
+    color: #64748b;
+  }
+  .v-step.done .v-step-dot {
+    background: #10b981;
+    color: #ffffff;
+  }
+  .v-step.active .v-step-dot {
+    background: #f59e0b;
+    color: #ffffff;
+    animation: stepPulse 1.8s infinite;
+  }
+  .v-step-text b {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  .v-step-text span {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  /* كارت تثبيت التطبيق على شاشة الجوال (PWA Install Card) */
+  .pwa-install-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1.5px solid #cbd5e1;
+    border-radius: 20px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+  }
+  .pwa-install-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .pwa-app-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 200px;
+  }
+  .pwa-app-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+    flex-shrink: 0;
+    object-fit: cover;
+    background: #ffffff;
+  }
+  .pwa-app-text h3 {
+    margin: 0 0 2px;
+    font-size: 0.96rem;
+    font-weight: 900;
+    color: var(--text-dark);
+  }
+  .pwa-app-text p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+  .btn-pwa-install {
+    background: #0f172a;
+    color: #ffffff;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  .btn-pwa-install:hover {
+    background: var(--primary);
+  }
+  .ios-install-guide {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 13px;
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    font-size: 0.82rem;
+    color: #115e59;
+    line-height: 1.65;
+    animation: fadeIn 0.2s ease;
+  }
+  .ios-install-guide.show {
+    display: block;
+  }
+
+  .btn-signout-pill {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-signout-pill:hover {
+    background: #fee2e2;
+    border-color: #fecaca;
+    color: #b91c1c;
+  }
+
+  @media (max-width: 640px) {
+    .btn-pwa-install {
+      width: 100%;
+      justify-content: center;
+    }
   }
 </style>
 </head>
-<body class="app">
+<body class="app has-bottom-nav">
 <header class="app-header">
   <div class="app-header__inner">
     <a href="/" class="logo" aria-label="متوازي — الرئيسية">
@@ -186,26 +371,60 @@
       <span class="logo__text">متوازي</span>
     </a>
     <nav class="app-header__actions" aria-label="روابط الحساب">
-      <a href="/track" style="color:var(--primary); font-weight:700; text-decoration:none;">متابعتي</a>
       <a href="/plan" style="color:var(--text); font-weight:700; text-decoration:none;">جدولي</a>
-      <button class="link-btn hidden" id="signout" type="button">تسجيل الخروج</button>
+      <a href="/track" style="color:var(--primary); font-weight:700; text-decoration:none;">متابعتي</a>
+      <button class="btn-signout-pill hidden" id="signout" type="button">تسجيل الخروج</button>
     </nav>
   </div>
 </header>
 
 <main class="wrap">
-  <p class="msg" id="boot" role="status">جاري التحميل…</p>
+  <!-- تحميل هيكلي ناعم (Skeleton Shimmer) -->
+  <div class="skeleton-boot" id="boot" role="status" aria-label="جاري التحميل…">
+    <div class="skel-card">
+      <div class="skel-row">
+        <div class="skel-avatar"></div>
+        <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+          <div class="skel-bar lg"></div>
+          <div class="skel-bar sm"></div>
+        </div>
+      </div>
+      <div class="skel-box" style="height:56px;"></div>
+    </div>
+    <div class="skel-card">
+      <div class="skel-bar md"></div>
+      <div class="skel-box" style="height:96px;"></div>
+    </div>
+  </div>
 
   <div id="app" class="hidden">
-    <div class="welcome">
-      <div class="avatar" id="avatar" aria-hidden="true">م</div>
-      <div>
-        <h1>أهلاً <span id="uname"></span></h1>
-        <p class="muted small" id="uemail" dir="ltr" style="text-align:right"></p>
+    <!-- بطاقة الملف الشخصي وحالة الاشتراك الموحدة -->
+    <div class="profile-hero-card">
+      <div class="profile-hero-top">
+        <div class="profile-user-row">
+          <div class="avatar" id="avatar" aria-hidden="true">م</div>
+          <div class="profile-user-info">
+            <h1>أهلاً <span id="uname"></span></h1>
+            <p id="uemail" dir="ltr" style="text-align:right"></p>
+          </div>
+        </div>
+        <span class="badge" id="subBadge"></span>
+      </div>
+
+      <div class="profile-sub-box">
+        <div class="profile-sub-head">
+          <span class="profile-sub-label" id="subPlan">حالة العضوية</span>
+          <span class="muted small" id="subEnds" style="font-weight:700;"></span>
+        </div>
+        <div class="sub-days-bar-wrap hidden" id="subDaysBarWrap">
+          <div class="sub-days-track">
+            <div class="sub-days-fill" id="subDaysFill" style="width:100%;"></div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- كارت فتح الجدول اليومي المستقل (يظهر فقط إذا تم الاعتماد من الأخصائي في فايربيس) -->
+    <!-- كارت فتح الجدول اليومي (يظهر عند اعتماد الجدول) -->
     <div class="plan-banner-card hidden" id="planBannerCard">
       <div class="plan-banner-head">
         <h2 class="plan-banner-title">
@@ -215,36 +434,61 @@
         <span class="badge on" id="planApprovedBadge">معتمد ✓</span>
       </div>
       <p class="plan-banner-desc">
-        تم اعتماد وتدقيق خطتك من قِبل أخصائي التغذية ومدرب اللياقة. وجبات أكلات بلدك محسوبة السعرات مع ميزة زر «بدّل»، وجدول التمارين الموازي، مع إمكانية تصفح باقي أيام الشهر وتحميل الجدول بصيغة PDF.
+        خطتك اليومية معتمدة وجاهزة! استعرض وجباتك الموزونة مع ميزة «بدّل على ذوقك»، وتمارينك التفاعلية بالفيديو ومؤقت الراحة.
       </p>
       <div class="plan-banner-meta">
         <span class="plan-banner-pill" id="bannerKcal">🔥 السعرات: 1800 سعرة</span>
-        <span class="plan-banner-pill">🔄 ميزة زر «بدّل» متاحة</span>
-        <span class="plan-banner-pill">🏋️ تمارين موازية</span>
+        <span class="plan-banner-pill">🔄 200 وجبة قابلة للتبديل</span>
+        <span class="plan-banner-pill">🎬 تمارين مصوّرة بالفيديو</span>
       </div>
-      <div class="appt-actions" style="margin-top:14px;">
+      <div class="appt-actions">
         <a href="/plan" class="btn-open-plan">
-          <span>افتح وتصفّح جدولي الآن</span>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>افتح جدولي اليومي الآن</span>
+          <span>←</span>
         </a>
-        <a href="/track" class="btn btn--outline" style="margin-top:0; border-radius:var(--radius-full); font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
-          <span>📈 متابعة وزني والمواعيد</span>
+        <a href="/track" class="btn btn--outline" style="margin-top:0; border-radius:999px; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+          <span>📈 منحنى وزني وتقويم الالتزام</span>
         </a>
       </div>
     </div>
 
-    <!-- كارت يظهر إذا كان الطلب قيد المراجعة ولم يُعتمد بعد -->
-    <div class="card hidden" id="underReviewBanner">
-      <div class="card__head">
+    <!-- شريط مراحل المراجعة الحيّ (يظهر إذا كان الطلب قيد المراجعة) -->
+    <div class="review-stepper-card hidden" id="underReviewBanner">
+      <div class="card__head" style="margin-bottom:4px;">
         <span class="card__icon" style="background:#fffbeb; color:#d97706;" aria-hidden="true">⏳</span>
-        <h2>جدولك قيد المراجعة والتدقيق</h2>
+        <div>
+          <h2 style="margin:0; font-size:1.1rem;">جدولك قيد المراجعة والاعتماد</h2>
+          <p class="muted small" style="margin:2px 0 0;">يتم تدقيق بياناتك الصحية لاعتماد خطتك المتوازية اليوم</p>
+        </div>
       </div>
-      <p class="muted" style="margin-bottom:14px">
-        أخصائي التغذية ومدرب اللياقة يراجعان إجاباتك الصحية لبناء جدولك الرياضي والغذائي المتوازي. بمجرد اعتماد الجدول ستتمكن من فتحه وتصفحه فوراً من هنا.
-      </p>
-      <div class="appt-actions" style="margin-top:14px;">
-        <a href="/summary" class="btn ghost">متابعة مراحل الطلب</a>
-        <a href="/track" class="btn btn--outline">سجل الوزن والمواعيد</a>
+
+      <div class="visual-stepper">
+        <div class="v-step done">
+          <div class="v-step-dot">✓</div>
+          <div class="v-step-text">
+            <b>استلام الاستمارة الصحية وحساب الاحتياج</b>
+            <span>وصلت إجاباتك وبياناتك بنجاح</span>
+          </div>
+        </div>
+        <div class="v-step active">
+          <div class="v-step-dot">2</div>
+          <div class="v-step-text">
+            <b>مراجعة أخصائي التغذية ومدرب اللياقة</b>
+            <span>جاري الآن مطابقة السعرات والتمارين لحالتك</span>
+          </div>
+        </div>
+        <div class="v-step">
+          <div class="v-step-dot">3</div>
+          <div class="v-step-text">
+            <b>فتح وتفعيل جدولك المتوازي (30 يوماً)</b>
+            <span>يُفتح تلقائياً هنا فور الاعتماد</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="appt-actions">
+        <a href="/summary" class="btn ghost" style="margin-top:0;">تفاصيل طلبي وسعراتي</a>
+        <a href="/track" class="btn btn--outline" style="margin-top:0;">سجل الوزن والالتزام</a>
       </div>
     </div>
 
@@ -253,33 +497,42 @@
       <p class="msg" id="orderMsg" role="status" aria-live="polite"></p>
     </div>
 
+    <!-- كارت تثبيت متوازي كتطبيق على شاشة الجوال (PWA) -->
+    <div class="pwa-install-card hidden" id="pwaInstallCard">
+      <div class="pwa-install-row">
+        <div class="pwa-app-info">
+          <img src="/apple-touch-icon.png" alt="أيقونة تطبيق متوازي" class="pwa-app-icon">
+          <div class="pwa-app-text">
+            <h3>📲 ثبّت «متوازي» كتطبيق على شاشة جوالك</h3>
+            <p>افتح جدولك اليومي ومؤقت تمارينك بلمسة واحدة وبملء الشاشة مثل التطبيقات تماماً.</p>
+          </div>
+        </div>
+        <button type="button" class="btn-pwa-install" id="btnTriggerPwa">
+          <span>تثبيت على جوالي</span>
+          <span>↓</span>
+        </button>
+      </div>
+      <div class="ios-install-guide" id="iosInstallGuide">
+        <strong>خطوات التثبيت السريعة على جوالك:</strong><br>
+        1️⃣ اضغط زر <strong>المشاركة (Share ⬆️)</strong> أو القائمة <strong>(⋮)</strong> في المتصفح.<br>
+        2️⃣ اختر <strong>«إضافة إلى الشاشة الرئيسية» (Add to Home Screen ➕)</strong> ثم اضغط «إضافة».
+      </div>
+    </div>
+
     <!-- الاستمارة الصحية وحالة الطلب -->
-    <div class="card" id="intakeCard">
+    <div class="card" id="intakeCard" style="border-radius:20px;">
       <div class="card__head">
         <span class="card__icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg>
         </span>
-        <h2>حالة استمارتك الصحية</h2>
+        <h2>استمارتك الصحية وسعراتك</h2>
       </div>
       <p id="intakeText" class="muted">…</p>
       <a class="btn hidden" id="intakeBtn" href="/start"></a>
     </div>
 
-    <!-- حالة الاشتراك -->
-    <div class="card">
-      <div class="card__head">
-        <span class="card__icon card__icon--accent" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        </span>
-        <h2>حالة الاشتراك</h2>
-      </div>
-      <p><span class="badge" id="subBadge"></span></p>
-      <p id="subPlan" class="hidden"></p>
-      <p id="subEnds" class="muted small hidden"></p>
-    </div>
-
     <!-- الباقات -->
-    <section id="plans">
+    <section id="plans" style="margin-top:22px;">
       <h2 class="section-title">باقات الاشتراك</h2>
       <p class="muted small" style="margin-bottom:18px">كل الباقات فيها جدول غذائي وجدول رياضي يمشون مع بعض، يراجعهم أخصائي تغذية ومدرب لياقة.</p>
       <div id="planList"></div>
@@ -341,9 +594,51 @@
 <script>
 (function () {
   "use strict";
-  var REGION = "europe-west1";   // نفس REGION في functions/config.js و start.js
+  var REGION = "europe-west1";
   var $ = function (id) { return document.getElementById(id); };
   var paying = false;
+
+  // ============================================================
+  // إعداد كارت تثبيت التطبيق الذكي على الجوال (PWA Installer)
+  // ============================================================
+  var deferredInstallPrompt = null;
+  var isStandalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || (window.navigator && window.navigator.standalone === true);
+
+  function initPwaInstallCard() {
+    var card = $("pwaInstallCard");
+    var btn = $("btnTriggerPwa");
+    var guide = $("iosInstallGuide");
+    if (!card || !btn) return;
+    if (isStandalone) {
+      card.classList.add("hidden");
+      return;
+    }
+    card.classList.remove("hidden");
+
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      btn.innerHTML = "<span>تثبيت التطبيق الآن</span><span>📲</span>";
+    });
+
+    window.addEventListener("appinstalled", function () {
+      deferredInstallPrompt = null;
+      card.classList.add("hidden");
+    });
+
+    btn.addEventListener("click", function () {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        deferredInstallPrompt.userChoice.then(function () {
+          deferredInstallPrompt = null;
+        });
+      } else if (guide) {
+        var open = guide.classList.toggle("show");
+        btn.innerHTML = open ? "<span>إخفاء الخطوات ✕</span>" : "<span>تثبيت على جوالي ↓</span>";
+      }
+    });
+  }
+  initPwaInstallCard();
 
   var PLANS = [
     {
@@ -384,6 +679,7 @@
       period: "/ 30 يوماً"
     }
   ];
+
   function planLabel(key) {
     for (var i = 0; i < PLANS.length; i++) if (PLANS[i].key === key) return PLANS[i].label;
     return null;
@@ -403,6 +699,7 @@
     PLANS.forEach(function (p) {
       var c = document.createElement("div");
       c.className = "card plan" + (p.featured ? " featured" : "");
+      c.style.borderRadius = "20px";
       if (p.featured) {
         var t = document.createElement("span");
         t.className = "tag"; t.textContent = "الأكثر طلباً ⭐";
@@ -491,55 +788,65 @@
     var badge = $("subBadge");
     var subPlanEl = $("subPlan");
     var subEndsEl = $("subEnds");
+    var barWrap = $("subDaysBarWrap");
+    var barFill = $("subDaysFill");
 
     if (on) {
-      badge.textContent = "مشترك";
+      badge.textContent = "مشترك نشط ✓";
       badge.className = "badge on";
       var lbl = planLabel(Auth.plan);
-      subPlanEl.classList.toggle("hidden", !lbl);
-      if (lbl) subPlanEl.textContent = "الباقة: " + lbl;
-      subEndsEl.classList.toggle("hidden", !Auth.subEndsAt);
+      subPlanEl.textContent = lbl ? ("الباقة: " + lbl) : "اشتراك نشط";
       if (Auth.subEndsAt) {
-        subEndsEl.textContent = "ينتهي اشتراكك في " + fmtDate(Auth.subEndsAt) + " (باقي " + Auth.subDaysLeft() + " يوم)";
+        var daysLeft = Auth.subDaysLeft();
+        subEndsEl.textContent = "متبقي " + daysLeft + " يوم (حتى " + fmtDate(Auth.subEndsAt) + ")";
+        subEndsEl.classList.remove("hidden");
+        if (barWrap && barFill) {
+          barWrap.classList.remove("hidden");
+          barFill.style.width = Math.min(100, Math.max(8, Math.round((daysLeft / 30) * 100))) + "%";
+        }
+      } else {
+        subEndsEl.classList.add("hidden");
+        if (barWrap) barWrap.classList.add("hidden");
       }
     } else if (profileState.hasIntake && profileState.isApproved) {
-      badge.textContent = "مفعّل ✓ — هدية التحديث الجديد";
+      badge.textContent = "مفعّل ✓ — هدية المنصة";
       badge.className = "badge on";
-      subPlanEl.classList.remove("hidden");
-      subPlanEl.textContent = "الباقة الأساسية — جدول 30 يوماً بدون متابعة (معفاة من رسوم 149 ريال)";
+      subPlanEl.textContent = "الباقة الأساسية — جدول 30 يوماً بدون متابعة (مجاناً)";
       if (profileState.approvedAtMs > 0) {
         var giftEndsMs = profileState.approvedAtMs + 30 * 86400000;
         var giftDaysLeft = Math.max(0, Math.ceil((giftEndsMs - Date.now()) / 86400000));
         subEndsEl.classList.remove("hidden");
         subEndsEl.textContent = giftDaysLeft > 0
-          ? "صلاحية الهدية حتى " + fmtDate(giftEndsMs) + " (باقي " + giftDaysLeft + " يوم)"
+          ? ("متبقي " + giftDaysLeft + " يوم (حتى " + fmtDate(giftEndsMs) + ")")
           : "انتهت مدة الـ 30 يوماً المجانية";
+        if (barWrap && barFill) {
+          barWrap.classList.remove("hidden");
+          barFill.style.width = Math.min(100, Math.max(6, Math.round((giftDaysLeft / 30) * 100))) + "%";
+        }
       } else {
         subEndsEl.classList.remove("hidden");
         subEndsEl.textContent = "متاحة لمدة 30 يوماً من تاريخ اعتماد الجدول";
+        if (barWrap) barWrap.classList.add("hidden");
       }
     } else if (profileState.hasIntake) {
       badge.textContent = "🎁 هدية التحديث الجديد";
       badge.className = "badge on";
-      subPlanEl.classList.remove("hidden");
-      subPlanEl.textContent = "تم إعفاؤك من رسوم الباقة الأساسية (149 ريال) — استمارتك وصلت للأخصائي لاعتماد جدولك مجاناً اليوم (جدول 30 يوماً بدون متابعة).";
+      subPlanEl.textContent = "شملتك الباقة الأساسية مجاناً — استمارتك الآن لدى الأخصائي لاعتماد جدولك";
       subEndsEl.classList.add("hidden");
+      if (barWrap) barWrap.classList.add("hidden");
     } else {
       badge.textContent = profileState.loaded ? "بانتظار الاستمارة" : "غير مشترك";
       badge.className = "badge off";
-      if (profileState.loaded) {
-        subPlanEl.classList.remove("hidden");
-        subPlanEl.textContent = "عبّئ الاستمارة الصحية أولاً ليحسب النظام احتياجك ويراجع الأخصائي خطتك.";
-      } else {
-        subPlanEl.classList.add("hidden");
-      }
+      subPlanEl.textContent = profileState.loaded
+        ? "عبّئ الاستمارة الصحية أولاً ليحسب النظام احتياجك ويراجع الأخصائي خطتك."
+        : "جاري التحقق من الباقة…";
       subEndsEl.classList.toggle("hidden", !Auth.subEndsAt);
       if (Auth.subEndsAt) {
         subEndsEl.textContent = "انتهى اشتراكك في " + fmtDate(Auth.subEndsAt);
       }
+      if (barWrap) barWrap.classList.add("hidden");
     }
 
-    // تكييف نصوص قسم الباقات حسب حالة العميل
     var plansSection = $("plans");
     var plansTitle = plansSection ? plansSection.querySelector(".section-title") : null;
     var plansDesc = plansSection ? plansSection.querySelector("p.muted") : null;
@@ -599,8 +906,8 @@
   var STATUS = {
     received: "تم استلام استمارتك وجدولك قيد المراجعة",
     under_review: "جاري المراجعة والاعتماد من الأخصائي",
-    approved: "تم اعتماد جدولك من الأخصائي",
-    delivered: "جدولك معتمد ونشط"
+    approved: "تم اعتماد جدولك من الأخصائي ✓",
+    delivered: "جدولك معتمد ونشط ✓"
   };
 
   function renderIntake(uid) {
@@ -625,7 +932,7 @@
         };
 
         $("intakeText").textContent = STATUS[status] || "تم استلام استمارتك";
-        btn.textContent = "تفاصيل طلبك وسعراتك";
+        btn.textContent = "استعراض تفاصيل طلبي وسعراتي";
         btn.href = "/summary";
         btn.className = "btn ghost";
         btn.classList.remove("hidden");
@@ -634,7 +941,6 @@
           $("bannerKcal").textContent = "🔥 احتياجك: " + data.calc.kcal + " سعرة";
         }
 
-        // قفل الجدول الشرطي: لا يفتح إلا إذا كانت الحالة معتمدة من الأخصائي في فايربيس
         if (isApproved) {
           planBanner.classList.remove("hidden");
           reviewBanner.classList.add("hidden");
@@ -645,8 +951,8 @@
       } else {
         profileState = { loaded: true, hasIntake: false, isApproved: false, approvedAtMs: 0 };
 
-        $("intakeText").textContent = "لم تقم بتعبئة الاستمارة الصحية بعد. عبّ الاستمارة عشان نحسب احتياجك الفعلي ويبني الأخصائي خطتك.";
-        btn.textContent = "ابدأ الاستمارة الآن";
+        $("intakeText").textContent = "لم تقم بتعبئة الاستمارة الصحية بعد. عبّئ الاستمارة ليحسب النظام احتياجك الفعلي ويبني الأخصائي خطتك.";
+        btn.textContent = "ابدأ الاستمارة الصحية الآن";
         btn.href = "/start";
         btn.className = "btn";
         btn.classList.remove("hidden");

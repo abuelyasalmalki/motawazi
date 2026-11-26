@@ -472,7 +472,10 @@
     var s = STEPS[idx];
     var total = STEPS.filter(function (_, i) { return visible(i); }).length;
     var pos = STEPS.slice(0, idx + 1).filter(function (_, i) { return visible(i); }).length;
-    $("bar").style.width = Math.round((pos / total) * 100) + "%";
+    var pct = Math.round((pos / total) * 100);
+    $("bar").style.width = pct + "%";
+    if ($("stepCounterText")) $("stepCounterText").textContent = "الخطوة " + pos + " من " + total;
+    if ($("stepPercentText")) $("stepPercentText").textContent = pct + "%";
 
     var box = $("step");
     box.innerHTML = "";

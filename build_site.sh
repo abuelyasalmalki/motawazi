@@ -32,6 +32,9 @@ PUBLIC_FILES=(
   auth.js
   start.js
   manifest.json
+  apple-touch-icon.png
+  icon-192.png
+  icon-512.png
   og-image.jpg
   workouts.json
   meals.json

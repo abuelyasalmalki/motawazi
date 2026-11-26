@@ -13,13 +13,62 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://motawazi.com/og-image.jpg">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>ابدأ — متوازي</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=20261124a">
+<link rel="stylesheet" href="/style.css?v=20261126a">
+<style>
+  @keyframes stepEnter {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .intake-progress-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--text-muted);
+  }
+  .intake-step-pill {
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    color: var(--primary-dark);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+  .progress {
+    height: 8px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .progress span {
+    background: linear-gradient(90deg, var(--primary), #10b981, var(--accent));
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .intake-wizard-card {
+    border-radius: 22px;
+    border: 1.5px solid #e2e8f0;
+    box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.06);
+    padding: 24px 22px;
+  }
+  #step > * {
+    animation: stepEnter 0.22s ease-out;
+  }
+  @media (max-width: 560px) {
+    .intake-wizard-card {
+      padding: 20px 16px;
+    }
+  }
+</style>
 </head>
 <body class="app">
 <header class="app-header">
@@ -37,26 +86,40 @@
 </header>
 
 <main class="wrap">
-  <p class="msg" id="boot" role="status">جاري التحميل…</p>
+  <!-- تحميل هيكلي ناعم (Skeleton Shimmer) -->
+  <div class="skeleton-boot" id="boot" role="status" aria-label="جاري التحميل…">
+    <div class="skel-card">
+      <div class="skel-bar sm"></div>
+      <div class="skel-bar lg"></div>
+      <div class="skel-box" style="height:84px;"></div>
+      <div class="skel-box" style="height:48px;"></div>
+    </div>
+  </div>
 
   <div id="form" class="hidden">
-    <div id="editNotice" class="hidden" style="background:#fffbeb; border:1.5px solid #fde68a; border-radius:var(--radius-md); padding:14px 18px; margin-bottom:16px; color:#92400e; font-size:0.9rem; line-height:1.6; display:none;">
+    <div id="editNotice" class="hidden" style="background:#fffbeb; border:1.5px solid #fde68a; border-radius:16px; padding:13px 16px; margin-bottom:14px; color:#92400e; font-size:0.88rem; line-height:1.6; display:none;">
       ⚠️ <strong>تنبيه لتعديل البيانات:</strong> حفظ أي تعديل في استمارتك الصحية سيعيد إرسالها للأخصائي لمراجعة التغييرات وتحديث خطتك الغذائية والبدنية.
     </div>
+
+    <div class="intake-progress-head">
+      <span class="intake-step-pill" id="stepCounterText">الخطوة 1</span>
+      <span id="stepPercentText">10%</span>
+    </div>
     <div class="progress" aria-hidden="true"><span id="bar" style="width:0"></span></div>
-    <div class="card">
+
+    <div class="card intake-wizard-card">
       <div id="step"></div>
       <p class="field-err" id="err" role="alert" aria-live="assertive"></p>
       <div class="form-nav">
-        <button class="btn ghost hidden" id="back" type="button">رجوع</button>
-        <button class="btn" id="next" type="button">التالي</button>
+        <button class="btn ghost hidden" id="back" type="button" style="border-radius:14px;">رجوع</button>
+        <button class="btn" id="next" type="button" style="border-radius:14px;">التالي</button>
       </div>
     </div>
     <p class="disclaimer">النتائج تختلف من شخص لآخر حسب الالتزام.</p>
   </div>
 
   <!-- أقل من السن المسموح (minAge في ملف الإعداد) -->
-  <div id="tooYoung" class="card hidden">
+  <div id="tooYoung" class="card hidden" style="border-radius:22px;">
     <h1 class="step-title">شكراً لاهتمامك بمتوازي</h1>
     <p>الخدمة حالياً متاحة للبالغين فقط.</p>
     <p class="muted">نتمنى لك كل خير، وإذا عندك أي سؤال عن الأكل الصحي، أهلك وطبيبك أفضل من يساعدك.</p>
@@ -77,6 +140,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-functions-compat.js"></script>
 <script src="/firebase-config.js"></script>
 <script src="/auth.js"></script>
-<script src="/start.js?v=20261124_v7"></script>
+<script src="/start.js?v=20261126_v8"></script>
 </body>
 </html>
