@@ -7,8 +7,9 @@
   <meta name="description" content="من مئات التجارب الناجحة للملتزمين.. اخترنا لكم — 47 تجربة واقعية ملهمة وتحولات حقيقية لأشخاص استعادوا خفتهم ورشاقتهم بتوازي.">
   <meta name="theme-color" content="#0f766e">
   <link rel="canonical" href="https://motawazi.com/stories">
+  <link rel="manifest" href="/manifest.json">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_SA">
   <meta property="og:site_name" content="متوازي">
@@ -19,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=20261126a">
+  <link rel="stylesheet" href="/style.css?v=20261126b">
   <style>
     :root {
       --primary: #0f766e;
@@ -406,7 +407,7 @@
     }
   </style>
 </head>
-<body class="app">
+<body class="app has-bottom-nav">
   <header class="app-header">
     <div class="app-header__inner">
       <a href="/" class="logo" aria-label="متوازي — الرئيسية">
@@ -422,7 +423,7 @@
       </a>
       <nav class="app-header__actions" aria-label="روابط سريعة">
         <a href="/" class="btn btn--ghost" style="padding: 7px 12px; font-size: 0.86rem;">الرئيسية</a>
-        <a href="/start" class="btn btn--primary" style="padding: 7px 16px; font-size: 0.88rem; font-weight: 800;">ابدأ الآن</a>
+        <a href="/start" class="btn btn--primary" id="storiesHeaderCta" style="padding: 7px 16px; font-size: 0.88rem; font-weight: 800;">ابدأ الآن</a>
       </nav>
     </div>
   </header>
@@ -437,6 +438,12 @@
       <p class="stories-hero__subtitle">
         47 تجربة حقيقية لمشتركين ومشتركات بدؤوا بنفس التساؤلات التي تدور في ذهنك اليوم، والتزموا بخطوات متوازية جمعت تنظيم أكل البيت مع الحركة المريحة الخالية من إجهاد المفاصل.
       </p>
+
+      <div style="display:inline-flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center; background:#ffffff; border:1px solid #cbd5e1; border-radius:999px; padding:6px 14px; font-size:0.82rem; font-weight:800; margin-bottom:4px;">
+        <span style="color:#0f766e;">🍽️ تغذية بيتية موزونة</span>
+        <span style="color:#94a3b8;">∥</span>
+        <span style="color:#ea580c;">💪 حركة آمنة بدون تمارين أرض</span>
+      </div>
 
       <div class="stats-bar" aria-label="أبرز مؤشرات التجارب">
         <div class="stat-pill"><span aria-hidden="true">🏆</span> <span><b>47</b> تجربة مختارة وموثقة</span></div>
@@ -465,7 +472,12 @@
         <div>
           <div class="mega-metric">
             <span class="mega-metric__num">78-</span>
-            <span class="mega-metric__label">كجم (من 156 إلى 78 كجم)</span>
+            <span class="mega-metric__label">كيلوجرام</span>
+          </div>
+          <div class="transform-bridge" aria-label="من 156 كجم إلى 78 كجم">
+            <span class="transform-bridge__before">قبل: 156 كجم</span>
+            <span class="transform-bridge__arrow">⟵</span>
+            <span class="transform-bridge__after">بعد: 78 كجم ✓</span>
           </div>
           <p class="mega-quote">
             «الحمد لله نزلت 78 كيلو خلال 15 شهراً؛ من وزن 156 كيلو وصلت إلى 78 كيلو ولله الحمد. كانت البداية دافعاً قوياً للالتزام بالرياضة وتنظيم الأكل وتجنب المقليات، وكثير من معارفي اشتركوا بعد ما رأوا النتيجة بأنفسهم.»
@@ -483,7 +495,12 @@
         <div>
           <div class="mega-metric">
             <span class="mega-metric__num">57-</span>
-            <span class="mega-metric__label">كجم (من 143 إلى 86 كجم)</span>
+            <span class="mega-metric__label">كيلوجرام</span>
+          </div>
+          <div class="transform-bridge" aria-label="من 143 كجم إلى 86 كجم">
+            <span class="transform-bridge__before">قبل: 143 كجم</span>
+            <span class="transform-bridge__arrow">⟵</span>
+            <span class="transform-bridge__after">بعد: 86 كجم ✓</span>
           </div>
           <p class="mega-quote">
             «وصل وزني الآن إلى 86 كيلو بعد أن كان 143 كيلو في أقل من سنة ولله الحمد. لم أكن أتوقع أن أكسر حاجز المئة بهذه السلاسة، المتابعة الواضحة وتدرج الخطوة صنعا الفارق كله.»
@@ -501,7 +518,12 @@
         <div>
           <div class="mega-metric">
             <span class="mega-metric__num">55-</span>
-            <span class="mega-metric__label">كجم (من 143 إلى 88 كجم)</span>
+            <span class="mega-metric__label">كيلوجرام</span>
+          </div>
+          <div class="transform-bridge" aria-label="من 143 كجم إلى 88 كجم">
+            <span class="transform-bridge__before">قبل: 143 كجم</span>
+            <span class="transform-bridge__arrow">⟵</span>
+            <span class="transform-bridge__after">بعد: 88 كجم ✓</span>
           </div>
           <p class="mega-quote">
             «عند بداية الاشتراك كان وزني 143 كيلو، واليوم استقر على 88 كيلو؛ نزول 55 كيلو في 11 شهراً مع الالتزام بالمشي اليومي وتنظيم أكل البيت بدون حرمان.. تجربة صادقة غيّرت تفاصيل يومي بالكامل.»
@@ -1031,6 +1053,38 @@
     updateTabCounts();
     renderStories("high-loss");
   })();
+  </script>
+
+  <!-- تخصيص الأزرار تلقائياً للمشترك المسجّل دخوله -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script defer src="/firebase-config.js"></script>
+  <script defer src="/auth.js"></script>
+  <script>
+    window.addEventListener("load", function () {
+      if (!window.Auth || !Auth.ready) return;
+      Auth.onChange(function (u) {
+        if (!u) return;
+        var headerCta = document.getElementById("storiesHeaderCta");
+        firebase.firestore().collection("profiles").doc(u.uid).get().then(function (snap) {
+          if (!snap.exists) return;
+          var p = snap.data() || {};
+          var st = p.status || "received";
+          if (st === "approved" || st === "delivered") {
+            if (headerCta) {
+              headerCta.href = "/plan";
+              headerCta.textContent = "جدولي اليومي";
+            }
+          } else {
+            if (headerCta) {
+              headerCta.href = "/summary";
+              headerCta.textContent = "حالة طلبي";
+            }
+          }
+        }).catch(function () {});
+      });
+    });
   </script>
 </body>
 </html>

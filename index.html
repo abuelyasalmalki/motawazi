@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="متوازي — منصة عربية تجمع جدولك الغذائي وجدولك الرياضي، بمراجعة أخصائي تغذية ومدرب لياقة. اشتراك شهري بسعر رمزي.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="متوازي — منصة عربية تجمع جدولك الغذائي وجدولك الرياضي بتوازي، بمراجعة أخصائي تغذية ومدرب لياقة. اشتراك شهري مرن بدون تجديد تلقائي.">
   <meta name="theme-color" content="#0f766e">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -33,10 +33,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="/style.css?v=20261126a">
+
+  <link rel="stylesheet" href="/style.css?v=20261126b">
 </head>
-<body>
+<body class="home-page">
 
   <!-- الترويسة الرئيسية -->
   <header class="header" role="banner">
@@ -70,6 +70,13 @@
         <div class="nav__actions" id="homeNavActions">
           <a href="/login" class="btn btn--ghost" id="navLoginBtn">تسجيل الدخول</a>
           <a href="/start" class="btn btn--primary" id="navPrimaryBtn">ابدأ الآن</a>
+          <button type="button" class="btn-mobile-menu" id="btnMobileMenu" aria-label="فتح قائمة الصفحة" aria-expanded="false" aria-controls="mobileNavSheet">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+              <line x1="4" y1="7" x2="20" y2="7"></line>
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+              <line x1="7" y1="17" x2="20" y2="17"></line>
+            </svg>
+          </button>
         </div>
       </nav>
     </div>
@@ -77,22 +84,56 @@
 
   <main>
     <!-- القسم الترحيبي (Hero Section) -->
-    <section class="hero" aria-labelledby="hero-title">
+    <section class="hero" id="heroSection" aria-labelledby="hero-title">
       <div class="container hero__inner">
         <div class="hero__content">
+
+          <!-- لوحة الترحيب الفورية للعميل المسجّل دخوله مسبقاً -->
+          <div class="member-welcome-dock" id="memberWelcomeDock" role="region" aria-label="وصول سريع لحسابك">
+            <div class="member-welcome-dock__top">
+              <span class="member-welcome-dock__greet" id="memberDockGreet">أهلاً بعودتك في متوازي 👋</span>
+              <span class="member-welcome-dock__status" id="memberDockStatus">عضوية نشطة</span>
+            </div>
+            <div class="member-welcome-dock__links" id="memberDockLinks">
+              <a href="/plan" class="member-dock-pill member-dock-pill--primary" id="memberDockMainLink">📅 جدولي اليومي</a>
+              <a href="/track" class="member-dock-pill" id="memberDockTrackLink">⚖️ مسار وزني</a>
+              <a href="/account" class="member-dock-pill">👤 حسابي</a>
+            </div>
+          </div>
+
           <div class="hero__badge" id="heroWelcomeBadge">
             <span class="hero__badge-pulse" aria-hidden="true"></span>
-            <span id="heroBadgeText">جدول أكل وجدول رياضة بمراجعة مختصين</span>
+            <span id="heroBadgeText">إشراف مزدوج: أخصائي تغذية مرخص ∥ مدرب لياقة معتمد</span>
           </div>
 
           <h1 id="hero-title" class="hero__title">
             رحلة نزول وزن واضحة<br>
-            <span class="hero__title-gradient">بجدولين يمشون مع بعض.. بتوازي</span>
+            <span class="hero__title-gradient">بمسارين يمشيان معك.. بتوازي</span>
           </h1>
 
           <p class="hero__subtitle">
-            بدون حرمان من أكلات ديرتك المحبوبة، وبدون تمارين قاسية تعجزك. نظام ذكي يبني خطتك بحصص موزونة، ويراجعها أخصائي تغذية ومدرب لياقة معتمد قبل ما تبدأ.
+            بدون حرمان من أكلات ديرتك المحبوبة، وبدون تمارين أرضية تُجهد مفاصلك. في <strong>متوازي</strong> يتحرك أكل بيتك الموزون جنباً إلى جنب مع حركتك اليومية ليصنعا نزولاً مستمراً ومريحاً.
           </p>
+
+          <!-- الجسر البصري الحي لمعنى "متوازي" -->
+          <div class="parallel-concept-bridge" aria-label="توضيح المسارين المتوازيين نحو الهدف">
+            <div class="parallel-bridge__row">
+              <div class="parallel-bridge__rails">
+                <div class="parallel-rail parallel-rail--nutrition">
+                  <span class="parallel-rail__tag">🍽️ أكل بيتك موزون</span>
+                  <div class="parallel-rail__line" aria-hidden="true"><span class="parallel-rail__pulse"></span></div>
+                </div>
+                <div class="parallel-rail parallel-rail--fitness">
+                  <span class="parallel-rail__tag">💪 حركة بدون أرض</span>
+                  <div class="parallel-rail__line" aria-hidden="true"><span class="parallel-rail__pulse"></span></div>
+                </div>
+              </div>
+              <div class="parallel-bridge__goal">
+                🎯 نزول ثابت
+                <span>بدون جوع ولا إجهاد</span>
+              </div>
+            </div>
+          </div>
 
           <div class="hero__actions" id="heroActionsWrap">
             <a href="/start" class="btn btn--primary btn--lg" id="heroPrimaryCta">
@@ -102,7 +143,10 @@
                 <polyline points="12 19 5 12 12 5"></polyline>
               </svg>
             </a>
-            <a href="#how-it-works" class="btn btn--outline btn--lg" id="heroSecondaryCta">شاهد كيف نعمل</a>
+            <button type="button" class="btn btn--accent btn--lg hidden" id="btnWatchDemoHero">
+              <span>▶️ شاهد المنصة في 90 ثانية</span>
+            </button>
+            <a href="#philosophy" class="btn btn--outline btn--lg" id="heroSecondaryCta">⚡ جرّب فرق التوازي</a>
           </div>
 
           <div class="hero__trust" aria-label="مزايا الثقة">
@@ -121,12 +165,21 @@
           </div>
         </div>
 
-        <!-- المعاينة البصرية للمسار المتوازي -->
+        <!-- المعاينة التفاعلية الحية ليوم مشترك في متوازي -->
         <div class="hero__visual" aria-label="معاينة خطة متوازي اليومية">
-          <div class="mockup-card">
-            <div class="mockup-header">
-              <span class="mockup-day">🗓️ خطتك اليومية المتوازية</span>
-              <span class="mockup-status">نشطة ومعتمدة</span>
+          <div class="mockup-card mockup-card--parallel">
+            <div class="mockup-header" style="flex-wrap:wrap; gap:8px;">
+              <span class="mockup-day">🗓️ معادلة يومك المتوازي</span>
+              <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                <span class="mockup-cal-ring-pill">
+                  <svg width="16" height="16" viewBox="0 0 36 36" aria-hidden="true">
+                    <circle cx="18" cy="18" r="14" fill="none" stroke="#e2e8f0" stroke-width="4"></circle>
+                    <circle cx="18" cy="18" r="14" fill="none" stroke="#0f766e" stroke-width="4" stroke-dasharray="68 88" stroke-linecap="round"></circle>
+                  </svg>
+                  <span>1,650 سعرة موزونة</span>
+                </span>
+                <span class="mockup-status">نشطة ومعتمدة ✓</span>
+              </div>
             </div>
 
             <div class="parallel-tracks">
@@ -137,13 +190,14 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
                     المسار الغذائي · وجبة الغداء
                   </span>
-                  <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                  <div style="display:flex; gap:5px; align-items:center; flex-wrap:wrap;">
+                    <button type="button" class="btn-meal-check-demo" id="btnMealDoneDemo" title="جرّب تسجيل الوجبة">○ سجّل الوجبة</button>
                     <button type="button" class="btn-swap-demo" id="btnPrepDemo" style="border-color:#cbd5e1; color:var(--text-dark);" title="اضغط لعرض طريقة التحضير">
-                      <span id="btnPrepDemoLabel">👨‍🍳 طريقة التحضير</span>
+                      <span id="btnPrepDemoLabel">👨‍🍳 التحضير</span>
                     </button>
                     <button type="button" class="btn-swap-demo" id="btnSwapDemo" title="اضغط لتجربة ميزة التبديل">
-                      <span>بدّل الوجبة</span>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                      <span>بدّل على ذوقك</span>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
                     </button>
                   </div>
                 </div>
@@ -171,43 +225,65 @@
                 </div>
               </div>
 
+              <!-- رابط التناغم المتوازي بين المسارين -->
+              <div class="parallel-sync-connector" aria-hidden="true">
+                <span class="parallel-sync-pill">
+                  <span class="parallel-sync-dots">
+                    <i style="background:#0f766e;"></i>
+                    <i style="background:#f97316;"></i>
+                  </span>
+                  <span>يمشيان بتوازي في نفس اليوم ⚡</span>
+                </span>
+              </div>
+
               <!-- المسار الثاني: الرياضي -->
-              <div class="track-card track-card--fitness">
-                <div class="track-card__head">
+              <div class="track-card track-card--fitness" id="fitnessDemoCard">
+                <div class="track-card__head" style="flex-wrap:wrap; gap:6px;">
                   <span class="track-card__label">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"></path></svg>
                     المسار الرياضي · تمرين اليوم
                   </span>
-                  <span class="metric-pill" style="background:#ffffff; color:var(--accent);">منزلي أو نادي · بدون تمارين أرض</span>
+                  <div class="workout-mode-mini-switch" role="group" aria-label="اختيار بيئة التمرين">
+                    <button type="button" class="workout-mode-mini-btn active" data-wmode="home">🏠 منزلي</button>
+                    <button type="button" class="workout-mode-mini-btn" data-wmode="gym">🏋️ نادي</button>
+                  </div>
                 </div>
-                <h4 class="track-card__title">مقاومة لكامل الجسم بدون نزول للأرض + مشي</h4>
-                <p class="track-card__desc">تمارين آمنة للمفاصل والركب (سكوات الكرسي، ضغط الجدار، إطالات) مشروحة بالفيديو وتوجيه الكابتن.</p>
+                <h4 class="track-card__title" id="workoutDemoTitle">مقاومة لكامل الجسم بدون نزول للأرض + مشي</h4>
+                <p class="track-card__desc" id="workoutDemoDesc">تمارين آمنة للمفاصل والركب (سكوات الكرسي، ضغط الجدار، مشي نشط) مشروحة بالفيديو ومؤقت راحة ذكي.</p>
                 <div class="track-card__footer">
                   <div class="track-card__metrics" style="flex-wrap:wrap;">
-                    <span class="metric-pill">⏱️ 25 دقيقة</span>
-                    <span class="metric-pill">⚡ ~210 سعرة محروقة</span>
-                    <span class="metric-pill">▶️ فيديو توضيحي لكل تمرين</span>
+                    <span class="metric-pill" id="workoutDemoTime">⏱️ 25 دقيقة</span>
+                    <span class="metric-pill" id="workoutDemoBurn">⚡ ~210 سعرة محروقة</span>
+                    <span class="metric-pill">🛡️ بدون تمارين أرض</span>
+                    <span class="metric-pill">▶️ فيديو + مؤقت راحة</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- ختم الاعتماد البشري -->
-            <div class="mockup-approval">
-              <div class="mockup-approval__avatar" aria-hidden="true">✓</div>
-              <div class="mockup-approval__text">
-                تم التدقيق والاعتماد بواسطة <strong>أخصائي التغذية ومدرب اللياقة</strong>
+            <!-- معادلة الحصيلة اليومية بدون أي بطاقات عائمة متداخلة -->
+            <div class="harmony-equation-bar">
+              <span>✨ حصص مشبعة + حركة مريحة = <strong>نزول مستمر بدون جوع</strong></span>
+              <span class="harmony-safe-pill">🛡️ حد أدنى آمن للسعرات</span>
+            </div>
+
+            <!-- ختم الاعتماد البشري المزدوج المتوازي -->
+            <div class="dual-specialist-stamp">
+              <span style="font-size:0.78rem; font-weight:800; color:var(--text-muted);">اعتماد بشري مزدوج:</span>
+              <div class="dual-specialist-badges">
+                <span class="spec-badge spec-badge--nutrition">✓ أخصائي تغذية مرخص</span>
+                <span class="spec-badge spec-badge--fitness">✓ مدرب لياقة معتمد</span>
               </div>
             </div>
 
-            <!-- البطاقة العائمة لتتبع الهدف -->
-            <div class="floating-chip" aria-hidden="true">
-              <div class="floating-chip__icon">🛡️</div>
+            <!-- شريط تشغيل جولة الفيديو (يظهر تلقائياً فور إضافة رابط الفيديو في DEMO_VIDEO) -->
+            <button type="button" class="demo-video-trigger-banner" id="cardVideoBanner">
               <div>
-                <div class="floating-chip__label">حد أدنى آمن للسعرات</div>
-                <div class="floating-chip__val">مهما كانت السرعة</div>
+                <div style="font-size:0.88rem; font-weight:900;">جولة حقيقية من داخل حساب مشترك</div>
+                <div style="font-size:0.75rem; color:#99f6e4; font-weight:600;">شاهد تبديل الوجبات، التمارين، ومنحنى الوزن في 90 ثانية</div>
               </div>
-            </div>
+              <span class="demo-video-play-circle" aria-hidden="true">▶</span>
+            </button>
           </div>
         </div>
       </div>
@@ -222,8 +298,8 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </div>
             <div>
-              <h3 class="stat-item__title">100% مخصص لك</h3>
-              <p class="stat-item__desc">محسوب حسب وزنك، طولك، ونشاطك الفعلي وتاريخك الصحي.</p>
+              <h3 class="stat-item__title">100% مخصص لبياناتك</h3>
+              <p class="stat-item__desc">محسوب حسب وزنك، طولك، نشاطك الفعلي، وتاريخك الصحي.</p>
             </div>
           </div>
 
@@ -233,7 +309,7 @@
             </div>
             <div>
               <h3 class="stat-item__title">أكلات ديرتك المحبوبة</h3>
-              <p class="stat-item__desc">كبسة، مرقوق، جريش، سلطات — بحصص وسعرات مفهومة وبدون حرمان.</p>
+              <p class="stat-item__desc">كبسة، مرقوق، جريش، سلطات — بمقادير البيت والميزان وبدون حرمان.</p>
             </div>
           </div>
 
@@ -242,8 +318,8 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
             </div>
             <div>
-              <h3 class="stat-item__title">اعتماد بشري مرخص</h3>
-              <p class="stat-item__desc">أخصائي تغذية مرخص ومدرب معتمد يراجعان كل جدول قبل أن يوصلك.</p>
+              <h3 class="stat-item__title">إشراف بشري مزدوج</h3>
+              <p class="stat-item__desc">أخصائي تغذية مرخص ومدرب معتمد يراجعان كل جدول قبل اعتماده.</p>
             </div>
           </div>
 
@@ -252,102 +328,147 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
             </div>
             <div>
-              <h3 class="stat-item__title">مرونة زر «بدّل»</h3>
-              <p class="stat-item__desc">ما ناسبتك الوجبة؟ بضغطة زر واحدة تختار بديلاً بنفس السعرات فوراً.</p>
+              <h3 class="stat-item__title">مرونة زر «بدّل» الفوري</h3>
+              <p class="stat-item__desc">ما ناسبتك الوجبة؟ بضغطة واحدة تختار بديلاً مطابقاً لسعراتك فوراً.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- قسم فلسفة "متوازي" -->
+    <!-- قسم فلسفة "متوازي" التفاعلي -->
     <section id="philosophy" class="section section--alt" aria-labelledby="philosophy-title">
       <div class="container">
         <header class="section__header">
           <span class="section__badge">فلسفة متوازي</span>
-          <h2 id="philosophy-title" class="section__title">ليش الأكل والتمرين مع بعض؟</h2>
-          <p class="section__subtitle">كثير منا جرّب يركّز على جانب واحد ويهمل الثاني. في متوازي، المساران مبنيان على بعض من البداية.</p>
+          <h2 id="philosophy-title" class="section__title">ليش الأكل والتمرين لازم يمشون بتوازي؟</h2>
+          <p class="section__subtitle">اضغط وجرّب بنفسك الفرق بين السير بمسار واحد منفرد مقابل تناغم المسارين معاً في متوازي:</p>
         </header>
 
-        <div class="comparison-grid">
-          <div class="comp-card comp-card--diet">
-            <div class="comp-card__icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
-            </div>
-            <h3>الأكل لوحده</h3>
-            <p>تنتبه لأكلك، بس ما عندك خطة للحركة:</p>
-            <ul>
-              <li>⚠️ ما تدري وش التمرين اللي يناسب مستواك</li>
-              <li>⚠️ الجدول ما ياخذ نشاطك اليومي في الحساب</li>
-              <li>⚠️ تقليل عشوائي للأكل يصعب الالتزام فيه</li>
-              <li>⚠️ ما فيه أحد يراجع معك ويعدّل</li>
-            </ul>
+        <div class="parallel-sim-wrap">
+          <!-- أزرار المحاكاة الثلاثة -->
+          <div class="parallel-sim-tabs" role="tablist" aria-label="قارن بين أنماط نزول الوزن">
+            <button type="button" class="parallel-sim-tab is-active" role="tab" aria-selected="true" data-sim="parallel">
+              <span>✨ نظام «متوازي»</span>
+            </button>
+            <button type="button" class="parallel-sim-tab" role="tab" aria-selected="false" data-sim="diet">
+              <span>🍽️ الأكل لوحده</span>
+            </button>
+            <button type="button" class="parallel-sim-tab" role="tab" aria-selected="false" data-sim="gym">
+              <span>💪 التمرين لوحده</span>
+            </button>
           </div>
 
-          <div class="comp-card comp-card--gym">
-            <div class="comp-card__icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"></path></svg>
-            </div>
-            <h3>التمرين لوحده</h3>
-            <p>تتمرن بجد، بس أكلك ماله خطة:</p>
-            <ul>
-              <li>⚠️ ما تعرف كم تحتاج تاكل في يومك</li>
-              <li>⚠️ تمارين أقوى من مستواك تتعبك وتوقفك</li>
-              <li>⚠️ جدول التمرين ماله علاقة بجدول الأكل</li>
-              <li>⚠️ ما فيه أحد يراجع معك ويعدّل</li>
-            </ul>
-          </div>
+          <!-- منصة العرض البصري الحي -->
+          <div class="parallel-sim-stage" id="parallelSimStage" role="tabpanel" aria-live="polite">
+            <div>
+              <span class="sim-verdict-badge" id="simVerdictBadge">✅ التناغم المثالي المستدام</span>
+              <h3 class="sim-stage-title" id="simStageTitle">المساران يمشيان معاً.. حرق مستمر بدون جوع ولا إرهاق</h3>
+              <p class="sim-stage-desc" id="simStageDesc">عندما تُبنى سعرات أكلك على حجم حركتك اليومية، يحرق جسمك الدهون المخزّنة مع الحفاظ على عضلاتك ونشاطك طوال اليوم.</p>
 
-          <div class="comp-card comp-card--featured">
-            <span class="comp-card__tag">الفكرة</span>
-            <div class="comp-card__icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <div class="sim-meters">
+                <div class="sim-meter-row">
+                  <div class="sim-meter-head">
+                    <span style="color:var(--primary);">🍽️ مسار التغذية الموزونة</span>
+                    <span id="simNutriLabel" style="color:var(--primary);">مفصّل على سعراتك 100%</span>
+                  </div>
+                  <div class="sim-meter-bar">
+                    <div class="sim-meter-fill" id="simNutriFill" style="width:100%; background:#0f766e;"></div>
+                  </div>
+                </div>
+
+                <div class="sim-meter-row">
+                  <div class="sim-meter-head">
+                    <span style="color:var(--accent);">💪 مسار الحركة الآمنة</span>
+                    <span id="simFitLabel" style="color:var(--accent);">متدرج ومناسب لمفاصلك 100%</span>
+                  </div>
+                  <div class="sim-meter-bar">
+                    <div class="sim-meter-fill" id="simFitFill" style="width:100%; background:#f97316;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <ul class="sim-points-list" id="simPointsList">
+                <li><span>✅</span> <span>سعرات محسوبة من وزنك وطولك ونشاطك</span></li>
+                <li><span>✅</span> <span>أكلات بيتك وديرتك بحصص مشبعة ومفهومة</span></li>
+                <li><span>✅</span> <span>تمارين تحمي المفاصل بدون نزول للأرض</span></li>
+                <li><span>✅</span> <span>أخصائي ومدرب يراجعان الجدولين معاً</span></li>
+              </ul>
             </div>
-            <h3>نظام «متوازي»</h3>
-            <p>جدولين مبنيين على بعض، من بياناتك أنت:</p>
-            <ul>
-              <li>✅ سعرات محسوبة من وزنك وطولك ونشاطك</li>
-              <li>✅ أكلات من بيتك وبلدك بحصص مفهومة</li>
-              <li>✅ تمارين متدرجة تناسب مستواك ومكانك</li>
-              <li>✅ أخصائي ومدرب يراجعون الجدولين قبل ما يوصلونك</li>
-            </ul>
+
+            <!-- منحنى مسار الوزن المتوقع (SVG ديناميكي) -->
+            <div class="sim-chart-box">
+              <div class="sim-chart-title">
+                <span>📉 أثر المسار على الميزان والطاقة</span>
+                <span id="simChartTag" style="font-size:0.75rem; color:var(--primary); font-weight:900;">خلال الأشهر الأولى</span>
+              </div>
+              <svg viewBox="0 0 300 155" width="100%" height="155" aria-hidden="true" style="overflow:visible;">
+                <defs>
+                  <linearGradient id="simGradOk" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#0f766e" stop-opacity="0.22"></stop>
+                    <stop offset="100%" stop-color="#0f766e" stop-opacity="0.0"></stop>
+                  </linearGradient>
+                  <linearGradient id="simGradWarn" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#f97316" stop-opacity="0.18"></stop>
+                    <stop offset="100%" stop-color="#f97316" stop-opacity="0.0"></stop>
+                  </linearGradient>
+                </defs>
+                <!-- خطوط شبكية خفيفة -->
+                <line x1="20" y1="32" x2="280" y2="32" stroke="#e2e8f0" stroke-dasharray="4 4"></line>
+                <line x1="20" y1="78" x2="280" y2="78" stroke="#e2e8f0" stroke-dasharray="4 4"></line>
+                <line x1="20" y1="124" x2="280" y2="124" stroke="#cbd5e1" stroke-dasharray="3 3"></line>
+                <text x="278" y="26" font-size="10" font-weight="700" fill="#94a3b8" text-anchor="end">وزن البداية</text>
+                <text x="24" y="142" font-size="10" font-weight="800" fill="#0f766e" text-anchor="start">🎯 الهدف الصحي</text>
+
+                <!-- المساحة المظللة تحت المنحنى (من اليمين لليسار RTL) -->
+                <path id="simCurveArea" d="M 275 34 C 215 48, 135 88, 30 122 L 30 135 L 275 135 Z" fill="url(#simGradOk)"></path>
+                <!-- خط المنحنى الرئيسي -->
+                <path id="simCurvePath" d="M 275 34 C 215 48, 135 88, 30 122" fill="none" stroke="#0f766e" stroke-width="4" stroke-linecap="round"></path>
+                <!-- نقطة البداية (يمين) ونقطة النتيجة (يسار) -->
+                <circle cx="275" cy="34" r="5" fill="#ffffff" stroke="#64748b" stroke-width="3"></circle>
+                <circle id="simEndDot" cx="30" cy="122" r="6.5" fill="#0f766e" stroke="#ffffff" stroke-width="2.5"></circle>
+              </svg>
+              <div class="sim-chart-outcome" id="simChartOutcome">
+                🔥 نزول تدريجي مستمر + شد للجسم وطاقة يومية عالية
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- قسم كيف يعمل متوازي -->
+    <!-- قسم كيف يعمل متوازي (بخط التوازي المزدوج) -->
     <section id="how-it-works" class="section" aria-labelledby="how-title">
       <div class="container">
         <header class="section__header">
           <span class="section__badge">سهل وبسيط</span>
           <h2 id="how-title" class="section__title">كيف تبدأ رحلتك في متوازي؟</h2>
-          <p class="section__subtitle">أربع خطوات ذكية تضمن لك جدولاً دقيقاً ومناسباً لظروفك الصحية والحياتية.</p>
+          <p class="section__subtitle">أربع خطوات واضحة يسير فيها مساراك الغذائي والرياضي معاً منذ اللحظة الأولى.</p>
         </header>
 
-        <div class="steps-container">
+        <div class="steps-container steps-container--parallel">
           <div class="step-card">
-            <div class="step-card__num">1</div>
+            <div class="step-card__num step-card__num--dual">1</div>
             <h3 class="step-card__title">املأ الاستمارة الصحية</h3>
-            <p class="step-card__desc">تستغرق 5 دقائق فقط: طولك، وزنك الحالي، نشاطك، تاريخك الصحي، وأكلاتك المفضلة.</p>
+            <p class="step-card__desc">تستغرق 5 دقائق فقط: طولك، وزنك الحالي، نشاطك، تاريخك الصحي، ومكان تمرينك المفضل.</p>
           </div>
 
           <div class="step-card">
-            <div class="step-card__num">2</div>
-            <h3 class="step-card__title">حساب السعرات والماكروز</h3>
-            <p class="step-card__desc">النظام يحسب احتياجك الفعلي بمعادلات علمية معتمدة ويبني مسودة جدولك الغذائي والرياضي.</p>
+            <div class="step-card__num step-card__num--dual">2</div>
+            <h3 class="step-card__title">بناء المسارين بتوازي</h3>
+            <p class="step-card__desc">النظام يحسب احتياجك الفعلي بمعادلات علمية معتمدة وينسّق حصص وجباتك مع شدة تمرينك.</p>
           </div>
 
           <div class="step-card">
-            <div class="step-card__num">3</div>
-            <h3 class="step-card__title">مراجعة واعتماد الخبراء</h3>
-            <p class="step-card__desc">أخصائي تغذية مرخص ومدرب معتمد يدققون كل وجبة وتمرين لضمان أمانها وفعاليتها لك.</p>
+            <div class="step-card__num step-card__num--dual">3</div>
+            <h3 class="step-card__title">اعتماد الأخصائي والمدرب</h3>
+            <p class="step-card__desc">أخصائي تغذية مرخص ومدرب معتمد يدققان كل وجبة وتمرين لضمان أمانها ومناسبتها لك.</p>
           </div>
 
           <div class="step-card">
-            <div class="step-card__num">4</div>
-            <h3 class="step-card__title">متابعة ومرونة كاملة</h3>
-            <p class="step-card__desc">جدولك على جوالك، تقدر تبدل أي وجبة بضغطة زر، وتسجل وزنك لتشاهد منحنى نزولك بثبات.</p>
+            <div class="step-card__num step-card__num--dual">4</div>
+            <h3 class="step-card__title">التزام مرن ومتابعة ذكية</h3>
+            <p class="step-card__desc">جدولك التفاعلي على جوالك مع زر «بدّل»، مؤقت التمارين، ومنحنى نزول وزنك الأسبوعي.</p>
           </div>
         </div>
       </div>
@@ -367,16 +488,16 @@
             <div class="feature-box__icon" aria-hidden="true">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path><path d="M12 6v6l4 2"></path></svg>
             </div>
-            <h3>أكلات بلدك بحصص مفهومة</h3>
-            <p>كبسة، مطبق، جريش، سليق، مسخن.. أكلاتنا الشعبية متوفرة بحصص واضحة بمقاييس بسيطة (كوب، كف، ملعقة) بدون ما تحتاج ميزان في كل عزيمة.</p>
+            <h3>أكلات بلدك بمقادير البيت والميزان</h3>
+            <p>كبسة، مطبق، جريش، سليق، مسخن.. كل وجبة موضحة بالجرام وبمقاييس البيت البسيطة (كوب، كف، ملعقة) مع طريقة تحضير صحية سريعة.</p>
           </div>
 
           <div class="feature-box">
             <div class="feature-box__icon" aria-hidden="true">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
             </div>
-            <h3>زر «بدّل» السحري</h3>
-            <p>ما ناسبتك وجبة معينة اليوم؟ اضغط «بدّل» وتلقائياً يظهر لك بديل متطابق في السعرات والماكروز لتأكل اللي تحبه وتبقى ضمن خطتك.</p>
+            <h3>زر «بدّل على ذوقك»</h3>
+            <p>ما ناسبتك وجبة اليوم؟ اضغط «بدّل» وتلقائياً تختار بديلاً مطابقاً لسعراتك ويُحفظ اختيارك في جدولك لتأكل ما تحب وتبقى ضمن خطتك.</p>
           </div>
 
           <div class="feature-box">
@@ -391,45 +512,50 @@
             <div class="feature-box__icon" aria-hidden="true">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"></path></svg>
             </div>
-            <h3>تمارين تناسب مكانك ووقتك</h3>
-            <p>سواءً كنت تفضل التمرن في البيت بدون أدوات، أو عندك اشتراك نادي، نحدد لك التمارين المناسبة لمستواك الحقيقي بدون إجهاد.</p>
+            <h3>تمارين بالفيديو بدون نزول للأرض</h3>
+            <p>مساران متكاملان (منزلي ونادي) خاليان تماماً من تمارين الأرض لحماية الركب والمفاصل، مع شرح فيديو ومؤقت راحة تفاعلي لكل تمرين.</p>
           </div>
 
           <div class="feature-box">
             <div class="feature-box__icon" aria-hidden="true">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
             </div>
-            <h3>سجل وزن ومنحنى تقدم ذكي</h3>
-            <p>سجل وزنك وشاهد المنحنى يتناقص، مع تنبيهات ذكية من الأخصائي عند ثبات الوزن أو عند تحقيقك لإنجازات كيلو و5 و10 كيلو.</p>
+            <h3>منحنى وزن وتقويم التزام حي</h3>
+            <p>وثّق وزنك الأسبوعي وتابع منحنى تقدمك نحو الهدف مع تقويم التزام شهري يحفّزك على بناء سلسلة أيامك الناجحة.</p>
           </div>
 
           <div class="feature-box">
             <div class="feature-box__icon" aria-hidden="true">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
             </div>
-            <h3>جوال أولاً وتجربة فورية</h3>
-            <p>منصة سريعة وخفيفة تعمل مباشرة من متصفح هاتفك بدون الحاجة لتثبيت تطبيقات ثقيلة، مع خصوصية وتشفير كامل لبياناتك الصحية.</p>
+            <h3>تجربة تطبيق فاخرة على شاشة جوالك</h3>
+            <p>أضف متوازي لشاشة جوالك الرئيسية بضغطة واحدة ليفتح كتطبيق فوري فائق السرعة دون استهلاك مساحة هاتفك.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- قسم الإثبات الاجتماعي وقصص النجاح -->
-    <section id="testimonials" class="section section--alt" aria-labelledby="testimonials-title">
+    <section id="testimonials" class="section" aria-labelledby="testimonials-title">
       <div class="container">
         <header class="section__header">
           <span class="section__badge">قصص واقعية موثقة</span>
           <h2 id="testimonials-title" class="section__title">من مئات التجارب الناجحة للملتزمين.. اخترنا لكم</h2>
-          <p class="section__subtitle">تجارب حقيقية وتحولات ملهمة لأشخاص بدؤوا بنفس خطوتك اليوم، واستعادوا خفتهم ورشاقتهم بدون حرمان ولا تمارين قاسية.</p>
+          <p class="section__subtitle">تحولات حقيقية لأشخاص جمعوا تنظيم أكل البيت مع الحركة المريحة فاستعادوا خفتهم ورشاقتهم بثبات.</p>
         </header>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(295px, 1fr)); gap: 18px; margin-bottom: 22px;">
           <!-- تحول 78 كجم -->
-          <article class="card" style="border: 2px solid #fde68a; border-radius: var(--radius-lg, 20px); padding: 22px; position: relative; background: #ffffff; display: flex; flex-direction: column; justify-content: space-between;">
+          <article class="card" style="border: 2px solid #fde68a; border-radius: var(--radius-lg, 20px); padding: 22px; position: relative; background: #ffffff; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
             <span style="position: absolute; top: -11px; left: 16px; background: linear-gradient(135deg, #d97706 0%, #f97316 100%); color: #fff; font-size: 0.74rem; font-weight: 900; padding: 2px 10px; border-radius: 9999px;">خسارة نصف الوزن ⭐</span>
             <div>
-              <div style="font-size: 2.2rem; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 8px;">
-                78- <small style="font-size: 0.95rem; color: var(--text-dark, #0f172a); font-weight: 800;">كجم (من 156 إلى 78 كجم)</small>
+              <div style="font-size: 2.2rem; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 10px;">
+                78- <small style="font-size: 0.95rem; color: var(--text-dark, #0f172a); font-weight: 800;">كيلوجرام</small>
+              </div>
+              <div class="transform-bridge" aria-label="من 156 كجم إلى 78 كجم">
+                <span class="transform-bridge__before">قبل: 156 كجم</span>
+                <span class="transform-bridge__arrow">⟵</span>
+                <span class="transform-bridge__after">بعد: 78 كجم ✓</span>
               </div>
               <p style="font-size: 0.92rem; color: #334155; line-height: 1.65; margin: 0 0 14px; background: #f8fafc; padding: 10px 12px; border-radius: 8px; border-right: 3px solid var(--primary);">
                 «الحمد لله نزلت 78 كيلو.. من وزن 156 وصل وزني إلى 78 كيلو ولله الحمد! كانت البداية دافعاً للالتزام بالرياضة وتنظيم الأكل، وكثير من معارفي اشتركوا بعد ما رأوا النتيجة علي.»
@@ -442,11 +568,16 @@
           </article>
 
           <!-- تحول 57 كجم -->
-          <article class="card" style="border: 2px solid #fde68a; border-radius: var(--radius-lg, 20px); padding: 22px; position: relative; background: #ffffff; display: flex; flex-direction: column; justify-content: space-between;">
+          <article class="card" style="border: 2px solid #fde68a; border-radius: var(--radius-lg, 20px); padding: 22px; position: relative; background: #ffffff; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
             <span style="position: absolute; top: -11px; left: 16px; background: linear-gradient(135deg, #d97706 0%, #f97316 100%); color: #fff; font-size: 0.74rem; font-weight: 900; padding: 2px 10px; border-radius: 9999px;">كسر حاجز الـ 100 🎯</span>
             <div>
-              <div style="font-size: 2.2rem; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 8px;">
-                57- <small style="font-size: 0.95rem; color: var(--text-dark, #0f172a); font-weight: 800;">كجم (من 143 إلى 86 كجم)</small>
+              <div style="font-size: 2.2rem; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 10px;">
+                57- <small style="font-size: 0.95rem; color: var(--text-dark, #0f172a); font-weight: 800;">كيلوجرام</small>
+              </div>
+              <div class="transform-bridge" aria-label="من 143 كجم إلى 86 كجم">
+                <span class="transform-bridge__before">قبل: 143 كجم</span>
+                <span class="transform-bridge__arrow">⟵</span>
+                <span class="transform-bridge__after">بعد: 86 كجم ✓</span>
               </div>
               <p style="font-size: 0.92rem; color: #334155; line-height: 1.65; margin: 0 0 14px; background: #f8fafc; padding: 10px 12px; border-radius: 8px; border-right: 3px solid var(--primary);">
                 «وصل وزني إلى 86 كيلو بعد أن كان 143 كيلو في أقل من سنة ولله الحمد. لم أكن أتوقع كسر حاجز المئة بهذه السلاسة، المتابعة والتدرج صنعا الفارق.»
@@ -459,11 +590,16 @@
           </article>
 
           <!-- تحول 55 كجم -->
-          <article class="card" style="border: 2px solid #fde68a; border-radius: var(--radius-lg, 20px); padding: 22px; position: relative; background: #ffffff; display: flex; flex-direction: column; justify-content: space-between;">
+          <article class="card" style="border: 2px solid #fde68a; border-radius: var(--radius-lg, 20px); padding: 22px; position: relative; background: #ffffff; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
             <span style="position: absolute; top: -11px; left: 16px; background: linear-gradient(135deg, #d97706 0%, #f97316 100%); color: #fff; font-size: 0.74rem; font-weight: 900; padding: 2px 10px; border-radius: 9999px;">خفة ورشاقة 🏃</span>
             <div>
-              <div style="font-size: 2.2rem; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 8px;">
-                55- <small style="font-size: 0.95rem; color: var(--text-dark, #0f172a); font-weight: 800;">كجم (من 143 إلى 88 كجم)</small>
+              <div style="font-size: 2.2rem; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 10px;">
+                55- <small style="font-size: 0.95rem; color: var(--text-dark, #0f172a); font-weight: 800;">كيلوجرام</small>
+              </div>
+              <div class="transform-bridge" aria-label="من 143 كجم إلى 88 كجم">
+                <span class="transform-bridge__before">قبل: 143 كجم</span>
+                <span class="transform-bridge__arrow">⟵</span>
+                <span class="transform-bridge__after">بعد: 88 كجم ✓</span>
               </div>
               <p style="font-size: 0.92rem; color: #334155; line-height: 1.65; margin: 0 0 14px; background: #f8fafc; padding: 10px 12px; border-radius: 8px; border-right: 3px solid var(--primary);">
                 «عند البداية كان وزني 143 كيلو واستقر على 88 كيلو؛ نزول 55 كيلو في 11 شهراً بدون حرمان من أكل البيت ومع المشي اليومي المريح.»
@@ -478,19 +614,19 @@
 
         <!-- تجارب سريعة متنوعة -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(275px, 1fr)); gap: 14px; margin-bottom: 24px;">
-          <div class="card" style="padding: 16px; border-radius: 12px; border: 1px solid var(--border); background: #ffffff;">
+          <div class="card" style="padding: 16px; border-radius: 14px; border: 1px solid var(--border); background: #ffffff; margin-bottom: 0;">
             <div style="color: #f59e0b; margin-bottom: 6px;">★★★★★ <span style="color: var(--primary); font-weight: 800; font-size: 0.8rem; margin-right: 6px;">نزول 6 كجم</span></div>
             <p style="font-size: 0.89rem; line-height: 1.55; color: var(--text-dark, #0f172a); margin: 0 0 10px;">«الحمد لله نزلت 6 كيلو في شهر واحد، التزام مريح وخفة واضحة بالحركة والمشي بدون شعور بالجوع.»</p>
             <div style="font-size: 0.78rem; color: var(--text-muted, #64748b); font-weight: 700;">أم سارة — الدمام</div>
           </div>
 
-          <div class="card" style="padding: 16px; border-radius: 12px; border: 1px solid var(--border); background: #ffffff;">
+          <div class="card" style="padding: 16px; border-radius: 14px; border: 1px solid var(--border); background: #ffffff; margin-bottom: 0;">
             <div style="color: #f59e0b; margin-bottom: 6px;">★★★★★ <span style="color: var(--primary); font-weight: 800; font-size: 0.8rem; margin-right: 6px;">كسر ثبات الوزن</span></div>
             <p style="font-size: 0.89rem; line-height: 1.55; color: var(--text-dark, #0f172a); margin: 0 0 10px;">«رغم محاولاتي السابقة كان وزني ثابتاً، ومع التنظيم المتوازي انكسر الثبات وتحرك الميزان بشكل مستمر.»</p>
             <div style="font-size: 0.78rem; color: var(--text-muted, #64748b); font-weight: 700;">أمل ح. — الرياض</div>
           </div>
 
-          <div class="card" style="padding: 16px; border-radius: 12px; border: 1px solid var(--border); background: #ffffff;">
+          <div class="card" style="padding: 16px; border-radius: 14px; border: 1px solid var(--border); background: #ffffff; margin-bottom: 0;">
             <div style="color: #f59e0b; margin-bottom: 6px;">★★★★★ <span style="color: var(--primary); font-weight: 800; font-size: 0.8rem; margin-right: 6px;">طاقة وزوال الخمول</span></div>
             <p style="font-size: 0.89rem; line-height: 1.55; color: var(--text-dark, #0f172a); margin: 0 0 10px;">«اختفى الخمول اليومي الذي كان يلازمني، صرت خفيفة وأمشي يومياً بنشاط ودون أي إجهاد لمفاصلي.»</p>
             <div style="font-size: 0.78rem; color: var(--text-muted, #64748b); font-weight: 700;">نورة م. — الجبيل</div>
@@ -514,7 +650,7 @@
     </section>
 
     <!-- قسم الباقات -->
-    <section id="plans" class="section" aria-labelledby="plans-title">
+    <section id="plans" class="section section--alt" aria-labelledby="plans-title">
       <div class="container">
         <header class="section__header">
           <span class="section__badge">الباقات</span>
@@ -611,11 +747,18 @@
             <a href="/start" class="btn btn--outline">ابدأ بالاستمارة</a>
           </div>
         </div>
+
+        <!-- شريط الطمأنينة أسفل الباقات -->
+        <div class="plans-trust-strip" aria-label="ضمانات الاشتراك">
+          <div class="plans-trust-item"><span>🔒</span> <span>بدون تجديد تلقائي أو التزام طويل</span></div>
+          <div class="plans-trust-item"><span>👨‍⚕️</span> <span>مراجعة بشرية مزدوجة لكل خطة</span></div>
+          <div class="plans-trust-item"><span>📝</span> <span>تعبئة الاستمارة مجانية قبل أي اشتراك</span></div>
+        </div>
       </div>
     </section>
 
     <!-- قسم الأسئلة الشائعة -->
-    <section id="faq" class="section section--alt" aria-labelledby="faq-title">
+    <section id="faq" class="section" aria-labelledby="faq-title">
       <div class="container">
         <header class="section__header">
           <span class="section__badge">إجابات واضحة</span>
@@ -630,7 +773,7 @@
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
             <div class="faq-answer">
-              لا إطلاقاً. فلسفة متوازي قائمة على الأكل المتوازن من أكلات بيتك وديرتك (كبسة، جريش، مرقوق، سلطات..). لا نجبرك على أكلات غير مألوفة، والحصص موزونة ومحسوبة بمقاييس بسيطة (كوب، كف، ملعقة)، ومعك زر «بدّل» لتغيير أي وجبة فوراً.
+              لا إطلاقاً. فلسفة متوازي قائمة على الأكل المتوازن من أكلات بيتك وديرتك (كبسة، جريش، مرقوق، سلطات..). لا نجبرك على أكلات غير مألوفة، والحصص موزونة ومحسوبة بالجرام وبمقاييس البيت البسيطة (كوب، كف، ملعقة)، ومعك زر «بدّل» لتغيير أي وجبة فوراً.
             </div>
           </details>
 
@@ -640,7 +783,7 @@
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
             <div class="faq-answer">
-              ليس بالضرورة. في الاستمارة الصحية نحدد رغبتك؛ فإذا كنت تفضل التمارين المنزلية بدون أي أدوات نوفر لك جدولاً رياضياً منزلياً متدرجاً يناسب وقتك، وإذا كان لديك اشتراك في النادي نحدد لك تمارين تناسب أجهزة النادي.
+              ليس بالضرورة. تحصل في خطتك على المسارين معاً (منزلي بدون أجهزة + نادي)، وكلاهما مصمم بدون أي تمارين أرضية لحماية الركب والمفاصل، ومشروح بالفيديو ومؤقت الراحة.
             </div>
           </details>
 
@@ -666,11 +809,11 @@
 
           <details class="faq-item">
             <summary class="faq-question">
-              <span>هل أستطيع إلغاء اشتراكي في أي وقت؟</span>
+              <span>هل هناك سحب أو تجديد تلقائي للاشتراك؟</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
             <div class="faq-answer">
-              نعم بكل سهولة. الاشتراك شهري مرن، وبإمكانك إيقافه أو إلغاؤه في أي وقت بضغطة زر من صفحة حسابك دون أي رسوم خفية أو قيود.
+              لا يوجد أي سحب أو تجديد تلقائي نهائياً. كل اشتراك مدته 30 يوماً مستقلة وبشفافية تامة، ولك كامل الحرية في التجديد متى رغبت.
             </div>
           </details>
         </div>
@@ -689,7 +832,7 @@
     </section>
 
     <!-- قسم الحث على اتخاذ قرار (CTA Banner) -->
-    <section class="section section--cta" aria-labelledby="cta-title">
+    <section class="section section--cta" id="bottomCtaSection" aria-labelledby="cta-title">
       <div class="container">
         <div class="cta__content">
           <span class="cta__badge">ابدأ اليوم</span>
@@ -698,8 +841,8 @@
             تعبئة الاستمارة الصحية تستغرق أقل من 5 دقائق. أخصائي التغذية والمدرب سيبدأون بمراجعة بياناتك وبناء جدولك فوراً.
           </p>
           <div class="cta__actions">
-            <a href="/start" class="btn btn--primary btn--lg">ابدأ الآن مجاناً</a>
-            <a href="/login" class="btn btn--ghost" style="color:#ffffff; border-color:rgba(255,255,255,0.4);">تسجيل الدخول</a>
+            <a href="/start" class="btn btn--primary btn--lg" id="bottomPrimaryCta">ابدأ الآن مجاناً</a>
+            <a href="/login" class="btn btn--ghost" id="bottomSecondaryCta" style="color:#ffffff; border-color:rgba(255,255,255,0.4);">تسجيل الدخول</a>
           </div>
           <p class="cta__disclaimer">النتائج تختلف من شخص لآخر حسب الالتزام.</p>
         </div>
@@ -758,10 +901,74 @@
     </div>
   </footer>
 
-  <!-- سكربت تجربة ميزة "بدّل" وطريقة التحضير التفاعلية -->
+  <!-- قائمة الجوال السفلية (Bottom Sheet) -->
+  <div class="mobile-sheet-backdrop" id="mobileNavSheet" role="dialog" aria-modal="true" aria-label="قائمة التنقل">
+    <div class="mobile-sheet-panel">
+      <div class="mobile-sheet-handle" aria-hidden="true"></div>
+      <div class="mobile-sheet-head">
+        <span style="font-weight:900; font-size:1.05rem; color:var(--text-dark);">تصفّح متوازي</span>
+        <button type="button" class="mobile-sheet-close" id="btnCloseMobileSheet" aria-label="إغلاق القائمة">✕</button>
+      </div>
+      <div class="mobile-sheet-links">
+        <a href="#philosophy" class="mobile-sheet-link" data-sheet-close><span>⚡</span> <span>ليش متوازي؟</span></a>
+        <a href="#how-it-works" class="mobile-sheet-link" data-sheet-close><span>🗺️</span> <span>طريقة العمل</span></a>
+        <a href="#features" class="mobile-sheet-link" data-sheet-close><span>✨</span> <span>المميزات</span></a>
+        <a href="#plans" class="mobile-sheet-link" data-sheet-close><span>💎</span> <span>الباقات والأسعار</span></a>
+        <a href="#faq" class="mobile-sheet-link" data-sheet-close style="grid-column: 1 / -1;"><span>❓</span> <span>الأسئلة الشائعة والضمانات الطبية</span></a>
+        <a href="/stories" class="mobile-sheet-link mobile-sheet-link--gold"><span>⭐</span> <span>قصص النجاح الموثقة (47 تجربة)</span></a>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <a href="/start" class="btn btn--primary" id="sheetPrimaryBtn" style="flex:1.4; padding:11px 14px; font-size:0.92rem;">ابدأ رحلتك الآن</a>
+        <a href="/login" class="btn btn--ghost" id="sheetLoginBtn" style="flex:1; padding:11px 12px; font-size:0.88rem;">تسجيل الدخول</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- الشريط العائم الذكي للجوال أثناء التمرير -->
+  <div class="home-sticky-cta" id="homeStickyCta" aria-label="اختصار البدء السريع">
+    <div class="home-sticky-cta__text">
+      <span id="stickyCtaLabel">مساران يمشيان معك بتوازي</span>
+      <small id="stickyCtaSub">الاستمارة الصحية مجانية · 5 دقائق</small>
+    </div>
+    <a href="/start" class="btn btn--primary" id="stickyCtaBtn">ابدأ الآن ←</a>
+  </div>
+
+  <!-- مشغّل جولة الـ 90 ثانية بإطار الجوال (يتفعّل تلقائياً عند إضافة رابط الفيديو) -->
+  <div class="video-modal-backdrop" id="demoVideoModal" role="dialog" aria-modal="true" aria-label="جولة مصورة داخل منصة متوازي">
+    <div class="video-modal-phone" id="demoVideoFrame">
+      <div class="video-modal-top">
+        <span>📱 جولة داخل متوازي (90 ثانية)</span>
+        <button type="button" class="mobile-sheet-close" id="btnCloseVideoModal" aria-label="إغلاق الفيديو" style="background:#1e293b; border-color:#334155; color:#ffffff;">✕</button>
+      </div>
+      <div class="video-modal-stage" id="demoVideoStage"></div>
+      <div class="video-modal-chapters">
+        <span class="video-chapter-pill">🍽️ الجدول وبدائل الوجبات</span>
+        <span class="video-chapter-pill">💪 فيديو التمارين والراحة</span>
+        <span class="video-chapter-pill">📉 منحنى الوزن والالتزام</span>
+      </div>
+      <div style="padding:12px 14px; background:#0f172a; border-top:1px solid #1e293b;">
+        <a href="/start" class="btn btn--primary" style="width:100%; padding:11px 16px; font-size:0.94rem;">ابدأ استمارتك الصحية المجانية الآن ←</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- سكربت التفاعلات الحية: تبديل الوجبات، التمارين، محاكي التوازي، القائمة، والفيديو -->
   <script>
     (function () {
       "use strict";
+
+      /* =========================================================
+         إعداد فيديو الجولة التعريفية (90 ثانية):
+         ضع معرّف يوتيوب في youtubeId أو رابط ملف mp4 في mp4Url
+         ليظهر زر ومشغّل الفيديو بإطار الجوال تلقائياً.
+         ========================================================= */
+      var DEMO_VIDEO = {
+        youtubeId: "",
+        mp4Url: "",
+        orientation: "portrait" // "portrait" لتصوير شاشة الجوال الطولي 9:16 أو "landscape" للعرضي 16:9
+      };
+
+      /* 1. وجبات المعاينة التفاعلية */
       var demoMeals = [
         {
           title: "كبسة دجاج نجدية بحصص موزونة",
@@ -829,6 +1036,7 @@
       var btnSwap = document.getElementById("btnSwapDemo");
       var btnPrep = document.getElementById("btnPrepDemo");
       var btnPrepLabel = document.getElementById("btnPrepDemoLabel");
+      var btnMealDone = document.getElementById("btnMealDoneDemo");
       var prepPanel = document.getElementById("mealPrepDemoPanel");
       var prepTimeEl = document.getElementById("mealPrepTime");
       var prepStepsEl = document.getElementById("mealPrepSteps");
@@ -841,12 +1049,19 @@
       var fatEl = document.getElementById("mealFat");
       var nutritionCard = document.getElementById("nutritionCard");
 
+      if (btnMealDone) {
+        btnMealDone.addEventListener("click", function () {
+          var done = btnMealDone.classList.toggle("is-done");
+          btnMealDone.textContent = done ? "✓ تم تناولها" : "○ سجّل الوجبة";
+        });
+      }
+
       if (btnPrep && prepPanel) {
         btnPrep.addEventListener("click", function () {
           var isOpen = prepPanel.style.display !== "none";
           prepPanel.style.display = isOpen ? "none" : "block";
           if (btnPrepLabel) {
-            btnPrepLabel.textContent = isOpen ? "👨‍🍳 طريقة التحضير" : "إخفاء الخطوات ✕";
+            btnPrepLabel.textContent = isOpen ? "👨‍🍳 التحضير" : "إخفاء ✕";
           }
         });
       }
@@ -871,12 +1086,298 @@
             if (prepStepsEl && meal.steps) {
               prepStepsEl.innerHTML = meal.steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
             }
+            if (btnMealDone) {
+              btnMealDone.classList.remove("is-done");
+              btnMealDone.textContent = "○ سجّل الوجبة";
+            }
 
             nutritionCard.style.opacity = "1";
             nutritionCard.style.transform = "scale(1)";
           }, 150);
         });
       }
+
+      /* 2. تبديل بيئة التمرين في بطاقة المقدمة (منزلي / نادي) */
+      var workoutModes = {
+        home: {
+          title: "مقاومة لكامل الجسم بدون نزول للأرض + مشي",
+          desc: "تمارين آمنة للمفاصل والركب (سكوات الكرسي، ضغط الجدار، مشي نشط) مشروحة بالفيديو ومؤقت راحة ذكي.",
+          time: "⏱️ 25 دقيقة",
+          burn: "⚡ ~210 سعرة محروقة"
+        },
+        gym: {
+          title: "أجهزة مقاومة مسنودة ومريحة للمفاصل + مشي مائل",
+          desc: "تمرين نادي منظم بدون تمارين أرضية (دفع الأرجل، سحب علوي، ضغط صدر بالجهاز) مع شرح فيديو ومؤقت راحة.",
+          time: "⏱️ 35 دقيقة",
+          burn: "⚡ ~265 سعرة محروقة"
+        }
+      };
+
+      var wModeBtns = document.querySelectorAll("[data-wmode]");
+      var wTitleEl = document.getElementById("workoutDemoTitle");
+      var wDescEl = document.getElementById("workoutDemoDesc");
+      var wTimeEl = document.getElementById("workoutDemoTime");
+      var wBurnEl = document.getElementById("workoutDemoBurn");
+      var fitnessCard = document.getElementById("fitnessDemoCard");
+
+      wModeBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var mode = btn.getAttribute("data-wmode");
+          var data = workoutModes[mode];
+          if (!data) return;
+          wModeBtns.forEach(function (b) { b.classList.remove("active"); });
+          btn.classList.add("active");
+          if (fitnessCard) fitnessCard.style.opacity = "0.55";
+          setTimeout(function () {
+            if (wTitleEl) wTitleEl.textContent = data.title;
+            if (wDescEl) wDescEl.textContent = data.desc;
+            if (wTimeEl) wTimeEl.textContent = data.time;
+            if (wBurnEl) wBurnEl.textContent = data.burn;
+            if (fitnessCard) fitnessCard.style.opacity = "1";
+          }, 130);
+        });
+      });
+
+      /* 3. محاكي التوازي التفاعلي (#philosophy) */
+      var SIM_STATES = {
+        parallel: {
+          warn: false,
+          badge: "✅ التناغم المثالي المستدام",
+          title: "المساران يمشيان معاً.. حرق مستمر بدون جوع ولا إرهاق",
+          desc: "عندما تُبنى سعرات أكلك على حجم حركتك اليومية، يحرق جسمك الدهون المخزّنة مع الحفاظ على عضلاتك ونشاطك طوال اليوم.",
+          nutriLabel: "مفصّل على سعراتك 100%",
+          nutriWidth: "100%",
+          nutriColor: "#0f766e",
+          fitLabel: "متدرج ومناسب لمفاصلك 100%",
+          fitWidth: "100%",
+          fitColor: "#f97316",
+          points: [
+            ["✅", "سعرات محسوبة من وزنك وطولك ونشاطك"],
+            ["✅", "أكلات بيتك وديرتك بحصص مشبعة ومفهومة"],
+            ["✅", "تمارين تحمي المفاصل بدون نزول للأرض"],
+            ["✅", "أخصائي ومدرب يراجعان الجدولين معاً"]
+          ],
+          curvePath: "M 275 34 C 215 48, 135 88, 30 122",
+          curveArea: "M 275 34 C 215 48, 135 88, 30 122 L 30 135 L 275 135 Z",
+          stroke: "#0f766e",
+          areaFill: "url(#simGradOk)",
+          endY: "122",
+          outcome: "🔥 نزول تدريجي مستمر + شد للجسم وطاقة يومية عالية"
+        },
+        diet: {
+          warn: true,
+          badge: "⚠️ مسار واحد ناقص (بدون حركة موزونة)",
+          title: "تنتبه لأكلك لوحده.. فيتباطأ الحرق ويثبت الميزان سريعاً",
+          desc: "تقليل الأكل بدون حركة مدروسة يدفع الجسم لخفض معدل الحرق اليومي، فيتوقف النزول بعد أسابيع قليلة مع شعور بالخمول.",
+          nutriLabel: "اجتهاد غذائي منفرد (65%)",
+          nutriWidth: "65%",
+          nutriColor: "#0f766e",
+          fitLabel: "غائب — لا توجد خطة حركة (10%)",
+          fitWidth: "10%",
+          fitColor: "#94a3b8",
+          points: [
+            ["⚠️", "ثبات محبط للميزان بعد أول نزول بسيط"],
+            ["⚠️", "فقدان من العضلات وترهّل بدل شد القوام"],
+            ["⚠️", "تقليل أكل عشوائي يصعب الاستمرار عليه"],
+            ["⚠️", "خمول يومي لعدم تنشيط الدورة والحرق"]
+          ],
+          curvePath: "M 275 34 C 225 58, 165 76, 30 78",
+          curveArea: "M 275 34 C 225 58, 165 76, 30 78 L 30 135 L 275 135 Z",
+          stroke: "#d97706",
+          areaFill: "url(#simGradWarn)",
+          endY: "78",
+          outcome: "⚠️ نزول مبدئي بطيء يعقبه ثبات طويل للميزان وخمول"
+        },
+        gym: {
+          warn: true,
+          badge: "⚠️ مسار واحد ناقص (مجهود بدون خطة أكل)",
+          title: "تتمرن بجد.. لكن غياب الميزان الغذائي يضيع تعبك",
+          desc: "التمرين القوي يفتح الشهية؛ وبدون حصص وسعرات محسوبة يعوّض الجسم ما حرقته في وجبة واحدة، فيتسلل الإحباط وتترك التمرين.",
+          nutriLabel: "عشوائي غير محسوب السعرات (20%)",
+          nutriWidth: "20%",
+          nutriColor: "#d97706",
+          fitLabel: "مجهود بدني مرتفع ومُرهق (85%)",
+          fitWidth: "85%",
+          fitColor: "#f97316",
+          points: [
+            ["⚠️", "جوع مفتوح بعد التمرين يلغي عجز السعرات"],
+            ["⚠️", "تمارين تفوق مستواك قد تُجهد الركب والمفاصل"],
+            ["⚠️", "تعب بدني يومي بدون فرق واضح على الميزان"],
+            ["⚠️", "لا يوجد ربط بين سعرات أكلك وأيام تمرينك"]
+          ],
+          curvePath: "M 275 34 C 220 44, 150 38, 30 56",
+          curveArea: "M 275 34 C 220 44, 150 38, 30 56 L 30 135 L 275 135 Z",
+          stroke: "#ea580c",
+          areaFill: "url(#simGradWarn)",
+          endY: "56",
+          outcome: "⚠️ جوع وإرهاق متكرر مع تذبذب شبه ثابت في الوزن"
+        }
+      };
+
+      var simTabs = document.querySelectorAll("[data-sim]");
+      var simStage = document.getElementById("parallelSimStage");
+      var simVerdictBadge = document.getElementById("simVerdictBadge");
+      var simStageTitle = document.getElementById("simStageTitle");
+      var simStageDesc = document.getElementById("simStageDesc");
+      var simNutriLabel = document.getElementById("simNutriLabel");
+      var simNutriFill = document.getElementById("simNutriFill");
+      var simFitLabel = document.getElementById("simFitLabel");
+      var simFitFill = document.getElementById("simFitFill");
+      var simPointsList = document.getElementById("simPointsList");
+      var simCurvePath = document.getElementById("simCurvePath");
+      var simCurveArea = document.getElementById("simCurveArea");
+      var simEndDot = document.getElementById("simEndDot");
+      var simChartOutcome = document.getElementById("simChartOutcome");
+
+      simTabs.forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          var key = tab.getAttribute("data-sim");
+          var st = SIM_STATES[key];
+          if (!st) return;
+
+          simTabs.forEach(function (t) {
+            t.classList.remove("is-active");
+            t.setAttribute("aria-selected", "false");
+          });
+          tab.classList.add("is-active");
+          tab.setAttribute("aria-selected", "true");
+
+          if (simStage) simStage.classList.toggle("is-warn", !!st.warn);
+          if (simVerdictBadge) simVerdictBadge.textContent = st.badge;
+          if (simStageTitle) simStageTitle.textContent = st.title;
+          if (simStageDesc) simStageDesc.textContent = st.desc;
+          if (simNutriLabel) simNutriLabel.textContent = st.nutriLabel;
+          if (simNutriFill) {
+            simNutriFill.style.width = st.nutriWidth;
+            simNutriFill.style.background = st.nutriColor;
+          }
+          if (simFitLabel) simFitLabel.textContent = st.fitLabel;
+          if (simFitFill) {
+            simFitFill.style.width = st.fitWidth;
+            simFitFill.style.background = st.fitColor;
+          }
+          if (simPointsList) {
+            simPointsList.innerHTML = st.points.map(function (p) {
+              return "<li><span>" + p[0] + "</span> <span>" + p[1] + "</span></li>";
+            }).join("");
+          }
+          if (simCurvePath) {
+            simCurvePath.setAttribute("d", st.curvePath);
+            simCurvePath.setAttribute("stroke", st.stroke);
+          }
+          if (simCurveArea) {
+            simCurveArea.setAttribute("d", st.curveArea);
+            simCurveArea.setAttribute("fill", st.areaFill);
+          }
+          if (simEndDot) {
+            simEndDot.setAttribute("cy", st.endY);
+            simEndDot.setAttribute("fill", st.stroke);
+          }
+          if (simChartOutcome) simChartOutcome.textContent = st.outcome;
+        });
+      });
+
+      /* 4. قائمة الجوال السفلية (Bottom Sheet) */
+      var btnMobileMenu = document.getElementById("btnMobileMenu");
+      var mobileNavSheet = document.getElementById("mobileNavSheet");
+      var btnCloseMobileSheet = document.getElementById("btnCloseMobileSheet");
+
+      function closeMobileSheet() {
+        if (!mobileNavSheet) return;
+        mobileNavSheet.classList.remove("is-open");
+        if (btnMobileMenu) btnMobileMenu.setAttribute("aria-expanded", "false");
+      }
+
+      if (btnMobileMenu && mobileNavSheet) {
+        btnMobileMenu.addEventListener("click", function () {
+          mobileNavSheet.classList.add("is-open");
+          btnMobileMenu.setAttribute("aria-expanded", "true");
+        });
+        if (btnCloseMobileSheet) {
+          btnCloseMobileSheet.addEventListener("click", closeMobileSheet);
+        }
+        mobileNavSheet.addEventListener("click", function (e) {
+          if (e.target === mobileNavSheet) closeMobileSheet();
+        });
+        document.querySelectorAll("[data-sheet-close]").forEach(function (link) {
+          link.addEventListener("click", closeMobileSheet);
+        });
+      }
+
+      /* 5. تفعيل مشغّل فيديو الـ 90 ثانية تلقائياً عند توفر الرابط */
+      var hasDemoVideo = Boolean((DEMO_VIDEO.youtubeId && DEMO_VIDEO.youtubeId.trim()) || (DEMO_VIDEO.mp4Url && DEMO_VIDEO.mp4Url.trim()));
+      var btnWatchHero = document.getElementById("btnWatchDemoHero");
+      var cardVideoBanner = document.getElementById("cardVideoBanner");
+      var demoVideoModal = document.getElementById("demoVideoModal");
+      var demoVideoFrame = document.getElementById("demoVideoFrame");
+      var demoVideoStage = document.getElementById("demoVideoStage");
+      var btnCloseVideoModal = document.getElementById("btnCloseVideoModal");
+
+      function openDemoVideo() {
+        if (!demoVideoModal || !demoVideoStage || !hasDemoVideo) return;
+        if (demoVideoFrame) {
+          demoVideoFrame.classList.toggle("is-landscape", DEMO_VIDEO.orientation === "landscape");
+        }
+        if (DEMO_VIDEO.mp4Url && DEMO_VIDEO.mp4Url.trim()) {
+          demoVideoStage.innerHTML = '<video src="' + DEMO_VIDEO.mp4Url.trim() + '" controls autoplay playsinline></video>';
+        } else {
+          var ytId = encodeURIComponent(DEMO_VIDEO.youtubeId.trim());
+          demoVideoStage.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + ytId + '?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="جولة داخل منصة متوازي"></iframe>';
+        }
+        demoVideoModal.classList.add("is-open");
+      }
+
+      function closeDemoVideo() {
+        if (!demoVideoModal) return;
+        demoVideoModal.classList.remove("is-open");
+        if (demoVideoStage) demoVideoStage.innerHTML = "";
+      }
+
+      if (hasDemoVideo) {
+        if (btnWatchHero) {
+          btnWatchHero.classList.remove("hidden");
+          btnWatchHero.addEventListener("click", openDemoVideo);
+        }
+        if (cardVideoBanner) {
+          cardVideoBanner.classList.add("is-ready");
+          cardVideoBanner.addEventListener("click", openDemoVideo);
+        }
+        if (btnCloseVideoModal) btnCloseVideoModal.addEventListener("click", closeDemoVideo);
+        if (demoVideoModal) {
+          demoVideoModal.addEventListener("click", function (e) {
+            if (e.target === demoVideoModal) closeDemoVideo();
+          });
+        }
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          closeMobileSheet();
+          closeDemoVideo();
+        }
+      });
+
+      /* 6. الشريط العائم الذكي للجوال أثناء التمرير */
+      var homeStickyCta = document.getElementById("homeStickyCta");
+      var bottomCtaSection = document.getElementById("bottomCtaSection");
+
+      function updateStickyBar() {
+        if (!homeStickyCta) return;
+        var y = window.scrollY || window.pageYOffset || 0;
+        var pastHero = y > 540;
+        var nearBottom = false;
+        if (bottomCtaSection) {
+          var rect = bottomCtaSection.getBoundingClientRect();
+          nearBottom = rect.top < (window.innerHeight + 40);
+        }
+        var show = pastHero && !nearBottom;
+        homeStickyCta.classList.toggle("is-shown", show);
+        document.body.classList.toggle("has-sticky-cta", show);
+      }
+
+      window.addEventListener("scroll", updateStickyBar, { passive: true });
+      window.addEventListener("resize", updateStickyBar, { passive: true });
+      updateStickyBar();
     })();
   </script>
 
@@ -893,53 +1394,118 @@
         if (!u) return;
         var navLoginBtn = document.getElementById("navLoginBtn");
         var navPrimaryBtn = document.getElementById("navPrimaryBtn");
-        var heroBadgeText = document.getElementById("heroBadgeText");
         var heroPrimaryCta = document.getElementById("heroPrimaryCta");
         var heroPrimaryCtaText = document.getElementById("heroPrimaryCtaText");
         var heroSecondaryCta = document.getElementById("heroSecondaryCta");
+        var memberDock = document.getElementById("memberWelcomeDock");
+        var memberDockGreet = document.getElementById("memberDockGreet");
+        var memberDockStatus = document.getElementById("memberDockStatus");
+        var memberDockMainLink = document.getElementById("memberDockMainLink");
+        var memberDockTrackLink = document.getElementById("memberDockTrackLink");
+        var sheetPrimaryBtn = document.getElementById("sheetPrimaryBtn");
+        var sheetLoginBtn = document.getElementById("sheetLoginBtn");
+        var stickyCtaLabel = document.getElementById("stickyCtaLabel");
+        var stickyCtaSub = document.getElementById("stickyCtaSub");
+        var stickyCtaBtn = document.getElementById("stickyCtaBtn");
+        var bottomPrimaryCta = document.getElementById("bottomPrimaryCta");
+        var bottomSecondaryCta = document.getElementById("bottomSecondaryCta");
 
         function applyMemberUI(firstName, hasIntake, isApproved) {
           var greet = firstName ? ("أهلاً بعودتك، " + firstName + " 👋") : "أهلاً بعودتك في متوازي 👋";
+          if (memberDock) memberDock.classList.add("is-visible");
+          if (memberDockGreet) memberDockGreet.textContent = greet;
+
           if (navLoginBtn) {
             navLoginBtn.href = "/account";
             navLoginBtn.textContent = "حسابي";
           }
+          if (sheetLoginBtn) {
+            sheetLoginBtn.href = "/account";
+            sheetLoginBtn.textContent = "حسابي";
+          }
+          if (bottomSecondaryCta) {
+            bottomSecondaryCta.href = "/account";
+            bottomSecondaryCta.textContent = "حسابي";
+          }
+
           if (isApproved) {
+            if (memberDockStatus) memberDockStatus.textContent = "خطتك نشطة ومعتمدة ✓";
+            if (memberDockMainLink) {
+              memberDockMainLink.href = "/plan";
+              memberDockMainLink.textContent = "📅 جدولي اليومي";
+            }
+            if (memberDockTrackLink) {
+              memberDockTrackLink.style.display = "inline-flex";
+              memberDockTrackLink.href = "/track";
+            }
             if (navPrimaryBtn) {
               navPrimaryBtn.href = "/plan";
               navPrimaryBtn.textContent = "جدولي اليومي";
             }
-            if (heroBadgeText) heroBadgeText.textContent = greet + " · خطتك اليومية جاهزة ونشطة";
+            if (sheetPrimaryBtn) {
+              sheetPrimaryBtn.href = "/plan";
+              sheetPrimaryBtn.textContent = "افتح جدولي اليومي";
+            }
             if (heroPrimaryCta) heroPrimaryCta.href = "/plan";
             if (heroPrimaryCtaText) heroPrimaryCtaText.textContent = "افتح جدولي اليومي الآن";
             if (heroSecondaryCta) {
               heroSecondaryCta.href = "/track";
               heroSecondaryCta.textContent = "📈 متابعتي وسجل وزني";
             }
+            if (stickyCtaLabel) stickyCtaLabel.textContent = greet;
+            if (stickyCtaSub) stickyCtaSub.textContent = "خطتك اليومية جاهزة للمتابعة";
+            if (stickyCtaBtn) {
+              stickyCtaBtn.href = "/plan";
+              stickyCtaBtn.textContent = "جدولي اليومي ←";
+            }
+            if (bottomPrimaryCta) {
+              bottomPrimaryCta.href = "/plan";
+              bottomPrimaryCta.textContent = "افتح جدولي اليومي";
+            }
           } else if (hasIntake) {
+            if (memberDockStatus) memberDockStatus.textContent = "قيد اعتماد الأخصائي ⏳";
+            if (memberDockMainLink) {
+              memberDockMainLink.href = "/summary";
+              memberDockMainLink.textContent = "📋 حالة طلبي وسعراتي";
+            }
+            if (memberDockTrackLink) memberDockTrackLink.style.display = "none";
             if (navPrimaryBtn) {
               navPrimaryBtn.href = "/summary";
               navPrimaryBtn.textContent = "متابعة طلبي";
             }
-            if (heroBadgeText) heroBadgeText.textContent = greet + " · استمارتك قيد الاعتماد لدى الأخصائي";
+            if (sheetPrimaryBtn) {
+              sheetPrimaryBtn.href = "/summary";
+              sheetPrimaryBtn.textContent = "متابعة حالة طلبي";
+            }
             if (heroPrimaryCta) heroPrimaryCta.href = "/summary";
             if (heroPrimaryCtaText) heroPrimaryCtaText.textContent = "استعراض حالة طلبي وسعراتي";
-            if (heroSecondaryCta) {
-              heroSecondaryCta.href = "/account";
-              heroSecondaryCta.textContent = "👤 الانتقال لحسابي";
+            if (stickyCtaLabel) stickyCtaLabel.textContent = "استمارتك قيد الاعتماد";
+            if (stickyCtaSub) stickyCtaSub.textContent = "راجع ملخص سعراتك وحالة طلبك";
+            if (stickyCtaBtn) {
+              stickyCtaBtn.href = "/summary";
+              stickyCtaBtn.textContent = "حالة طلبي ←";
+            }
+            if (bottomPrimaryCta) {
+              bottomPrimaryCta.href = "/summary";
+              bottomPrimaryCta.textContent = "استعراض حالة طلبي";
             }
           } else {
+            if (memberDockStatus) memberDockStatus.textContent = "بانتظار إكمال الاستمارة";
+            if (memberDockMainLink) {
+              memberDockMainLink.href = "/start";
+              memberDockMainLink.textContent = "📝 أكمل استمارتك الصحية";
+            }
+            if (memberDockTrackLink) memberDockTrackLink.style.display = "none";
             if (navPrimaryBtn) {
               navPrimaryBtn.href = "/start";
               navPrimaryBtn.textContent = "أكمل استمارتك";
             }
-            if (heroBadgeText) heroBadgeText.textContent = greet + " · أكمل استمارتك لبناء جدولك";
+            if (sheetPrimaryBtn) {
+              sheetPrimaryBtn.href = "/start";
+              sheetPrimaryBtn.textContent = "أكمل استمارتك الآن";
+            }
             if (heroPrimaryCta) heroPrimaryCta.href = "/start";
             if (heroPrimaryCtaText) heroPrimaryCtaText.textContent = "أكمل استمارتك الصحية الآن";
-            if (heroSecondaryCta) {
-              heroSecondaryCta.href = "/account";
-              heroSecondaryCta.textContent = "👤 حسابي";
-            }
           }
         }
 
