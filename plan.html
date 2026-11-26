@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=20261122b">
+<link rel="stylesheet" href="/style.css?v=20261125c">
 <style>
   /* شريط التنقل السفلي الذكي للهواتف — تصميم أيقونات SVG الفخمة */
   .mobile-bottom-nav {
@@ -105,77 +105,44 @@
     }
   }
 
-  /* تمييز تبويب اليوم في شريط الأيام */
-  .day-tab.today-indicator {
-    border-color: #0f766e;
-    background: #f0fdfa;
-    color: #0f766e;
-    font-weight: 800;
+  /* ==========================================================================
+     تصميم متوازي العصري لصفحة الجدول اليومي (Modern Native-App UX v2)
+     ========================================================================== */
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .day-tab.today-indicator.active {
-    background: #0f766e;
-    color: #ffffff;
+  @keyframes sheetSlideUp {
+    from { opacity: 0; transform: translateY(36px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  /* تنسيقات صفحة الجدول والطباعة PDF */
-  .plan-page-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 14px;
-    margin-bottom: 24px;
+  @keyframes pulseGlow {
+    0% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.38); }
+    70% { box-shadow: 0 0 0 8px rgba(15, 118, 110, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0); }
   }
-  .plan-page-title h1 {
-    font-size: 1.6rem;
-    font-weight: 900;
-    color: var(--text-dark);
-    margin: 0 0 4px;
-  }
-  .plan-page-title p {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: 0.95rem;
-  }
-  .plan-actions {
-    display: flex;
-    gap: 10px;
-  }
-  .btn-print {
-    background: #ffffff;
-    border: 1.5px solid var(--border);
-    color: var(--text);
-    padding: 8px 16px;
-    border-radius: var(--radius-full);
-    font-size: 0.88rem;
-    font-weight: 700;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease;
-  }
-  .btn-print:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-    box-shadow: var(--shadow-sm);
+  @keyframes restFlash {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
   }
 
-  /* بطاقة التحفيز والترحيب اليومي */
-  .daily-greeting-card {
-    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 60%, #fff7ed 100%);
+  /* الهيدر العلوي المدمج (الترحيب + زر الطباعة PDF) */
+  .plan-hero-bar {
+    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 58%, #fff7ed 100%);
     border: 1.5px solid #ccfbf1;
-    border-radius: var(--radius-lg);
-    padding: 16px 20px;
-    margin-bottom: 20px;
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 14px;
-    box-shadow: 0 4px 16px rgba(15, 118, 110, 0.05);
+    gap: 12px;
+    box-shadow: 0 4px 18px rgba(15, 118, 110, 0.05);
     position: relative;
     overflow: hidden;
   }
-  .daily-greeting-card::before {
+  .plan-hero-bar::before {
     content: "";
     position: absolute;
     top: 0;
@@ -184,234 +151,886 @@
     width: 4px;
     background: linear-gradient(to bottom, var(--primary), var(--accent));
   }
+  .plan-hero-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+  }
   .greeting-icon {
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
     background: #ffffff;
+    border: 1px solid #e2e8f0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    font-size: 1.35rem;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
     flex-shrink: 0;
   }
   .greeting-content {
     flex: 1;
     min-width: 0;
   }
-  .greeting-title {
-    margin: 0 0 2px;
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--text-dark);
+  .greeting-top-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
   }
-  .greeting-subtitle {
+  .greeting-title {
     margin: 0;
-    font-size: 0.86rem;
-    color: var(--text-muted);
-    line-height: 1.45;
+    font-size: 1.08rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    line-height: 1.3;
   }
   .greeting-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     background: #f0fdfa;
     border: 1px solid #99f6e4;
     color: var(--primary-dark);
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 5px 12px;
-    border-radius: var(--radius-full);
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 9px;
+    border-radius: 999px;
     white-space: nowrap;
   }
   .greeting-badge-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: var(--radius-full);
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
     background: var(--primary);
   }
-
-  /* تبويبات الأيام بسكرول ناعم وسناب للجوال */
-  .days-nav {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 4px 2px 14px;
-    margin-bottom: 20px;
-    scrollbar-width: none;
-  }
-  .days-nav::-webkit-scrollbar { display: none; }
-  .day-tab {
-    background: #ffffff;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-full);
-    padding: 10px 18px;
-    font-size: 0.92rem;
-    font-weight: 700;
+  .greeting-subtitle {
+    margin: 0;
+    font-size: 0.82rem;
     color: var(--text-muted);
+    line-height: 1.4;
+  }
+  .btn-print {
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    color: var(--text-dark);
+    padding: 8px 13px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    font-family: inherit;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     white-space: nowrap;
-    transition: all 0.2s ease;
-    scroll-snap-align: center;
     flex-shrink: 0;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  }
+  .btn-print:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: #f0fdfa;
+  }
+
+  /* شريط الالتزام اليومي الذكي المدمج والقابل للطي (Compact Smart Tracker) */
+  .tracker-card {
+    background: #ffffff;
+    border: 1.5px solid #ccfbf1;
+    border-radius: 18px;
+    padding: 13px 15px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(15, 118, 110, 0.05);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s ease;
+  }
+  .tracker-compact-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .tracker-compact-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+    cursor: pointer;
     user-select: none;
-    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tracker-mini-ring {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tracker-mini-ring svg {
+    width: 40px;
+    height: 40px;
+    transform: rotate(-90deg);
+  }
+  .tracker-mini-ring-text {
+    position: absolute;
+    font-size: 0.72rem;
+    font-weight: 900;
+    color: var(--primary-dark);
+  }
+  .tracker-compact-info {
+    min-width: 0;
+  }
+  .tracker-title-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tracker-title {
+    margin: 0;
+    font-size: 0.96rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  .tracker-date {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    display: block;
+    margin-top: 1px;
+  }
+  .tracker-compact-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .btn-quick-water {
+    background: #f0f9ff;
+    border: 1.5px solid #bae6fd;
+    color: #0369a1;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-quick-water.checked {
+    background: #0284c7;
+    border-color: #0284c7;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+  }
+  .streak-badge {
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #fed7aa;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .btn-toggle-tracker {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  .tracker-card.is-expanded .btn-toggle-tracker {
+    background: #f0fdfa;
+    border-color: #99f6e4;
+    color: var(--primary);
+    transform: rotate(180deg);
+  }
+  .tracker-thin-bar {
+    width: 100%;
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+  .tracker-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), #10b981, var(--accent));
+    border-radius: 999px;
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .compact-lock-banner {
+    display: none;
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f0fdfa, #ecfdf5);
+    border: 1px solid #99f6e4;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    animation: fadeIn 0.2s ease;
+  }
+  .compact-lock-banner.show {
+    display: flex;
+  }
+  .compact-lock-banner-text {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #065f46;
+  }
+  .btn-compact-lock-now {
+    background: var(--primary);
+    color: #ffffff;
+    border: none;
+    border-radius: 999px;
+    padding: 5px 13px;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(15, 118, 110, 0.25);
+  }
+  .tracker-details-drawer {
+    display: none;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed #e2e8f0;
+    animation: fadeIn 0.2s ease;
+  }
+  .tracker-card.is-expanded .tracker-details-drawer {
+    display: block;
+  }
+  .tracker-progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .tracker-items-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .tracker-check-btn {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 9px 11px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .tracker-check-btn:hover {
+    border-color: #cbd5e1;
+    background: #f1f5f9;
+  }
+  .tracker-check-btn.checked {
+    background: #f0fdfa;
+    border-color: var(--primary);
+    color: var(--primary-dark);
+  }
+  .tracker-check-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    color: #ffffff;
+    font-size: 0.74rem;
+    font-weight: 900;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .tracker-check-btn.checked .tracker-check-box {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+  .tracker-congrats {
+    display: none;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 12px;
+    padding: 11px 14px;
+    margin-top: 12px;
+    color: #065f46;
+    font-size: 0.85rem;
+    font-weight: 700;
+    align-items: center;
+    gap: 10px;
+    animation: fadeIn 0.25s ease;
+  }
+  .tracker-congrats.show {
+    display: flex;
+  }
+  .tracker-actions {
+    margin-top: 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .btn-lock-day {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 340px;
+    padding: 11px 22px;
+    border-radius: 999px;
+    border: none;
+    background: #e2e8f0;
+    color: #94a3b8;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: not-allowed;
+    transition: all 0.25s ease;
+    user-select: none;
+  }
+  .btn-lock-day.ready {
+    background: linear-gradient(135deg, var(--primary), #0d9488);
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(15, 118, 110, 0.28);
+    animation: pulseGlow 1.8s infinite;
+  }
+  .btn-lock-day.locked {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1.5px solid #a7f3d0;
+    cursor: default;
+    animation: none;
+  }
+  .tracker-unlock-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 7px auto 0;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 600;
+  }
+  .tracker-unlock-btn.show {
+    display: inline-block;
+  }
+
+  /* شريط الأيام الأسبوعي بتصميم تقويم تطبيقات الجوال (7 أيام كاملة بدون سحب) */
+  .days-calendar-wrap {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 10px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+  }
+  .days-nav {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px;
+    padding: 0;
+    margin: 0;
+  }
+  .day-tab {
+    background: #f8fafc;
+    border: 1.5px solid transparent;
+    border-radius: 13px;
+    padding: 8px 3px 7px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    min-height: 62px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3px;
+    position: relative;
+    font-family: inherit;
     -webkit-tap-highlight-color: transparent;
   }
   .day-tab:hover {
-    border-color: var(--primary-light);
-    color: var(--primary);
+    background: #f0fdfa;
+    border-color: #99f6e4;
   }
-  .day-tab.active {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: #ffffff;
-    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
-    font-weight: 800;
+  .day-tab__name {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #64748b;
+    line-height: 1.1;
+    white-space: nowrap;
   }
-
-  /* بطاقات الوجبات */
-  .meal-slot {
-    background: #ffffff;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 18px 20px;
-    margin-bottom: 14px;
+  .day-tab__num {
+    font-size: 0.96rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    line-height: 1.1;
+  }
+  .day-tab__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #cbd5e1;
     transition: all 0.2s ease;
   }
+  .day-tab.is-done .day-tab__dot {
+    background: #10b981;
+    width: 14px;
+    height: 5px;
+  }
+  .day-tab.today-indicator {
+    background: #f0fdfa;
+    border-color: #5eead4;
+  }
+  .day-tab.today-indicator .day-tab__name {
+    color: var(--primary-dark);
+    font-weight: 800;
+  }
+  .day-tab.today-indicator .day-tab__dot {
+    background: var(--accent);
+  }
+  .day-tab.active {
+    background: linear-gradient(145deg, #0f766e, #0d9488);
+    border-color: #0f766e;
+    color: #ffffff;
+    box-shadow: 0 6px 14px rgba(15, 118, 110, 0.26);
+    transform: translateY(-1px);
+  }
+  .day-tab.active .day-tab__name,
+  .day-tab.active .day-tab__num {
+    color: #ffffff;
+  }
+  .day-tab.active .day-tab__dot {
+    background: #ffffff;
+  }
+  .day-today-pill {
+    position: absolute;
+    top: -6px;
+    background: var(--accent);
+    color: #ffffff;
+    font-size: 0.6rem;
+    font-weight: 800;
+    padding: 1px 6px;
+    border-radius: 999px;
+    line-height: 1.2;
+    box-shadow: 0 2px 5px rgba(249, 115, 22, 0.3);
+  }
+
+  /* التبويب المزدوج المثبت (المسار الغذائي | المسار الرياضي) */
+  .plan-mode-sticky {
+    position: sticky;
+    top: 8px;
+    z-index: 45;
+    margin-bottom: 16px;
+  }
+  .plan-mode-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    background: rgba(241, 245, 249, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 5px;
+    border-radius: 16px;
+    border: 1.5px solid #e2e8f0;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  }
+  .plan-mode-btn {
+    border: none;
+    background: transparent;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .plan-mode-btn.active[data-mode="meals"] {
+    background: #ffffff;
+    color: var(--primary-dark);
+    box-shadow: 0 3px 10px rgba(15, 118, 110, 0.12);
+  }
+  .plan-mode-btn.active[data-mode="workout"] {
+    background: #ffffff;
+    color: #c2410c;
+    box-shadow: 0 3px 10px rgba(234, 88, 12, 0.14);
+  }
+  .mode-badge {
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    color: #475569;
+  }
+  .plan-mode-btn.active[data-mode="meals"] .mode-badge {
+    background: #ccfbf1;
+    color: #0f766e;
+  }
+  .plan-mode-btn.active[data-mode="workout"] .mode-badge {
+    background: #ffedd5;
+    color: #c2410c;
+  }
+  .track-panel-section {
+    animation: fadeIn 0.22s ease;
+  }
+  .track-panel-section.is-hidden-mode {
+    display: none;
+  }
+
+  /* لوحة السعرات والماكروز البصرية العصرية (SVG Ring + Macro Bars) */
+  .plan-summary-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
+    border: 1.5px solid #ccfbf1;
+    border-radius: 18px;
+    padding: 15px 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 14px rgba(15, 118, 110, 0.05);
+  }
+  .kcal-ring-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 14px;
+    border-left: 1.5px dashed #cbd5e1;
+    flex-shrink: 0;
+  }
+  .kcal-ring-svg-wrap {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .kcal-ring-svg-wrap svg {
+    width: 60px;
+    height: 60px;
+    transform: rotate(-90deg);
+  }
+  .kcal-ring-icon {
+    position: absolute;
+    font-size: 1.15rem;
+  }
+  .kcal-ring-meta b {
+    display: block;
+    font-size: 1.32rem;
+    font-weight: 900;
+    color: var(--primary-dark);
+    line-height: 1.15;
+  }
+  .kcal-ring-meta span {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .macros-bars-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    min-width: 0;
+  }
+  .macro-stat-col {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .macro-stat-col b {
+    display: block;
+    font-size: 0.96rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    line-height: 1.2;
+  }
+  .macro-stat-col span {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .macro-mini-track {
+    width: 100%;
+    height: 4px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    overflow: hidden;
+  }
+  .macro-mini-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+  .macro-mini-fill.protein { background: #0f766e; }
+  .macro-mini-fill.carbs { background: #f59e0b; }
+  .macro-mini-fill.fat { background: #6366f1; }
+
+  /* بطاقات الوجبات العصرية (Modern Meal Cards) */
+  .meal-slot {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    transition: all 0.22s ease;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+    position: relative;
+  }
   .meal-slot:hover {
-    border-color: var(--primary-light);
-    box-shadow: var(--shadow-sm);
+    border-color: #99f6e4;
+    box-shadow: 0 6px 18px rgba(15, 118, 110, 0.07);
+  }
+  .meal-slot.is-completed {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 65%);
+    border-color: #86efac;
   }
   .meal-slot__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    gap: 8px;
+    margin-bottom: 10px;
   }
-  .meal-slot__title {
+  .meal-slot__title-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+  .meal-period-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 999px;
     font-weight: 800;
-    font-size: 0.94rem;
+    font-size: 0.82rem;
+  }
+  .meal-period-pill.breakfast { background: #fef3c7; color: #b45309; }
+  .meal-period-pill.lunch { background: #ffedd5; color: #c2410c; }
+  .meal-period-pill.dinner { background: #e0e7ff; color: #4338ca; }
+  .meal-period-pill.snack { background: #ccfbf1; color: #0f766e; }
+
+  .meal-custom-badge {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #0f766e;
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .btn-inline-check {
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    color: #475569;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-inline-check:hover {
+    border-color: var(--primary);
     color: var(--primary);
   }
-  .meal-slot__title.lunch { color: var(--accent); }
+  .btn-inline-check.checked {
+    background: #10b981;
+    border-color: #10b981;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+  }
   .meal-slot__name {
-    font-size: 1.15rem;
-    font-weight: 800;
+    font-size: 1.14rem;
+    font-weight: 900;
     color: var(--text-dark);
-    margin-bottom: 6px;
+    margin-bottom: 5px;
+    line-height: 1.38;
   }
   .meal-slot__portion {
-    font-size: 0.9rem;
+    font-size: 0.89rem;
     color: var(--text-muted);
-    line-height: 1.55;
-    margin-bottom: 12px;
+    line-height: 1.58;
+    margin-bottom: 10px;
   }
-  .meal-slot__footer {
-    display: flex;
-    justify-content: space-between;
+  .meal-slot__scale-weight {
+    margin-bottom: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #0f766e;
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    padding: 6px 12px;
+    border-radius: 10px;
+    display: inline-flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding-top: 10px;
-    border-top: 1px dashed var(--border);
+    gap: 6px;
+    line-height: 1.4;
   }
   .meal-slot__metrics {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
+    margin-bottom: 12px;
   }
   .macro-tag {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 6px;
-    background: var(--bg);
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
     color: var(--text);
   }
   .macro-tag.kcal {
     background: var(--primary-soft);
-    color: var(--primary);
+    border-color: #99f6e4;
+    color: var(--primary-dark);
+    font-weight: 800;
   }
+  .meal-slot__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding-top: 11px;
+    border-top: 1px dashed #e2e8f0;
+  }
+  .meal-slot__actions.single-action {
+    grid-template-columns: 1fr;
+  }
+  .btn-prep,
   .btn-swap {
-    background: #ffffff;
-    border: 1.5px solid var(--primary);
-    color: var(--primary);
-    padding: 5px 14px;
-    border-radius: var(--radius-full);
+    padding: 8px 12px;
+    border-radius: 11px;
+    font-family: inherit;
     font-size: 0.82rem;
     font-weight: 800;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
+    gap: 5px;
     transition: all 0.2s ease;
-  }
-  .btn-swap:hover {
-    background: var(--primary);
-    color: #ffffff;
-    transform: translateY(-1px);
-  }
-  .btn-swap.lunch {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .btn-swap.lunch:hover {
-    background: var(--accent);
-    color: #ffffff;
+    -webkit-tap-highlight-color: transparent;
   }
   .btn-prep {
     background: #f8fafc;
     border: 1.5px solid #cbd5e1;
     color: var(--text-dark);
-    padding: 5px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    transition: all 0.2s ease;
   }
   .btn-prep:hover {
     background: #f1f5f9;
     border-color: #94a3b8;
-    color: var(--primary);
   }
   .btn-prep.active {
     background: var(--primary-soft);
     border-color: var(--primary);
     color: var(--primary-dark);
   }
+  .btn-swap {
+    background: #f0fdfa;
+    border: 1.5px solid #5eead4;
+    color: var(--primary-dark);
+  }
+  .btn-swap:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+  }
+  .btn-swap.lunch {
+    background: #fff7ed;
+    border-color: #fdba74;
+    color: #c2410c;
+  }
+  .btn-swap.lunch:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+  }
   .prep-accordion {
-    margin-top: 14px;
+    margin-top: 12px;
     padding: 14px 16px;
     background: #f8fafc;
-    border: 1px dashed #cbd5e1;
-    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+    border-radius: 13px;
     animation: fadeIn 0.2s ease-in-out;
   }
   .prep-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--text-muted);
     font-weight: 700;
     margin-bottom: 10px;
     background: #ffffff;
-    padding: 3px 10px;
-    border-radius: var(--radius-full);
+    padding: 4px 10px;
+    border-radius: 999px;
     border: 1px solid #e2e8f0;
   }
   .prep-badge strong {
@@ -420,7 +1039,7 @@
   .prep-steps-list {
     margin: 0;
     padding-right: 20px;
-    font-size: 0.88rem;
+    font-size: 0.87rem;
     color: var(--text);
     line-height: 1.7;
   }
@@ -431,25 +1050,27 @@
     margin-bottom: 0;
   }
 
-  /* المسار الرياضي الموازي */
+  /* المسار الرياضي التفاعلي (Interactive Workout Player) */
   .workout-card {
-    background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
-    border: 1.5px solid var(--accent-border);
-    border-radius: var(--radius-md);
-    padding: 20px;
-    margin-top: 24px;
+    background: linear-gradient(160deg, #fff7ed 0%, #ffffff 35%, #ffffff 100%);
+    border: 1.5px solid #fed7aa;
+    border-radius: 20px;
+    padding: 18px;
+    box-shadow: 0 4px 16px rgba(234, 88, 12, 0.05);
   }
   .workout-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
     margin-bottom: 12px;
   }
   .workout-head h3 {
     margin: 0;
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: var(--accent);
+    font-size: 1.08rem;
+    font-weight: 900;
+    color: #c2410c;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -457,20 +1078,20 @@
   .workout-track-switch {
     display: flex;
     background: #f1f5f9;
-    border-radius: 999px;
-    padding: 3px;
+    border-radius: 14px;
+    padding: 4px;
     gap: 4px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     border: 1px solid #e2e8f0;
   }
   .workout-track-btn {
     flex: 1;
     border: none;
     background: transparent;
-    padding: 8px 14px;
-    border-radius: 999px;
-    font-size: 0.88rem;
-    font-weight: 700;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    font-weight: 800;
     font-family: inherit;
     color: #64748b;
     cursor: pointer;
@@ -482,24 +1103,61 @@
   }
   .workout-track-btn.active {
     background: #ffffff;
-    color: var(--accent);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    color: #c2410c;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  }
+  .workout-session-progress {
+    background: #ffffff;
+    border: 1px solid #fed7aa;
+    border-radius: 13px;
+    padding: 10px 13px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .workout-session-bar-wrap {
+    flex: 1;
+    min-width: 150px;
+  }
+  .workout-session-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #9a3412;
+    margin-bottom: 5px;
+  }
+  .workout-session-track {
+    width: 100%;
+    height: 6px;
+    background: #ffedd5;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .workout-session-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f97316, #10b981);
+    border-radius: 999px;
+    transition: width 0.3s ease;
   }
   .workout-phase-box {
-    background: rgba(254, 243, 199, 0.6);
+    background: rgba(254, 243, 199, 0.55);
     border: 1px solid #fde68a;
-    border-radius: 8px;
-    padding: 10px 12px;
+    border-radius: 12px;
+    padding: 10px 13px;
     font-size: 0.84rem;
     color: #92400e;
     margin-bottom: 12px;
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    line-height: 1.45;
+    line-height: 1.5;
   }
   .workout-phase-box.cooldown {
-    background: rgba(236, 253, 245, 0.7);
+    background: rgba(236, 253, 245, 0.75);
     border-color: #a7f3d0;
     color: #065f46;
     margin-top: 14px;
@@ -508,148 +1166,233 @@
   .workout-exercises-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
   .exercise-card {
     background: #ffffff;
-    border: 1px solid #fed7aa;
-    border-radius: 10px;
-    padding: 12px 14px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    border: 1.5px solid #fed7aa;
+    border-radius: 16px;
+    padding: 14px 15px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+    transition: all 0.22s ease;
+  }
+  .exercise-card.is-done {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 70%);
+    border-color: #86efac;
   }
   .exercise-header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
   .exercise-num-title {
     display: flex;
     align-items: flex-start;
-    gap: 8px;
+    gap: 10px;
     width: 100%;
     min-width: 0;
   }
-  .exercise-num {
+  .exercise-check-btn {
     background: #ffedd5;
     color: #c2410c;
-    width: 22px;
-    height: 22px;
-    margin-top: 2px;
+    border: 2px solid #fdba74;
+    width: 28px;
+    height: 28px;
+    margin-top: 1px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.76rem;
-    font-weight: 800;
+    font-size: 0.82rem;
+    font-weight: 900;
+    font-family: inherit;
     flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .exercise-check-btn:hover {
+    transform: scale(1.06);
+    border-color: #10b981;
+  }
+  .exercise-card.is-done .exercise-check-btn {
+    background: #10b981;
+    border-color: #10b981;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
   }
   .exercise-name {
-    font-size: 0.95rem;
+    font-size: 0.96rem;
     font-weight: 800;
     color: var(--text-dark);
     margin: 0;
     line-height: 1.45;
     min-width: 0;
+    flex: 1;
     overflow-wrap: break-word;
+    cursor: pointer;
+  }
+  .exercise-card.is-done .exercise-name {
+    color: #065f46;
   }
   .exercise-muscle-tag {
     font-size: 0.76rem;
     color: #475569;
     background: #f1f5f9;
     padding: 3px 9px;
-    border-radius: 6px;
+    border-radius: 7px;
     white-space: normal;
     line-height: 1.38;
     font-weight: 700;
     max-width: 100%;
     box-sizing: border-box;
-    margin-inline-start: 30px;
+    margin-inline-start: 38px;
   }
   .exercise-metrics {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 8px;
     font-size: 0.82rem;
-    color: #0f766e;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   .exercise-metric-pill {
     background: #f0fdfa;
     border: 1px solid #ccfbf1;
-    border-radius: 6px;
-    padding: 2px 8px;
+    color: #0f766e;
+    border-radius: 8px;
+    padding: 5px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  /* زر مؤقت الراحة الذكي (1-Tap Live Rest Timer) */
+  .btn-rest-timer {
+    position: relative;
+    overflow: hidden;
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    color: #334155;
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-rest-timer:hover {
+    border-color: var(--accent);
+    color: #c2410c;
+    background: #fff7ed;
+  }
+  .btn-rest-timer.is-running {
+    background: #fff7ed;
+    border-color: #f97316;
+    color: #9a3412;
+    box-shadow: 0 2px 10px rgba(249, 115, 22, 0.18);
+  }
+  .btn-rest-timer.is-finished {
+    background: #10b981;
+    border-color: #10b981;
+    color: #ffffff;
+    animation: restFlash 0.5s ease 2;
   }
   .exercise-tip {
     font-size: 0.8rem;
     color: #78350f;
     background: #fffbeb;
-    border-radius: 6px;
-    padding: 6px 10px;
-    line-height: 1.4;
+    border: 1px solid #fef3c7;
+    border-radius: 10px;
+    padding: 8px 11px;
+    line-height: 1.48;
     display: flex;
     align-items: flex-start;
     gap: 6px;
+    margin-bottom: 10px;
   }
   .btn-exercise-visual {
-    background: #f0fdfa;
-    border: 1px solid #99f6e4;
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 0.8rem;
+    width: 100%;
+    background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);
+    border: 1.5px solid #99f6e4;
+    border-radius: 12px;
+    padding: 9px 14px;
+    font-size: 0.84rem;
     font-weight: 800;
     color: var(--primary-dark);
     cursor: pointer;
     font-family: inherit;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 8px;
-    transition: all 0.15s ease;
+    justify-content: space-between;
+    gap: 8px;
+    transition: all 0.18s ease;
+    -webkit-tap-highlight-color: transparent;
   }
   .btn-exercise-visual:hover {
     background: var(--primary);
     border-color: var(--primary);
     color: #ffffff;
   }
-
-  .plan-summary-bar {
+  .btn-exercise-visual-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .play-icon-badge {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.18s ease;
+  }
+  .btn-exercise-visual:hover .play-icon-badge {
+    background: #ffffff;
+    color: var(--primary);
+  }
+  .workout-all-done-banner {
+    display: none;
+    margin-top: 14px;
+    padding: 13px 15px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ecfdf5, #f0fdfa);
+    border: 1.5px solid #6ee7b7;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    animation: fadeIn 0.25s ease;
+  }
+  .workout-all-done-banner.show {
     display: flex;
-    justify-content: space-around;
-    background: var(--primary-soft);
-    border: 1px solid var(--primary-border);
-    border-radius: var(--radius-md);
-    padding: 14px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  .plan-summary-item b {
-    display: block;
-    font-size: 1.25rem;
-    color: var(--primary-dark);
-  }
-  .plan-summary-item span {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    font-weight: 700;
   }
 
-  /* نافذة تصفح واختيار الوجبات الموزونة (Meal Picker Modal) */
+  /* النوافذ المنبثقة والمنزلقة من الأسفل للجوال (Smooth Bottom Sheets) */
   .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(15, 23, 42, 0.65);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: rgba(15, 23, 42, 0.62);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 100000;
     padding: 16px;
     animation: fadeIn 0.15s ease-out;
   }
@@ -658,30 +1401,39 @@
     width: 100%;
     max-width: 680px;
     max-height: 88vh;
-    border-radius: var(--radius-lg);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border-radius: 22px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.28);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     border: 1px solid #e2e8f0;
+  }
+  .sheet-drag-handle {
+    display: none;
+    width: 42px;
+    height: 5px;
+    border-radius: 999px;
+    background: #cbd5e1;
+    margin: 10px auto 2px;
+    flex-shrink: 0;
   }
   .modal-header {
     flex-shrink: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 22px 12px;
+    padding: 14px 20px 12px;
     border-bottom: 1px solid #f1f5f9;
   }
   .modal-title {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 800;
     color: var(--text-dark);
   }
   .modal-subtitle {
-    margin: 4px 0 0;
-    font-size: 0.85rem;
+    margin: 3px 0 0;
+    font-size: 0.83rem;
     color: var(--text-muted);
   }
   .btn-close-modal {
@@ -689,13 +1441,14 @@
     border: none;
     width: 34px;
     height: 34px;
-    border-radius: var(--radius-full);
+    border-radius: 999px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: var(--text-muted);
     cursor: pointer;
+    flex-shrink: 0;
     transition: all 0.2s;
   }
   .btn-close-modal:hover {
@@ -708,11 +1461,11 @@
   }
   .picker-input {
     width: 100%;
-    padding: 11px 18px;
+    padding: 11px 16px;
     border: 1.5px solid #cbd5e1;
-    border-radius: var(--radius-full);
+    border-radius: 14px;
     font-family: 'Tajawal', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.94rem;
     color: var(--text-dark);
     background: #f8fafc;
     outline: none;
@@ -732,32 +1485,26 @@
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    min-height: 46px;
+    min-height: 44px;
     box-sizing: border-box;
     align-items: center;
   }
-  .picker-filter-pills::-webkit-scrollbar {
-    display: none;
-  }
+  .picker-filter-pills::-webkit-scrollbar { display: none; }
   .filter-pill {
     flex-shrink: 0;
     white-space: nowrap;
     padding: 6px 14px;
-    border-radius: var(--radius-full);
+    border-radius: 999px;
     border: 1px solid #cbd5e1;
     background: #f8fafc;
     color: var(--text-dark);
-    font-size: 0.85rem;
+    font-family: inherit;
+    font-size: 0.84rem;
     font-weight: 700;
     cursor: pointer;
     line-height: 1.25;
     transition: all 0.15s;
     user-select: none;
-  }
-  .filter-pill:hover {
-    background: #f1f5f9;
-    color: var(--text-dark);
-    border-color: #94a3b8;
   }
   .filter-pill.active {
     background: var(--primary);
@@ -769,7 +1516,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 22px;
+    padding: 8px 20px;
     font-size: 0.82rem;
     color: var(--text-muted);
     font-weight: 700;
@@ -780,6 +1527,7 @@
     background: none;
     border: none;
     color: var(--accent);
+    font-family: inherit;
     font-size: 0.82rem;
     font-weight: 800;
     cursor: pointer;
@@ -787,23 +1535,19 @@
     align-items: center;
     gap: 4px;
     padding: 2px 6px;
-    border-radius: 4px;
-    transition: all 0.2s;
-  }
-  .btn-random-pick:hover {
-    background: #fff7ed;
+    border-radius: 6px;
   }
   .picker-meals-list {
     flex: 1;
     overflow-y: auto;
-    padding: 14px 20px;
+    padding: 14px 20px calc(18px + env(safe-area-inset-bottom, 0px));
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
   .picker-item-card {
     border: 1.5px solid #e2e8f0;
-    border-radius: var(--radius-md);
+    border-radius: 15px;
     padding: 14px 16px;
     background: #ffffff;
     transition: all 0.2s;
@@ -829,22 +1573,22 @@
     font-size: 1rem;
     font-weight: 800;
     color: var(--text-dark);
-    margin: 0;
+    margin: 0 0 3px;
   }
   .picker-item-desc {
-    font-size: 0.86rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
     line-height: 1.5;
   }
   .picker-item-tags {
     display: flex;
-    gap: 4px;
+    gap: 5px;
     flex-wrap: wrap;
   }
   .picker-item-tag {
     font-size: 0.72rem;
     padding: 2px 7px;
-    border-radius: 4px;
+    border-radius: 6px;
     background: #f1f5f9;
     color: #64748b;
     font-weight: 600;
@@ -863,8 +1607,9 @@
     background: var(--primary);
     color: #ffffff;
     border: none;
-    padding: 6px 16px;
-    border-radius: var(--radius-full);
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-family: inherit;
     font-size: 0.84rem;
     font-weight: 800;
     cursor: pointer;
@@ -872,365 +1617,123 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-  }
-  .btn-select-meal:hover {
-    background: var(--primary-dark);
-    transform: translateY(-1px);
   }
   .btn-select-meal.current-btn {
     background: #e2e8f0;
     color: #64748b;
     cursor: default;
   }
-  .btn-select-meal.current-btn:hover {
-    transform: none;
-  }
 
-  /* بطاقة متابعة الالتزام اليومي وسلسلة الأيام (Daily Habit & Streak Tracker) */
-  .tracker-card {
-    background: #ffffff;
-    border: 1.5px solid #ccfbf1;
-    border-radius: var(--radius-lg);
-    padding: 20px 22px;
-    margin-bottom: 24px;
-    box-shadow: 0 4px 16px rgba(15, 118, 110, 0.06);
-    position: relative;
-    overflow: hidden;
-  }
-  .tracker-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-  }
-  .tracker-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 14px;
-  }
-  .tracker-title-wrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .tracker-title {
-    margin: 0;
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--text-dark);
-  }
-  .tracker-date {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    font-weight: 600;
-  }
-  .streak-badge {
-    background: #fff7ed;
-    color: #c2410c;
-    border: 1px solid #ffedd5;
-    padding: 5px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.84rem;
-    font-weight: 800;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    box-shadow: 0 1px 3px rgba(234, 88, 12, 0.1);
-  }
-  .tracker-progress-wrap {
-    margin-bottom: 16px;
-  }
-  .tracker-progress-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.84rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-  }
-  .tracker-progress-bar-bg {
-    width: 100%;
-    height: 9px;
-    background: #e2e8f0;
-    border-radius: var(--radius-full);
-    overflow: hidden;
-  }
-  .tracker-progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    border-radius: var(--radius-full);
-    transition: width 0.35s ease;
-  }
-
-  /* شريط أيام الأسبوع وسجل الالتزام المحفوظ */
-  .tracker-week-history {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: var(--radius-md);
-    padding: 10px 12px;
-    margin-bottom: 16px;
-    gap: 4px;
-  }
-  .week-dot-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    flex: 1;
-    min-width: 0;
-  }
-  .week-dot-day {
-    font-size: 0.74rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    white-space: nowrap;
-  }
-  .week-dot-circle {
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-full);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.86rem;
-    background: #ffffff;
-    border: 1.5px solid #cbd5e1;
-    color: var(--text-muted);
-    transition: all 0.2s;
-  }
-  .week-dot-item.is-today .week-dot-day {
-    color: var(--primary);
-    font-weight: 800;
-  }
-  .week-dot-item.is-today .week-dot-circle {
-    border-color: var(--primary);
-    background: #f0fdfa;
-    box-shadow: 0 0 0 2px var(--primary-soft);
-    color: var(--primary);
-  }
-  .week-dot-item.is-done .week-dot-circle {
-    background: #fff7ed;
-    border-color: #fdba74;
-    color: #ea580c;
-  }
-  .week-dot-item.is-golden .week-dot-circle {
-    background: #fefce8;
-    border-color: #fde047;
-    color: #ca8a04;
-  }
-  .week-dot-item.is-missed .week-dot-circle {
-    background: #f1f5f9;
-    border-color: #e2e8f0;
-    color: #94a3b8;
-  }
-  .tracker-items-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 10px;
-  }
-  .tracker-check-btn {
-    background: #f8fafc;
-    border: 1.5px solid #e2e8f0;
-    border-radius: var(--radius-md);
-    padding: 10px 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    cursor: pointer;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    transition: all 0.2s;
-    user-select: none;
-  }
-  .tracker-check-btn:hover {
-    border-color: #cbd5e1;
-    background: #f1f5f9;
-  }
-  .tracker-check-btn.checked {
-    background: #f0fdfa;
-    border-color: var(--primary);
-    color: var(--primary-dark);
-  }
-  .tracker-check-box {
-    width: 22px;
-    height: 22px;
-    border-radius: 6px;
-    border: 2px solid #cbd5e1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-    color: #ffffff;
-    font-size: 0.8rem;
-    font-weight: 900;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-  .tracker-check-btn.checked .tracker-check-box {
-    background: var(--primary);
-    border-color: var(--primary);
-  }
-  .tracker-congrats {
-    display: none;
-    background: #ecfdf5;
-    border: 1px solid #a7f3d0;
-    border-radius: var(--radius-md);
-    padding: 12px 16px;
-    margin-top: 14px;
-    color: #065f46;
-    font-size: 0.88rem;
-    font-weight: 700;
-    align-items: center;
-    gap: 10px;
-    animation: fadeIn 0.3s ease;
-  }
-  .tracker-congrats.show {
-    display: flex;
-  }
-
-  /* زر تأكيد وتقفيل التزام اليوم */
-  .tracker-actions {
-    margin-top: 14px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .btn-lock-day {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    max-width: 340px;
-    padding: 12px 24px;
-    border-radius: var(--radius-full);
-    border: none;
-    background: #e2e8f0;
-    color: #94a3b8;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 800;
-    cursor: not-allowed;
-    transition: all 0.25s ease;
-    box-shadow: none;
-    user-select: none;
-  }
-  .btn-lock-day.ready {
-    background: linear-gradient(135deg, var(--primary), #0d9488);
-    color: #ffffff;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(15, 118, 110, 0.28);
-    animation: pulseGlow 1.8s infinite;
-  }
-  .btn-lock-day.ready:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(15, 118, 110, 0.35);
-  }
-  .btn-lock-day.locked {
-    background: #ecfdf5;
-    color: #065f46;
-    border: 1.5px solid #a7f3d0;
-    cursor: default;
-    animation: none;
-    box-shadow: none;
-  }
-  .tracker-unlock-btn {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    text-decoration: underline;
-    cursor: pointer;
-    margin: 8px auto 0;
-    font-family: 'Tajawal', sans-serif;
-    font-weight: 600;
-  }
-  .tracker-unlock-btn.show {
-    display: inline-block;
-  }
-  @keyframes pulseGlow {
-    0% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.4); }
-    70% { box-shadow: 0 0 0 8px rgba(15, 118, 110, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0); }
-  }
-
-  /* خيارات الطباعة وتصدير PDF (Print Choices Modal) */
+  /* خيارات الطباعة وتصدير PDF */
   .print-options-grid {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 16px 20px 22px;
+    padding: 16px 20px calc(22px + env(safe-area-inset-bottom, 0px));
   }
   .print-option-card {
     border: 1.5px solid #e2e8f0;
-    border-radius: var(--radius-md);
-    padding: 16px 18px;
+    border-radius: 14px;
+    padding: 15px 16px;
     background: #ffffff;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
     transition: all 0.2s;
     text-align: right;
   }
   .print-option-card:hover {
     border-color: var(--primary);
     background: #f0fdfa;
-    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.08);
   }
   .print-option-info h4 {
     margin: 0 0 4px;
-    font-size: 1.02rem;
+    font-size: 1rem;
     color: var(--text-dark);
     font-weight: 800;
   }
   .print-option-info p {
     margin: 0;
-    font-size: 0.84rem;
+    font-size: 0.83rem;
     color: var(--text-muted);
   }
   .print-option-btn {
     background: #f1f5f9;
     color: var(--text-dark);
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 800;
-    padding: 6px 14px;
-    border-radius: var(--radius-full);
-    border: none;
-    pointer-events: none;
-    transition: all 0.2s;
-  }
-  .print-option-card:hover .print-option-btn {
-    background: var(--primary);
-    color: #ffffff;
+    padding: 6px 13px;
+    border-radius: 999px;
+    white-space: nowrap;
   }
 
-  /* تحسينات الشاشات الصغيرة والجوال */
+  /* تحسينات الجوال والشاشات الصغيرة (Bottom Sheets + Mobile Ergonomics) */
   @media (max-width: 640px) {
+    .plan-hero-bar {
+      padding: 12px 13px;
+    }
+    .btn-print span {
+      display: none;
+    }
+    .btn-print {
+      padding: 9px 11px;
+    }
+    .plan-summary-bar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      padding: 14px;
+    }
+    .kcal-ring-box {
+      padding-left: 0;
+      border-left: none;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #cbd5e1;
+      justify-content: center;
+    }
+    .days-calendar-wrap {
+      padding: 8px 6px;
+    }
+    .days-nav {
+      gap: 4px;
+    }
+    .day-tab {
+      padding: 8px 2px 6px;
+      min-height: 58px;
+      border-radius: 11px;
+    }
+    .day-tab__name {
+      font-size: 0.67rem;
+    }
+    .day-tab__num {
+      font-size: 0.9rem;
+    }
+    .plan-mode-btn {
+      padding: 9px 8px;
+      font-size: 0.84rem;
+      gap: 5px;
+    }
+    .tracker-items-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
     .modal-overlay {
-      padding: 12px 8px 0;
+      padding: 0;
       align-items: flex-end;
     }
     .modal-card {
+      max-width: 100%;
       max-height: 92vh;
-      border-radius: 20px 20px 0 0;
+      border-radius: 24px 24px 0 0;
+      border-bottom: none;
+      animation: sheetSlideUp 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .sheet-drag-handle {
+      display: block;
     }
     .modal-header {
-      padding: 14px 16px 10px;
+      padding: 10px 16px 10px;
     }
     .picker-search-bar {
       padding: 8px 16px 6px;
@@ -1238,41 +1741,25 @@
     .picker-filter-pills {
       padding: 6px 16px 8px;
       gap: 6px;
-      min-height: 42px;
-    }
-    .filter-pill {
-      font-size: 0.82rem;
-      padding: 5px 12px;
-    }
-    .picker-results-meta {
-      padding: 6px 16px;
     }
     .picker-meals-list {
-      padding: 10px 14px;
-    }
-    .tracker-items-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-    .tracker-check-btn {
-      padding: 9px 10px;
-      font-size: 0.84rem;
+      padding: 10px 14px calc(20px + env(safe-area-inset-bottom, 10px));
     }
   }
 
-  /* منطقة مخصصة للطباعة الكاملة (أسبوع أو شهر) */
   #printOutputContainer {
     display: none;
   }
 
-  /* إعدادات الطباعة وتحميل PDF */
+  /* إعدادات الطباعة وتحميل PDF — تضمن طباعة الوجبات والتمارين معاً دائماً */
   @media print {
-    body { background: #ffffff !important; }
-    .app-header, .app-footer, .days-nav, .btn-print, .btn-swap, .btn-prep, .modal-overlay, .tracker-card, .plan-actions { display: none !important; }
+    body { background: #ffffff !important; padding-bottom: 0 !important; }
+    .app-header, .app-footer, .mobile-bottom-nav, .days-calendar-wrap, .plan-mode-sticky, .btn-print, .meal-slot__actions, .btn-inline-check, .exercise-check-btn, .btn-rest-timer, .btn-exercise-visual, .workout-session-progress, .workout-all-done-banner, .modal-overlay, .tracker-card { display: none !important; }
+    .track-panel-section, .track-panel-section.is-hidden-mode { display: block !important; }
     .wrap { max-width: 100% !important; padding: 0 !important; }
     .card { border: none !important; box-shadow: none !important; padding: 0 !important; }
-    .meal-slot { break-inside: avoid; border: 1px solid #e2e8f0 !important; page-break-inside: avoid; }
-    .workout-card { break-inside: avoid; border: 1px solid #e2e8f0 !important; page-break-inside: avoid; }
+    .meal-slot { break-inside: avoid; border: 1px solid #e2e8f0 !important; page-break-inside: avoid; box-shadow: none !important; }
+    .workout-card { break-inside: avoid; border: 1px solid #e2e8f0 !important; page-break-inside: avoid; margin-top: 18px !important; box-shadow: none !important; }
     .print-sheet { page-break-after: always; break-after: page; }
     .print-sheet:last-child { page-break-after: auto; break-after: auto; }
     body.printing-custom #planContent { display: none !important; }
@@ -1313,197 +1800,274 @@
   </div>
 
   <div id="planContent" class="hidden">
-    <!-- بطاقة التحفيز والترحيب اليومي -->
-    <div class="daily-greeting-card" id="dailyGreetingCard">
-      <div class="greeting-icon" id="greetingIcon">🌱</div>
-      <div class="greeting-content">
-        <h2 class="greeting-title" id="greetingTitle">أهلاً بك في متوازي! 🎯</h2>
-        <p class="greeting-subtitle" id="greetingSubtitle">خطتك الغذائية والرياضية اليومية جاهزة وموزونة لهدفك.</p>
+    <!-- الهيدر العلوي المدمج (الترحيب + تصدير PDF) -->
+    <div class="plan-hero-bar" id="dailyGreetingCard">
+      <div class="plan-hero-main">
+        <div class="greeting-icon" id="greetingIcon">🌱</div>
+        <div class="greeting-content">
+          <div class="greeting-top-row">
+            <h1 class="greeting-title" id="greetingTitle">أهلاً بك في متوازي! 🎯</h1>
+            <span class="greeting-badge">
+              <span class="greeting-badge-dot"></span>
+              <span>معتمد وموزون</span>
+            </span>
+          </div>
+          <p class="greeting-subtitle" id="greetingSubtitle">خطتك الغذائية والرياضية اليومية جاهزة وموزونة لهدفك.</p>
+        </div>
       </div>
-      <div class="greeting-badge">
-        <span class="greeting-badge-dot"></span>
-        <span>ملفك معتمد وموزون</span>
-      </div>
+      <button type="button" class="btn-print" id="btnPrintPdf" title="تحميل أو طباعة الجدول PDF">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        <span>طباعة / PDF</span>
+      </button>
     </div>
 
-    <div class="plan-page-head">
-      <div class="plan-page-title">
-        <h1 id="userPlanHeading">جدولك الغذائي والرياضي المتوازي</h1>
-        <p>مصمم وموزون لسعراتك اليومية بمراجعة الأخصائي</p>
-      </div>
-      <div class="plan-actions">
-        <button type="button" class="btn-print" id="btnPrintPdf">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-          <span>تحميل / طباعة PDF</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- كارت متابعة الالتزام اليومي وسلسلة الأيام (Daily Habit & Streak Tracker) -->
+    <!-- شريط متابعة الالتزام اليومي المدمج والذكي (Compact & Expandable Tracker) -->
     <div class="tracker-card" id="dailyTrackerCard">
-      <div class="tracker-head">
-        <div class="tracker-title-wrap">
-          <span style="font-size:1.4rem;">🎯</span>
-          <div>
-            <h3 class="tracker-title">متابعة التزام اليوم</h3>
-            <span class="tracker-date" id="trackerDateText">اليوم</span>
+      <div class="tracker-compact-row">
+        <div class="tracker-compact-right" id="trackerToggleHeader" role="button" tabindex="0" aria-expanded="false" aria-controls="trackerDetailsDrawer">
+          <div class="tracker-mini-ring" aria-hidden="true">
+            <svg viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="16" fill="none" stroke="#e2e8f0" stroke-width="3.8"></circle>
+              <circle id="trackerMiniRingCircle" cx="20" cy="20" r="16" fill="none" stroke="#0f766e" stroke-width="3.8" stroke-linecap="round" stroke-dasharray="100.53" stroke-dashoffset="100.53" style="transition: stroke-dashoffset 0.35s ease;"></circle>
+            </svg>
+            <span class="tracker-mini-ring-text" id="trackerProgressPercent">0%</span>
+          </div>
+          <div class="tracker-compact-info">
+            <div class="tracker-title-line">
+              <h3 class="tracker-title">التزام اليوم</h3>
+            </div>
+            <span class="tracker-date" id="trackerCompactSub">0 من 6 مهام · اضغط للتفاصيل</span>
           </div>
         </div>
-        <div class="streak-badge" id="streakBadge" title="عدد الأيام المتتالية المكتملة">
-          <span>🔥</span>
-          <span id="streakCount">0</span>
-          <span>أيام التزام متتالية</span>
+
+        <div class="tracker-compact-actions">
+          <button type="button" class="btn-quick-water" id="btnQuickWater" title="تسجيل شرب الماء اليومي (2-3 لتر)">
+            <span>💧</span>
+            <span id="quickWaterText">الماء</span>
+          </button>
+          <div class="streak-badge" id="streakBadge" title="أيام متتالية بلا انقطاع">
+            <span>🔥</span>
+            <span id="streakCount">0</span>
+          </div>
+          <button type="button" class="btn-toggle-tracker" id="btnToggleTrackerDrawer" aria-label="عرض تفاصيل الالتزام">▾</button>
         </div>
       </div>
 
-      <div class="tracker-progress-wrap">
+      <div class="tracker-thin-bar">
+        <div class="tracker-progress-bar-fill" id="trackerProgressBar" style="width: 0%;"></div>
+      </div>
+
+      <!-- شريط سريع يظهر تلقائياً عند إتمام 3 مهام فأكثر لتقفيل اليوم بضغطة واحدة -->
+      <div class="compact-lock-banner" id="compactLockBanner">
+        <span class="compact-lock-banner-text" id="compactLockBannerText">🎯 أنجزت المطلوب! اعتمد تقفيل يومك الآن</span>
+        <button type="button" class="btn-compact-lock-now" id="btnCompactLockNow">تقفيل اليوم ✓</button>
+      </div>
+
+      <!-- درج التفاصيل الكامل (يفتح باللمس) -->
+      <div class="tracker-details-drawer" id="trackerDetailsDrawer">
         <div class="tracker-progress-meta">
           <span id="trackerProgressLabel">إنجاز اليوم: 0 من 6 مهام</span>
-          <span id="trackerProgressPercent">0%</span>
+          <span id="trackerDateText">اليوم</span>
         </div>
-        <div class="tracker-progress-bar-bg">
-          <div class="tracker-progress-bar-fill" id="trackerProgressBar" style="width: 0%;"></div>
+
+        <div class="tracker-items-grid" id="trackerItemsGrid">
+          <button type="button" class="tracker-check-btn" data-key="breakfast">
+            <span>🍳 الفطور</span>
+            <div class="tracker-check-box">✓</div>
+          </button>
+          <button type="button" class="tracker-check-btn" data-key="lunch">
+            <span>🍲 الغداء</span>
+            <div class="tracker-check-box">✓</div>
+          </button>
+          <button type="button" class="tracker-check-btn" data-key="dinner">
+            <span>🥗 العشاء</span>
+            <div class="tracker-check-box">✓</div>
+          </button>
+          <button type="button" class="tracker-check-btn" data-key="snack">
+            <span>☕ السناك</span>
+            <div class="tracker-check-box">✓</div>
+          </button>
+          <button type="button" class="tracker-check-btn" data-key="workout">
+            <span>🏃‍♂️ التمرين</span>
+            <div class="tracker-check-box">✓</div>
+          </button>
+          <button type="button" class="tracker-check-btn" data-key="water">
+            <span style="white-space:nowrap;">💧 الماء (2-3L)</span>
+            <div class="tracker-check-box">✓</div>
+          </button>
+        </div>
+
+        <div class="tracker-actions">
+          <button type="button" class="btn-lock-day" id="btnLockDay" disabled>
+            <span class="lock-icon" id="lockBtnIcon">🔒</span>
+            <span class="lock-text" id="lockBtnText">أكمل 3 مهام على الأقل لتقفيل اليوم (0 من 6)</span>
+          </button>
+          <button type="button" class="tracker-unlock-btn" id="btnUnlockDay">تعديل القائمة ✎</button>
+        </div>
+
+        <div class="tracker-congrats" id="trackerCongrats">
+          <span style="font-size:1.35rem;" id="trackerCongratsIcon">🎉</span>
+          <div>
+            <strong style="display:block; font-size:0.92rem; margin-bottom:2px;" id="trackerCongratsHeading">كفو يا بطل! تم تقفيل واعتماد التزام اليوم بنجاح 🎯</strong>
+            <span style="font-size:0.8rem; opacity:0.9;" id="trackerCongratsText">سلسلة التزامك مستمرة ومحفوظة، استمر بنفس هذه القوة غداً!</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <span style="color: var(--text-muted); font-size: 0.82rem;">سجل التزامك وتقويمك الشهري محفوظ:</span>
+          <a href="/track#history" style="color: var(--primary); font-weight: 800; font-size: 0.84rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+            <span>سجل التزامي 📅</span>
+            <span>←</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- شريط تقويم الأسبوع العصري (7 أيام كاملة أمامك بدون سحب) -->
+    <div class="days-calendar-wrap">
+      <div class="days-nav" id="daysNav" aria-label="أيام الأسبوع">
+        <button type="button" class="day-tab active" data-day="0"><span class="day-tab__name">السبت</span><span class="day-tab__num">1</span><span class="day-tab__dot"></span></button>
+        <button type="button" class="day-tab" data-day="1"><span class="day-tab__name">الأحد</span><span class="day-tab__num">2</span><span class="day-tab__dot"></span></button>
+        <button type="button" class="day-tab" data-day="2"><span class="day-tab__name">الاثنين</span><span class="day-tab__num">3</span><span class="day-tab__dot"></span></button>
+        <button type="button" class="day-tab" data-day="3"><span class="day-tab__name">الثلاثاء</span><span class="day-tab__num">4</span><span class="day-tab__dot"></span></button>
+        <button type="button" class="day-tab" data-day="4"><span class="day-tab__name">الأربعاء</span><span class="day-tab__num">5</span><span class="day-tab__dot"></span></button>
+        <button type="button" class="day-tab" data-day="5"><span class="day-tab__name">الخميس</span><span class="day-tab__num">6</span><span class="day-tab__dot"></span></button>
+        <button type="button" class="day-tab" data-day="6"><span class="day-tab__name">الجمعة</span><span class="day-tab__num">7</span><span class="day-tab__dot"></span></button>
+      </div>
+    </div>
+
+    <!-- التبويب المزدوج السريع (المسار الغذائي | المسار الرياضي) -->
+    <div class="plan-mode-sticky">
+      <div class="plan-mode-switch" role="tablist" aria-label="التبديل بين الوجبات والتمارين">
+        <button type="button" class="plan-mode-btn active" id="btnModeMeals" data-mode="meals" role="tab" aria-selected="true">
+          <span>🍽️ وجبات اليوم</span>
+          <span class="mode-badge" id="mealsModeBadge">4 وجبات</span>
+        </button>
+        <button type="button" class="plan-mode-btn" id="btnModeWorkout" data-mode="workout" role="tab" aria-selected="false">
+          <span>💪 تمرين اليوم</span>
+          <span class="mode-badge" id="workoutModeBadge">منزلي</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- القسم الأول: المسار الغذائي (الماكروز + الوجبات الأربعة) -->
+    <section id="mealsTrackPanel" class="track-panel-section" role="tabpanel" aria-labelledby="btnModeMeals">
+      <!-- لوحة السعرات والماكروز البصرية بحلقة SVG -->
+      <div class="plan-summary-bar">
+        <div class="kcal-ring-box">
+          <div class="kcal-ring-svg-wrap" aria-hidden="true">
+            <svg viewBox="0 0 60 60">
+              <circle cx="30" cy="30" r="24" fill="none" stroke="#ccfbf1" stroke-width="5.5"></circle>
+              <circle id="calorieRingCircle" cx="30" cy="30" r="24" fill="none" stroke="#0f766e" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="12" style="transition: stroke-dashoffset 0.4s ease;"></circle>
+            </svg>
+            <span class="kcal-ring-icon">🔥</span>
+          </div>
+          <div class="kcal-ring-meta">
+            <b id="summaryKcal">1800</b>
+            <span>سعرة اليوم الموزونة</span>
+          </div>
+        </div>
+
+        <div class="macros-bars-grid">
+          <div class="macro-stat-col">
+            <b id="summaryProtein">110 جم</b>
+            <span>🥩 بروتين</span>
+            <div class="macro-mini-track"><div class="macro-mini-fill protein" id="barProtein" style="width:75%;"></div></div>
+          </div>
+          <div class="macro-stat-col">
+            <b id="summaryCarbs">185 جم</b>
+            <span>🌾 كارب</span>
+            <div class="macro-mini-track"><div class="macro-mini-fill carbs" id="barCarbs" style="width:65%;"></div></div>
+          </div>
+          <div class="macro-stat-col">
+            <b id="summaryFat">65 جم</b>
+            <span>🥑 دهون</span>
+            <div class="macro-mini-track"><div class="macro-mini-fill fat" id="barFat" style="width:55%;"></div></div>
+          </div>
         </div>
       </div>
 
-      <div class="tracker-items-grid" id="trackerItemsGrid">
-        <button type="button" class="tracker-check-btn" data-key="breakfast">
-          <span>🍳 الفطور</span>
-          <div class="tracker-check-box">✓</div>
-        </button>
-        <button type="button" class="tracker-check-btn" data-key="lunch">
-          <span>🍲 الغداء</span>
-          <div class="tracker-check-box">✓</div>
-        </button>
-        <button type="button" class="tracker-check-btn" data-key="dinner">
-          <span>🥗 العشاء</span>
-          <div class="tracker-check-box">✓</div>
-        </button>
-        <button type="button" class="tracker-check-btn" data-key="snack">
-          <span>☕ السناك</span>
-          <div class="tracker-check-box">✓</div>
-        </button>
-        <button type="button" class="tracker-check-btn" data-key="workout">
-          <span>🏃‍♂️ تمرين اليوم</span>
-          <div class="tracker-check-box">✓</div>
-        </button>
-        <button type="button" class="tracker-check-btn" data-key="water">
-          <span style="white-space:nowrap;">💧 الماء (2-3L)</span>
-          <div class="tracker-check-box">✓</div>
-        </button>
-      </div>
+      <!-- قائمة وجبات اليوم -->
+      <div id="mealSlotsContainer"></div>
+    </section>
 
-      <!-- زر تأكيد واعتماد إغلاق اليوم -->
-      <div class="tracker-actions">
-        <button type="button" class="btn-lock-day" id="btnLockDay" disabled>
-          <span class="lock-icon" id="lockBtnIcon">🔒</span>
-          <span class="lock-text" id="lockBtnText">أكمل المهام لتقفيل اليوم (0 من 6)</span>
-        </button>
-        <button type="button" class="tracker-unlock-btn" id="btnUnlockDay">تعديل القائمة ✎</button>
-      </div>
+    <!-- القسم الثاني: المسار الرياضي التفاعلي -->
+    <section id="workoutTrackPanel" class="track-panel-section is-hidden-mode" role="tabpanel" aria-labelledby="btnModeWorkout">
+      <div class="workout-card">
+        <div class="workout-head">
+          <h3>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"></path></svg>
+            <span>تمرين اليوم المتوازي</span>
+          </h3>
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <span class="macro-tag" style="background:#ffffff; border-color:#fed7aa; color:#c2410c;" id="workoutLevel">مستوى مبتدئ متدرج</span>
+            <button type="button" class="btn-inline-check" id="btnWorkoutInlineCheck" style="display:none;">○ أتممت التمرين</button>
+          </div>
+        </div>
 
-      <div class="tracker-congrats" id="trackerCongrats">
-        <span style="font-size:1.4rem;" id="trackerCongratsIcon">🎉</span>
-        <div>
-          <strong style="display:block; font-size:0.95rem; margin-bottom:2px;" id="trackerCongratsHeading">كفو يا بطل! تم تقفيل واعتماد التزام اليوم بنجاح 🎯</strong>
-          <span style="font-size:0.82rem; opacity:0.9;" id="trackerCongratsText">سلسلة التزامك مستمرة ومحفوظة، استمر بنفس هذه القوة غداً!</span>
+        <!-- محول المسار الرياضي (منزلي / نادي) -->
+        <div class="workout-track-switch" role="tablist" aria-label="اختر مسار التمارين">
+          <button type="button" class="workout-track-btn active" id="btnTrackHome" role="tab" aria-selected="true" data-track="home">
+            <span>🏠 مسار منزلي (بدون أجهزة)</span>
+          </button>
+          <button type="button" class="workout-track-btn" id="btnTrackGym" role="tab" aria-selected="false" data-track="gym">
+            <span>🏋️‍♂️ مسار النادي (Gym)</span>
+          </button>
+        </div>
+
+        <h4 id="workoutTitle" style="font-size:1.14rem; margin:0 0 4px; color:var(--text-dark); font-weight:900;"></h4>
+        <p id="workoutTarget" style="font-size:0.87rem; color:var(--text-muted); margin:0 0 12px; line-height:1.55;"></p>
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+          <span class="macro-tag" id="workoutDuration">⏱️ 30 دقيقة</span>
+          <span class="macro-tag" id="workoutCalories">⚡ ~210 سعرة محروقة</span>
+        </div>
+
+        <!-- شريط تقدم الجلسة التدريبية (شطب التمارين واحداً تلو الآخر) -->
+        <div class="workout-session-progress" id="workoutSessionProgressBox">
+          <div class="workout-session-bar-wrap">
+            <div class="workout-session-meta">
+              <span id="workoutSessionLabel">تقدم الجلسة: اضغط الرقم بجانب كل تمرين عند إنهائه</span>
+              <span id="workoutSessionCount">0 / 0</span>
+            </div>
+            <div class="workout-session-track">
+              <div class="workout-session-fill" id="workoutSessionFill" style="width:0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- الإحماء والتهيئة -->
+        <div id="workoutWarmupBox" class="workout-phase-box">
+          <span style="font-size:1rem; flex-shrink:0;">🔥</span>
+          <div><strong>الإحماء والتهيئة:</strong> <span id="workoutWarmupText"></span></div>
+        </div>
+
+        <!-- قائمة التمارين التفصيلية -->
+        <div id="workoutExercisesList" class="workout-exercises-list"></div>
+
+        <!-- بانر إتمام كافة تمارين الجلسة -->
+        <div class="workout-all-done-banner" id="workoutAllDoneBanner">
+          <div style="font-size:0.86rem; font-weight:800; color:#065f46;">
+            🎉 كفو يا بطل! أنهيت جميع تمارين الجلسة بنجاح
+          </div>
+          <button type="button" class="btn-compact-lock-now" id="btnMarkWorkoutDoneBanner">تسجيل تمرين اليوم كمكتمل ✓</button>
+        </div>
+
+        <!-- التهدئة والإطالات -->
+        <div id="workoutCooldownBox" class="workout-phase-box cooldown">
+          <span style="font-size:1rem; flex-shrink:0;">🧘‍♂️</span>
+          <div><strong>التهدئة والإطالات:</strong> <span id="workoutCooldownText"></span></div>
         </div>
       </div>
-
-      <!-- رابط استعراض السجل المحفوظ في صفحة متابعتي -->
-      <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-        <span style="color: var(--text-muted); font-size: 0.84rem;">سلسلة أيامك السابقة وتفاصيل إنجازك محفوظة:</span>
-        <a href="/track#history" style="color: var(--primary); font-weight: 800; font-size: 0.86rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
-          <span>سجل التزامي المحفوظ 📅</span>
-          <span>←</span>
-        </a>
-      </div>
-    </div>
-
-    <!-- شريط تنقل الأيام (لتصفح جدول الشهر) -->
-    <div class="days-nav" id="daysNav" aria-label="أيام الأسبوع">
-      <button type="button" class="day-tab active" data-day="0">اليوم 1 (السبت)</button>
-      <button type="button" class="day-tab" data-day="1">اليوم 2 (الأحد)</button>
-      <button type="button" class="day-tab" data-day="2">اليوم 3 (الاثنين)</button>
-      <button type="button" class="day-tab" data-day="3">اليوم 4 (الثلاثاء)</button>
-      <button type="button" class="day-tab" data-day="4">اليوم 5 (الأربعاء)</button>
-      <button type="button" class="day-tab" data-day="5">اليوم 6 (الخميس)</button>
-      <button type="button" class="day-tab" data-day="6">اليوم 7 (الجمعة)</button>
-    </div>
-
-    <!-- ملخص السعرات والماكروز لليوم المحدد -->
-    <div class="plan-summary-bar">
-      <div class="plan-summary-item">
-        <b id="summaryKcal">1800</b>
-        <span>سعرة اليوم</span>
-      </div>
-      <div class="plan-summary-item">
-        <b id="summaryProtein">110 جم</b>
-        <span>بروتين</span>
-      </div>
-      <div class="plan-summary-item">
-        <b id="summaryCarbs">185 جم</b>
-        <span>كارب</span>
-      </div>
-      <div class="plan-summary-item">
-        <b id="summaryFat">65 جم</b>
-        <span>دهون</span>
-      </div>
-    </div>
-
-    <!-- قائمة وجبات اليوم المحددة -->
-    <div id="mealSlotsContainer"></div>
-
-    <!-- المسار الرياضي الموازي لليوم المحدد -->
-    <div class="workout-card">
-      <div class="workout-head">
-        <h3>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"></path></svg>
-          <span>تمرين اليوم الرياضي الموازي</span>
-        </h3>
-        <span class="macro-tag" style="background:#ffffff; color:var(--accent);" id="workoutLevel">مستوى مبتدئ متدرج</span>
-      </div>
-
-      <!-- محول المسار الرياضي (منزلي / نادي) -->
-      <div class="workout-track-switch" role="tablist" aria-label="اختر مسار التمارين">
-        <button type="button" class="workout-track-btn active" id="btnTrackHome" role="tab" aria-selected="true" data-track="home">
-          <span>🏠 مسار منزلي (بدون أجهزة)</span>
-        </button>
-        <button type="button" class="workout-track-btn" id="btnTrackGym" role="tab" aria-selected="false" data-track="gym">
-          <span>🏋️‍♂️ مسار النادي (Gym)</span>
-        </button>
-      </div>
-
-      <h4 id="workoutTitle" style="font-size:1.15rem; margin-bottom:4px; color:var(--text-dark); font-weight:800;"></h4>
-      <p id="workoutTarget" style="font-size:0.88rem; color:var(--text-muted); margin-bottom:12px; line-height:1.5;"></p>
-      
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
-        <span class="macro-tag" id="workoutDuration">⏱️ 30 دقيقة</span>
-        <span class="macro-tag" id="workoutCalories">⚡ ~210 سعرة محروقة</span>
-      </div>
-
-      <!-- الإحماء والتهيئة -->
-      <div id="workoutWarmupBox" class="workout-phase-box">
-        <span style="font-size:1rem; flex-shrink:0;">🔥</span>
-        <div><strong>الإحماء والتهيئة:</strong> <span id="workoutWarmupText"></span></div>
-      </div>
-
-      <!-- قائمة التمارين التفصيلية -->
-      <div id="workoutExercisesList" class="workout-exercises-list"></div>
-
-      <!-- التهدئة والإطالات -->
-      <div id="workoutCooldownBox" class="workout-phase-box cooldown">
-        <span style="font-size:1rem; flex-shrink:0;">🧘‍♂️</span>
-        <div><strong>التهدئة والإطالات:</strong> <span id="workoutCooldownText"></span></div>
-      </div>
-    </div>
+    </section>
 
     <p class="disclaimer">النتائج تختلف من شخص لآخر حسب الالتزام.</p>
   </div>
 
-  <!-- نافذة تصفح واختيار الوجبات على ذوقك (Meal Picker Modal) -->
+  <!-- نافذة تصفح واختيار الوجبات على ذوقك (Bottom Sheet on Mobile) -->
   <div id="mealPickerModal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="pickerModalTitle">
     <div class="modal-card">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
       <div class="modal-header">
         <div>
           <h3 class="modal-title" id="pickerModalTitle">اختر وجبتك على ذوقك 📋</h3>
@@ -1531,15 +2095,14 @@
         <button type="button" class="btn-random-pick" id="btnRandomPick">🎲 اختر لي عشوائياً</button>
       </div>
 
-      <div class="picker-meals-list" id="pickerMealsList">
-        <!-- تظهر بطاقات الوجبات الموزونة هنا -->
-      </div>
+      <div class="picker-meals-list" id="pickerMealsList"></div>
     </div>
   </div>
 
   <!-- نافذة خيارات الطباعة وتصدير PDF -->
   <div id="printChoiceModal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="printModalTitle">
     <div class="modal-card" style="max-width: 540px;">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
       <div class="modal-header">
         <div>
           <h3 class="modal-title" id="printModalTitle">خيارات الطباعة وتصدير PDF 🖨️</h3>
@@ -1551,8 +2114,8 @@
       <div class="print-options-grid">
         <div class="print-option-card" id="btnOptPrintToday">
           <div class="print-option-info">
-            <h4>📄 جدول اليوم الحالي فقط</h4>
-            <p>ورقة A4 واحدة سريعة وموجزة تناسب التعليق على الثلاجة أو الحفظ اليومي.</p>
+            <h4>📄 جدول اليوم المحدد (وجبات + تمارين)</h4>
+            <p>ورقة A4 واحدة شاملة للوجبات والتمارين تناسب التعليق على الثلاجة أو الحفظ اليومي.</p>
           </div>
           <span class="print-option-btn">طباعة ←</span>
         </div>
@@ -1560,7 +2123,7 @@
         <div class="print-option-card" id="btnOptPrintWeek">
           <div class="print-option-info">
             <h4>📑 جدول الأسبوع كامل (7 أيام)</h4>
-            <p>جميع أيام الأسبوع الـ 7 مع وجباتها وتمارينها وسعراتها، مثالي للتسوق والتجهيز المسبق.</p>
+            <p>جميع أيام الأسبوع الـ 7 مع وجباتك المختارة وتمارينها وسعراتها، مثالي للتسوق.</p>
           </div>
           <span class="print-option-btn">طباعة ←</span>
         </div>
@@ -1576,34 +2139,35 @@
     </div>
   </div>
 
-  <!-- نافذة فيديو وتوضيح التمرين بدون أرض (Exercise Video Modal) -->
+  <!-- نافذة فيديو وتوضيح التمرين بدون أرض (Bottom Sheet on Mobile) -->
   <div id="exerciseMediaModal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="exModalTitle">
-    <div class="modal-card" style="max-width: 500px;">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
       <div class="modal-header">
         <div>
-          <h3 class="modal-title" id="exModalTitle" style="font-size: 1.12rem; color: var(--text-dark);">تمرين</h3>
+          <h3 class="modal-title" id="exModalTitle" style="font-size: 1.08rem; color: var(--text-dark);">تمرين</h3>
           <p class="modal-subtitle" id="exModalTarget" style="color: var(--primary); font-weight: 700;"></p>
         </div>
         <button type="button" class="btn-close-modal" id="btnCloseExModal" aria-label="إغلاق">✕</button>
       </div>
 
-      <div style="padding: 16px; overflow-y: auto;">
-        <div id="exModalMediaContainer" style="background: #0f172a; border-radius: 12px; overflow: hidden; margin-bottom: 14px; position: relative; min-height: 240px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.12);"></div>
+      <div style="padding: 16px 16px calc(18px + env(safe-area-inset-bottom, 0px)); overflow-y: auto;">
+        <div id="exModalMediaContainer" style="background: #0f172a; border-radius: 14px; overflow: hidden; margin-bottom: 14px; position: relative; min-height: 240px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.12);"></div>
 
         <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
           <span class="macro-tag" id="exModalSetsReps" style="background: #f0fdfa; color: var(--primary); font-weight: 700; border: 1px solid #ccfbf1;"></span>
           <span class="macro-tag" id="exModalRest" style="background: #f8fafc; color: #475569; font-weight: 700; border: 1px solid #e2e8f0;"></span>
         </div>
 
-        <div id="exModalTipBox" class="exercise-tip" style="font-size: 0.85rem; padding: 12px 14px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 10px; line-height: 1.5; display: flex; gap: 10px; align-items: flex-start;">
-          <span style="font-size: 1.25rem; flex-shrink: 0;" aria-hidden="true">💡</span>
+        <div id="exModalTipBox" class="exercise-tip" style="font-size: 0.85rem; padding: 12px 14px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 10px; line-height: 1.5; display: flex; gap: 10px; align-items: flex-start; margin-bottom: 0;">
+          <span style="font-size: 1.2rem; flex-shrink: 0;" aria-hidden="true">💡</span>
           <div>
             <strong style="color: #92400e; display: block; margin-bottom: 2px;">توجيه الكابتن للأداء الصحيح:</strong>
             <p id="exModalTip" style="margin: 0; color: #78350f;"></p>
           </div>
         </div>
 
-        <div id="exModalLevelsBox" style="margin-top: 10px; display: none; font-size: 0.81rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; line-height: 1.55;">
+        <div id="exModalLevelsBox" style="margin-top: 10px; display: none; font-size: 0.81rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; line-height: 1.55;">
           <div id="exModalEasierRow" style="color: #0369a1; margin-bottom: 4px; display: none;">
             <strong>⬇️ لتسهيل التمرين:</strong> <span id="exModalEasier"></span>
           </div>
@@ -1676,11 +2240,14 @@
   var currentDayIndex = 0;
   var dayPlansCache = {}; // حفظ الوجبات لكل يوم
 
+  var savedMealChoices = {}; // حفظ اختيارات المستخدم المفضلة لكل يوم ووجبة
+  var activePlanMode = "meals"; // meals | workout
+
   var SLOT_NAMES = {
-    breakfast: { ar: "الفطور", icon: "🍳", ratio: 0.25 },
-    lunch:     { ar: "الغداء",  icon: "🍲", ratio: 0.40, isLunch: true },
-    dinner:    { ar: "العشاء",  icon: "🥗", ratio: 0.25 },
-    snack:     { ar: "سناك / خفايف", icon: "☕", ratio: 0.10 }
+    breakfast: { ar: "الفطور", icon: "☀️", ratio: 0.25, theme: "breakfast" },
+    lunch:     { ar: "الغداء",  icon: "🍲", ratio: 0.40, isLunch: true, theme: "lunch" },
+    dinner:    { ar: "العشاء",  icon: "🌙", ratio: 0.25, theme: "dinner" },
+    snack:     { ar: "سناك / خفايف", icon: "☕", ratio: 0.10, theme: "snack" }
   };
 
   var DEFAULT_WORKOUTS_DATA = [
@@ -3070,6 +3637,214 @@
     currentWorkoutTrack = "home";
   }
 
+  // ============================================================
+  // حفظ واسترجاع اختيارات الوجبات المفضلة للمشترك (Persistent Meal Choices)
+  // ============================================================
+  function getMealPrefsStorageKey() {
+    return "motawazi_meal_prefs_" + (currentUserId || "guest");
+  }
+
+  function loadSavedMealChoices(uid) {
+    if (uid) currentUserId = uid;
+    savedMealChoices = {};
+    try {
+      var raw = localStorage.getItem(getMealPrefsStorageKey());
+      if (raw) savedMealChoices = JSON.parse(raw) || {};
+    } catch (e) {
+      savedMealChoices = {};
+    }
+  }
+
+  function saveMealChoice(dayIdx, slotKey, mealId) {
+    if (!savedMealChoices[dayIdx]) savedMealChoices[dayIdx] = {};
+    savedMealChoices[dayIdx][slotKey] = mealId;
+    try {
+      localStorage.setItem(getMealPrefsStorageKey(), JSON.stringify(savedMealChoices));
+    } catch (e) {}
+  }
+
+  function getSavedMealChoice(dayIdx, slotKey) {
+    return (savedMealChoices[dayIdx] && savedMealChoices[dayIdx][slotKey]) ? savedMealChoices[dayIdx][slotKey] : null;
+  }
+
+  // ============================================================
+  // التبديل السريع بين المسار الغذائي والمسار الرياضي (Dual-Track Mode)
+  // ============================================================
+  function setPlanMode(mode) {
+    activePlanMode = (mode === "workout") ? "workout" : "meals";
+    var btnMeals = $("btnModeMeals");
+    var btnWorkout = $("btnModeWorkout");
+    var panelMeals = $("mealsTrackPanel");
+    var panelWorkout = $("workoutTrackPanel");
+
+    if (btnMeals && btnWorkout) {
+      btnMeals.classList.toggle("active", activePlanMode === "meals");
+      btnMeals.setAttribute("aria-selected", activePlanMode === "meals" ? "true" : "false");
+      btnWorkout.classList.toggle("active", activePlanMode === "workout");
+      btnWorkout.setAttribute("aria-selected", activePlanMode === "workout" ? "true" : "false");
+    }
+    if (panelMeals && panelWorkout) {
+      panelMeals.classList.toggle("is-hidden-mode", activePlanMode !== "meals");
+      panelWorkout.classList.toggle("is-hidden-mode", activePlanMode !== "workout");
+    }
+    if (activePlanMode !== "workout") {
+      clearRestTimer();
+    }
+  }
+
+  function setupPlanModeButtons() {
+    var btnMeals = $("btnModeMeals");
+    var btnWorkout = $("btnModeWorkout");
+    if (btnMeals) {
+      btnMeals.addEventListener("click", function() { setPlanMode("meals"); });
+    }
+    if (btnWorkout) {
+      btnWorkout.addEventListener("click", function() { setPlanMode("workout"); });
+    }
+    updateModeBadges();
+  }
+
+  function updateModeBadges() {
+    var mealsBadge = $("mealsModeBadge");
+    var workoutBadge = $("workoutModeBadge");
+    var isTodayView = (currentDayIndex === getTodayDayIndex());
+
+    if (mealsBadge) {
+      if (isTodayView) {
+        var mealKeys = ["breakfast", "lunch", "dinner", "snack"];
+        var doneMeals = mealKeys.filter(function(k) { return !!todayTracking[k]; }).length;
+        mealsBadge.textContent = doneMeals > 0 ? (doneMeals + "/4 ✓") : "4 وجبات";
+      } else {
+        mealsBadge.textContent = "4 وجبات";
+      }
+    }
+
+    if (workoutBadge) {
+      var tLabel = (currentWorkoutTrack === "gym") ? "نادي" : "منزلي";
+      if (isTodayView && todayTracking.workout) {
+        workoutBadge.textContent = tLabel + " ✓";
+      } else {
+        workoutBadge.textContent = tLabel;
+      }
+    }
+  }
+
+  // ============================================================
+  // مؤقت الراحة الذكي بلمسة واحدة (1-Tap Live Rest Timer)
+  // ============================================================
+  var activeRestState = {
+    intervalId: null,
+    timeoutId: null,
+    btn: null,
+    origSec: 0
+  };
+
+  function playGentleChime() {
+    try {
+      if (navigator.vibrate) navigator.vibrate([120, 60, 120]);
+    } catch (e) {}
+    try {
+      var AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      var ctx = new AudioCtx();
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      osc.frequency.setValueAtTime(1174.66, ctx.currentTime + 0.12);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.45);
+      setTimeout(function() { try { ctx.close(); } catch(e) {} }, 600);
+    } catch (e) {}
+  }
+
+  function formatRestMMSS(sec) {
+    var m = Math.floor(sec / 60);
+    var s = sec % 60;
+    return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+  }
+
+  function clearRestTimer() {
+    if (activeRestState.intervalId) {
+      clearInterval(activeRestState.intervalId);
+      activeRestState.intervalId = null;
+    }
+    if (activeRestState.timeoutId) {
+      clearTimeout(activeRestState.timeoutId);
+      activeRestState.timeoutId = null;
+    }
+    if (activeRestState.btn) {
+      var b = activeRestState.btn;
+      var orig = activeRestState.origSec;
+      b.classList.remove("is-running", "is-finished");
+      b.innerHTML = '<span>⏱️</span><span>ابدأ راحة ' + orig + ' ث</span>';
+      activeRestState.btn = null;
+    }
+  }
+
+  function toggleRestTimer(btn, seconds) {
+    if (!btn || !seconds) return;
+    if (activeRestState.btn === btn && activeRestState.intervalId) {
+      clearRestTimer();
+      return;
+    }
+    clearRestTimer();
+    activeRestState.btn = btn;
+    activeRestState.origSec = seconds;
+    var endAt = Date.now() + seconds * 1000;
+
+    btn.classList.add("is-running");
+    btn.innerHTML = '<span>⏳</span><span>راحة ' + formatRestMMSS(seconds) + ' · إيقاف</span>';
+
+    activeRestState.intervalId = setInterval(function() {
+      var rem = Math.ceil((endAt - Date.now()) / 1000);
+      if (rem <= 0) {
+        clearInterval(activeRestState.intervalId);
+        activeRestState.intervalId = null;
+        btn.classList.remove("is-running");
+        btn.classList.add("is-finished");
+        btn.innerHTML = '<span>🔔</span><span>انتهت الراحة! انطلق 💪</span>';
+        playGentleChime();
+        activeRestState.timeoutId = setTimeout(function() {
+          if (activeRestState.btn === btn) {
+            clearRestTimer();
+          }
+        }, 4200);
+      } else {
+        btn.innerHTML = '<span>⏳</span><span>راحة ' + formatRestMMSS(rem) + ' · إيقاف</span>';
+      }
+    }, 250);
+  }
+
+  // ============================================================
+  // شطب التمارين المنجزة أثناء الجلسة (Interactive Exercise Check-off)
+  // ============================================================
+  function getExerciseCheckStorageKey(dayIdx, track) {
+    return "motawazi_exchk_" + (currentUserId || "guest") + "_" + todayKey + "_" + dayIdx + "_" + track;
+  }
+
+  function getCheckedExercisesMap(dayIdx, track) {
+    try {
+      var raw = localStorage.getItem(getExerciseCheckStorageKey(dayIdx, track));
+      return raw ? (JSON.parse(raw) || {}) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function toggleExerciseDone(dayIdx, track, exKey, totalExercises) {
+    var map = getCheckedExercisesMap(dayIdx, track);
+    map[exKey] = !map[exKey];
+    try {
+      localStorage.setItem(getExerciseCheckStorageKey(dayIdx, track), JSON.stringify(map));
+    } catch (e) {}
+    renderWorkout(dayIdx);
+  }
+
   function loadWorkoutsDB() {
     return fetch("/config/workouts.json?v=20261125_yt2")
       .catch(function() { return fetch("/workouts.json?v=20261125_yt2"); })
@@ -3097,9 +3872,28 @@
     btnGym.addEventListener("click", function() {
       setWorkoutTrack("gym");
     });
+
+    var btnInlineW = $("btnWorkoutInlineCheck");
+    if (btnInlineW) {
+      btnInlineW.addEventListener("click", function() {
+        if (currentDayIndex === getTodayDayIndex()) {
+          toggleTrackerItem("workout");
+        }
+      });
+    }
+
+    var btnBannerDone = $("btnMarkWorkoutDoneBanner");
+    if (btnBannerDone) {
+      btnBannerDone.addEventListener("click", function() {
+        if (currentDayIndex === getTodayDayIndex() && !todayTracking.workout) {
+          toggleTrackerItem("workout");
+        }
+      });
+    }
   }
 
   function setWorkoutTrack(track) {
+    clearRestTimer();
     currentWorkoutTrack = (track === "gym") ? "gym" : "home";
     try { localStorage.setItem("motawazi_workout_track", currentWorkoutTrack); } catch (e) {}
 
@@ -3112,6 +3906,7 @@
       btnGym.setAttribute("aria-selected", currentWorkoutTrack === "gym" ? "true" : "false");
     }
 
+    updateModeBadges();
     renderWorkout(currentDayIndex);
   }
 
@@ -3121,7 +3916,8 @@
     var dayItem = list[dayIdx % list.length];
     if (!dayItem) return;
 
-    var track = dayItem[currentWorkoutTrack] || dayItem.home;
+    var trackKey = currentWorkoutTrack;
+    var track = dayItem[trackKey] || dayItem.home;
     if (!track) return;
 
     if ($("workoutLevel")) $("workoutLevel").textContent = track.level || "مبتدئ متدرج";
@@ -3133,41 +3929,65 @@
     if ($("workoutWarmupText")) $("workoutWarmupText").textContent = track.warmup || "";
     if ($("workoutCooldownText")) $("workoutCooldownText").textContent = track.cooldown || "";
 
+    var exercises = track.exercises || [];
+    var checkedMap = getCheckedExercisesMap(dayIdx, trackKey);
+    var doneCount = 0;
+
     var exList = $("workoutExercisesList");
     if (exList) {
       exList.innerHTML = "";
-      (track.exercises || []).forEach(function(ex, i) {
+      exercises.forEach(function(ex, i) {
+        var exKey = ex.id || ("ex_" + i);
+        var isExDone = !!checkedMap[exKey];
+        if (isExDone) doneCount++;
+
         var itemEl = document.createElement("div");
-        itemEl.className = "exercise-card";
+        itemEl.className = "exercise-card" + (isExDone ? " is-done" : "");
 
         var setsRepsText = (ex.sets && ex.sets > 1 ? (ex.sets + " جولات × ") : "") + (ex.reps || "");
-        var restText = ex.restSeconds ? ("راحة " + ex.restSeconds + " ث") : "بدون راحة";
+        var restSec = Number(ex.restSeconds) || 0;
+
+        var restHtml = "";
+        if (restSec > 0) {
+          restHtml =
+            '<button type="button" class="btn-rest-timer" data-rest="' + restSec + '">' +
+              '<span>⏱️</span><span>ابدأ راحة ' + restSec + ' ث</span>' +
+            '</button>';
+        } else {
+          restHtml = '<span class="exercise-metric-pill">⏱️ بدون راحة</span>';
+        }
 
         var hasMedia = !!(ex.video || ex.youtubeId || ex.image);
         var visualHtml = "";
         if (hasMedia) {
           var isVideo = !!(ex.video || ex.youtubeId);
           visualHtml =
-            '<div>' +
-              '<button type="button" class="btn-exercise-visual">' +
-                (isVideo
-                  ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"></polygon></svg><span>مشاهدة الفيديو التوضيحي</span>'
-                  : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg><span>توضيح الحركة</span>') +
-              '</button>' +
-            '</div>';
+            '<button type="button" class="btn-exercise-visual">' +
+              '<span class="btn-exercise-visual-right">' +
+                '<span class="play-icon-badge">' +
+                  (isVideo
+                    ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg>'
+                    : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"></circle></svg>') +
+                '</span>' +
+                '<span>' + (isVideo ? 'مشاهدة الفيديو التوضيحي للتمرين' : 'توضيح الأداء الحركي') + '</span>' +
+              '</span>' +
+              '<span style="font-size:0.75rem; opacity:0.85;">تشغيل ←</span>' +
+            '</button>';
         }
 
         itemEl.innerHTML =
           '<div class="exercise-header">' +
             '<div class="exercise-num-title">' +
-              '<div class="exercise-num">' + (i + 1) + '</div>' +
+              '<button type="button" class="exercise-check-btn" title="اضغط لتحديد التمرين كمكتمل" aria-label="تحديد التمرين كمكتمل">' +
+                (isExDone ? '✓' : (i + 1)) +
+              '</button>' +
               '<h5 class="exercise-name">' + String(ex.name || "").replace(/(\([A-Za-z0-9\s\/',.&\-]+\))/g, '<bdi dir="ltr" style="display:inline-block; font-weight:700; color:#475569; font-size:0.9em;">$1</bdi>') + '</h5>' +
             '</div>' +
             (ex.targetMuscle ? '<span class="exercise-muscle-tag">' + ex.targetMuscle + '</span>' : '') +
           '</div>' +
           '<div class="exercise-metrics">' +
             '<span class="exercise-metric-pill">🎯 ' + setsRepsText + '</span>' +
-            '<span class="exercise-metric-pill">⏱️ ' + restText + '</span>' +
+            restHtml +
           '</div>' +
           (ex.tip ? (
             '<div class="exercise-tip">' +
@@ -3176,6 +3996,28 @@
             '</div>'
           ) : '') +
           visualHtml;
+
+        var chkBtn = itemEl.querySelector(".exercise-check-btn");
+        var titleClick = itemEl.querySelector(".exercise-name");
+        if (chkBtn) {
+          chkBtn.addEventListener("click", function() {
+            clearRestTimer();
+            toggleExerciseDone(dayIdx, trackKey, exKey, exercises.length);
+          });
+        }
+        if (titleClick) {
+          titleClick.addEventListener("click", function() {
+            clearRestTimer();
+            toggleExerciseDone(dayIdx, trackKey, exKey, exercises.length);
+          });
+        }
+
+        var restBtn = itemEl.querySelector(".btn-rest-timer");
+        if (restBtn && restSec > 0) {
+          restBtn.addEventListener("click", function() {
+            toggleRestTimer(restBtn, restSec);
+          });
+        }
 
         if (hasMedia) {
           var btnVis = itemEl.querySelector(".btn-exercise-visual");
@@ -3189,6 +4031,26 @@
         exList.appendChild(itemEl);
       });
     }
+
+    // تحديث شريط تقدم الجلسة وبانر الإتمام
+    var totalEx = exercises.length;
+    var pct = totalEx > 0 ? Math.round((doneCount / totalEx) * 100) : 0;
+    if ($("workoutSessionCount")) $("workoutSessionCount").textContent = doneCount + " / " + totalEx;
+    if ($("workoutSessionFill")) $("workoutSessionFill").style.width = pct + "%";
+    if ($("workoutSessionLabel")) {
+      $("workoutSessionLabel").textContent = doneCount === 0
+        ? "اضغط الدائرة بجانب كل تمرين عند إنهائه"
+        : (doneCount === totalEx ? "أكملت كافة تمارين الجلسة بنجاح! 🌟" : "تقدم رائع! واصل بقية التمارين");
+    }
+
+    var isTodayView = (dayIdx === getTodayDayIndex());
+    var allDoneBanner = $("workoutAllDoneBanner");
+    if (allDoneBanner) {
+      var showBanner = isTodayView && totalEx > 0 && doneCount === totalEx && !todayTracking.workout && !todayTracking.locked;
+      allDoneBanner.classList.toggle("show", showBanner);
+    }
+
+    syncInlineCompletionButtons();
   }
 
   function openExerciseModal(ex) {
@@ -3216,7 +4078,7 @@
       vid.muted = true;
       vid.playsInline = true;
       vid.controls = true;
-      vid.style.cssText = "width:100%; max-height:360px; display:block; border-radius:8px; object-fit:contain;";
+      vid.style.cssText = "width:100%; max-height:360px; display:block; border-radius:10px; object-fit:contain;";
       mediaContainer.appendChild(vid);
     } else if (ex.youtubeId && /^[A-Za-z0-9_\-]{8,16}$/.test(ex.youtubeId)) {
       var ifr = document.createElement("iframe");
@@ -3225,13 +4087,13 @@
       ifr.setAttribute("frameborder", "0");
       ifr.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture");
       ifr.setAttribute("allowfullscreen", "allowfullscreen");
-      ifr.style.cssText = "width:100%; height:320px; display:block; border:none; border-radius:8px; background:#0f172a;";
+      ifr.style.cssText = "width:100%; height:320px; display:block; border:none; border-radius:10px; background:#0f172a;";
       mediaContainer.appendChild(ifr);
     } else if (ex.image) {
       var img = document.createElement("img");
       img.src = ex.image;
       img.alt = ex.name || "تمرين";
-      img.style.cssText = "width:100%; max-height:360px; display:block; border-radius:8px; object-fit:contain;";
+      img.style.cssText = "width:100%; max-height:360px; display:block; border-radius:10px; object-fit:contain;";
       mediaContainer.appendChild(img);
     }
 
@@ -3309,8 +4171,53 @@
     };
   }
 
+  function syncInlineCompletionButtons() {
+    var isTodayView = (currentDayIndex === getTodayDayIndex());
+    var isLocked = !!todayTracking.locked;
+
+    var inlineMealBtns = document.querySelectorAll(".btn-inline-meal-check");
+    inlineMealBtns.forEach(function(btn) {
+      var sKey = btn.getAttribute("data-slot-check");
+      var card = $("slot_" + sKey);
+      if (!isTodayView) {
+        btn.style.display = "none";
+        if (card) card.classList.remove("is-completed");
+        return;
+      }
+      btn.style.display = "inline-flex";
+      var done = !!todayTracking[sKey];
+      btn.classList.toggle("checked", done);
+      btn.disabled = isLocked;
+      btn.style.opacity = isLocked ? "0.85" : "1";
+      btn.innerHTML = done ? "<span>✓</span><span>تم تناولها</span>" : "<span>○</span><span>تسجيل الوجبة</span>";
+      if (card) card.classList.toggle("is-completed", done);
+    });
+
+    var btnW = $("btnWorkoutInlineCheck");
+    if (btnW) {
+      if (!isTodayView) {
+        btnW.style.display = "none";
+      } else {
+        btnW.style.display = "inline-flex";
+        var wDone = !!todayTracking.workout;
+        btnW.classList.toggle("checked", wDone);
+        btnW.disabled = isLocked;
+        btnW.style.opacity = isLocked ? "0.85" : "1";
+        btnW.innerHTML = wDone ? "<span>✓</span><span>أتممت التمرين</span>" : "<span>○</span><span>إتمام التمرين</span>";
+      }
+    }
+
+    var allDoneBanner = $("workoutAllDoneBanner");
+    if (allDoneBanner && (todayTracking.workout || todayTracking.locked || !isTodayView)) {
+      allDoneBanner.classList.remove("show");
+    }
+
+    updateModeBadges();
+  }
+
   function renderDayPlan(dayIdx) {
     if (!MEALS_DATA) return;
+    clearRestTimer();
     currentDayIndex = dayIdx;
 
     // تمييز التبويب النشط
@@ -3329,6 +4236,7 @@
 
     var totalKcal = 0, totalP = 0, totalC = 0, totalF = 0;
     var slots = ["breakfast", "lunch", "dinner", "snack"];
+    var isTodayView = (dayIdx === getTodayDayIndex());
 
     slots.forEach(function(slotKey) {
       var slotInfo = SLOT_NAMES[slotKey];
@@ -3336,56 +4244,69 @@
       var pool = MEALS_DATA[slotKey] || [];
       if (!pool.length) return;
 
+      var savedId = getSavedMealChoice(dayIdx, slotKey);
+      var defaultMeal = pool[dayIdx % pool.length];
+
       if (!dayPlan[slotKey]) {
-        // تنويع الوجبات حسب اليوم
-        var initialIdx = (dayIdx) % pool.length;
-        dayPlan[slotKey] = scaleMeal(pool[initialIdx], targetSlotKcal);
+        var chosenBase = null;
+        if (savedId) {
+          chosenBase = pool.find(function(m) { return m.id === savedId; }) || null;
+        }
+        dayPlan[slotKey] = scaleMeal(chosenBase || defaultMeal, targetSlotKcal);
       }
       var meal = dayPlan[slotKey];
+      var isCustomPicked = !!(savedId && meal.id === savedId && (!defaultMeal || defaultMeal.id !== savedId));
 
       totalKcal += meal.calories;
       totalP += meal.macros.protein;
       totalC += meal.macros.carbs;
       totalF += meal.macros.fat;
 
-      var stepsHtml = '';
-      if (meal.preparationSteps && meal.preparationSteps.length > 0) {
+      var hasPrep = !!(meal.preparationSteps && meal.preparationSteps.length > 0);
+      var prepMin = meal.prepTimeMinutes || 15;
+      var stepsHtml = "";
+      if (hasPrep) {
         stepsHtml =
           '<div class="prep-accordion" id="prep_' + slotKey + '" style="display:none;">' +
-            '<div class="prep-badge">⏱️ مدة التحضير والطهي: <strong>' + (meal.prepTimeMinutes || 15) + ' دقيقة</strong></div>' +
+            '<div class="prep-badge">⏱️ مدة التحضير والطهي: <strong>' + prepMin + ' دقيقة</strong></div>' +
             '<ol class="prep-steps-list">' +
               meal.preparationSteps.map(function(s) { return '<li>' + s + '</li>'; }).join('') +
             '</ol>' +
           '</div>';
       }
 
+      var isSlotDone = isTodayView && !!todayTracking[slotKey];
       var slotEl = document.createElement("div");
-      slotEl.className = "meal-slot";
+      slotEl.className = "meal-slot" + (isSlotDone ? " is-completed" : "");
       slotEl.id = "slot_" + slotKey;
 
       slotEl.innerHTML =
         '<div class="meal-slot__header">' +
-          '<span class="meal-slot__title ' + (slotInfo.isLunch ? 'lunch' : '') + '">' +
-            slotInfo.icon + ' ' + slotInfo.ar +
-          '</span>' +
-          '<div style="display:flex; gap:6px; align-items:center;">' +
-            (meal.preparationSteps && meal.preparationSteps.length > 0 ?
-              '<button type="button" class="btn-prep" data-slot="' + slotKey + '"><span>👨‍🍳 طريقة التحضير</span></button>' : '') +
-            '<button type="button" class="btn-swap ' + (slotInfo.isLunch ? 'lunch' : '') + '" data-slot="' + slotKey + '">' +
-              '<span>اختر على ذوقك</span> 📋' +
-            '</button>' +
+          '<div class="meal-slot__title-group">' +
+            '<span class="meal-period-pill ' + (slotInfo.theme || slotKey) + '">' +
+              '<span>' + slotInfo.icon + '</span>' +
+              '<span>' + slotInfo.ar + '</span>' +
+            '</span>' +
+            (isCustomPicked ? '<span class="meal-custom-badge">✨ على ذوقك</span>' : '') +
           '</div>' +
+          '<button type="button" class="btn-inline-check btn-inline-meal-check ' + (isSlotDone ? 'checked' : '') + '" data-slot-check="' + slotKey + '" style="' + (isTodayView ? '' : 'display:none;') + '">' +
+            (isSlotDone ? '<span>✓</span><span>تم تناولها</span>' : '<span>○</span><span>تسجيل الوجبة</span>') +
+          '</button>' +
         '</div>' +
         '<div class="meal-slot__name">' + meal.name + '</div>' +
         '<div class="meal-slot__portion">' + meal.portion + ' — ' + meal.description + '</div>' +
-        (meal.scaleWeightText ? '<div class="meal-slot__scale-weight" style="margin-top:7px; font-size:12px; font-weight:600; color:#0f766e; background:#f0fdfa; border:1px solid #ccfbf1; padding:5px 10px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;"><span>⚖️ وزن الميزان:</span> <strong>' + meal.scaleWeightText + '</strong></div>' : '') +
-        '<div class="meal-slot__footer">' +
-          '<div class="meal-slot__metrics">' +
-            '<span class="macro-tag kcal">🔥 ' + meal.calories + ' سعرة</span>' +
-            '<span class="macro-tag">🥩 ' + meal.macros.protein + ' جم بروتين</span>' +
-            '<span class="macro-tag">🌾 ' + meal.macros.carbs + ' جم كارب</span>' +
-            '<span class="macro-tag">🥑 ' + meal.macros.fat + ' جم دهون</span>' +
-          '</div>' +
+        (meal.scaleWeightText ? '<div class="meal-slot__scale-weight"><span>⚖️ وزن الميزان:</span> <strong>' + meal.scaleWeightText + '</strong></div>' : '') +
+        '<div class="meal-slot__metrics">' +
+          '<span class="macro-tag kcal">🔥 ' + meal.calories + ' سعرة</span>' +
+          '<span class="macro-tag">🥩 ' + meal.macros.protein + ' جم بروتين</span>' +
+          '<span class="macro-tag">🌾 ' + meal.macros.carbs + ' جم كارب</span>' +
+          '<span class="macro-tag">🥑 ' + meal.macros.fat + ' جم دهون</span>' +
+        '</div>' +
+        '<div class="meal-slot__actions ' + (hasPrep ? '' : 'single-action') + '">' +
+          (hasPrep ? '<button type="button" class="btn-prep" data-slot="' + slotKey + '" data-min="' + prepMin + '"><span>👨‍🍳 التحضير (' + prepMin + ' د)</span></button>' : '') +
+          '<button type="button" class="btn-swap ' + (slotInfo.isLunch ? 'lunch' : '') + '" data-slot="' + slotKey + '">' +
+            '<span>🔄 بدّل على ذوقك</span>' +
+          '</button>' +
         '</div>' +
         stepsHtml;
 
@@ -3397,6 +4318,20 @@
     $("summaryCarbs").textContent = totalC + " جم";
     $("summaryFat").textContent = totalF + " جم";
 
+    // تحديث الحلقة البصرية للسعرات وأشرطة الماكروز
+    var calRing = $("calorieRingCircle");
+    if (calRing) {
+      var circum = 150.8;
+      var calRatio = Math.min(Math.max(totalKcal / (userTargetKcal || 1800), 0.15), 1);
+      calRing.style.strokeDashoffset = String(Math.round(circum * (1 - calRatio) * 10) / 10);
+    }
+    var macroCalTotal = (totalP * 4) + (totalC * 4) + (totalF * 9);
+    if (macroCalTotal > 0) {
+      if ($("barProtein")) $("barProtein").style.width = Math.min(100, Math.round(((totalP * 4) / macroCalTotal) * 180)) + "%";
+      if ($("barCarbs")) $("barCarbs").style.width = Math.min(100, Math.round(((totalC * 4) / macroCalTotal) * 140)) + "%";
+      if ($("barFat")) $("barFat").style.width = Math.min(100, Math.round(((totalF * 9) / macroCalTotal) * 180)) + "%";
+    }
+
     // تمرين اليوم الرياضي الموازي
     renderWorkout(dayIdx);
 
@@ -3405,13 +4340,14 @@
     prepBtns.forEach(function(b) {
       b.addEventListener("click", function() {
         var sKey = b.getAttribute("data-slot");
+        var pMin = b.getAttribute("data-min") || "15";
         var panel = $("prep_" + sKey);
         if (!panel) return;
         var isOpen = (panel.style.display !== "none");
         panel.style.display = isOpen ? "none" : "block";
         b.classList.toggle("active", !isOpen);
         var spanEl = b.querySelector("span");
-        if (spanEl) spanEl.textContent = isOpen ? "👨‍🍳 طريقة التحضير" : "إخفاء الخطوات ✕";
+        if (spanEl) spanEl.textContent = isOpen ? ("👨‍🍳 التحضير (" + pMin + " د)") : "إخفاء الخطوات ✕";
       });
     });
 
@@ -3423,6 +4359,19 @@
         handleSwap(sKey);
       });
     });
+
+    // أزرار تسجيل إنجاز الوجبة مباشرة داخل البطاقة
+    var inlineChecks = container.querySelectorAll(".btn-inline-meal-check");
+    inlineChecks.forEach(function(chk) {
+      chk.addEventListener("click", function() {
+        var sKey = chk.getAttribute("data-slot-check");
+        if (sKey && currentDayIndex === getTodayDayIndex()) {
+          toggleTrackerItem(sKey);
+        }
+      });
+    });
+
+    syncInlineCompletionButtons();
   }
 
   // إدارة نافذة تصفح واختيار الوجبات الموزونة (Meal Picker Modal)
@@ -3436,7 +4385,7 @@
       .replace(/[إأآا]/g, "ا")
       .replace(/[ة]/g, "ه")
       .replace(/[يى]/g, "ي")
-      .replace(/[\u064B-\u065F]/g, ""); // إزالة التشكيل
+      .replace(/[\u064B-\u065F]/g, "");
   }
 
   function openMealPicker(slotKey) {
@@ -3449,7 +4398,7 @@
     var targetSlotKcal = Math.round(userTargetKcal * slotInfo.ratio);
 
     $("pickerModalTitle").textContent = "اختر وجبة " + slotInfo.ar + " على ذوقك 📋";
-    $("pickerModalSubtitle").textContent = "تصفح بنك وجبات " + slotInfo.ar + " — جميع الخيارات موزونة تلقائياً على " + targetSlotKcal + " سعرة حرارية";
+    $("pickerModalSubtitle").textContent = "جميع خيارات " + slotInfo.ar + " موزونة تلقائياً على " + targetSlotKcal + " سعرة حرارية وتُحفظ لجدولك";
 
     $("pickerSearchInput").value = "";
 
@@ -3464,9 +4413,11 @@
     modal.style.display = "flex";
     document.body.style.overflow = "hidden";
 
-    setTimeout(function() {
-      $("pickerSearchInput").focus();
-    }, 120);
+    if (window.innerWidth > 640) {
+      setTimeout(function() {
+        $("pickerSearchInput").focus();
+      }, 120);
+    }
   }
 
   function closeMealPicker() {
@@ -3484,7 +4435,9 @@
 
     var slotInfo = SLOT_NAMES[activePickerSlot];
     var targetSlotKcal = Math.round(userTargetKcal * slotInfo.ratio);
+    if (!dayPlansCache[currentDayIndex]) dayPlansCache[currentDayIndex] = {};
     dayPlansCache[currentDayIndex][activePickerSlot] = scaleMeal(found, targetSlotKcal);
+    saveMealChoice(currentDayIndex, activePickerSlot, found.id);
 
     var highlightedSlot = activePickerSlot;
     closeMealPicker();
@@ -3495,7 +4448,7 @@
       cardEl.scrollIntoView({ behavior: "smooth", block: "center" });
       cardEl.style.transition = "transform 0.25s ease, box-shadow 0.25s ease";
       cardEl.style.boxShadow = "0 0 0 3px var(--primary)";
-      cardEl.style.transform = "scale(1.02)";
+      cardEl.style.transform = "scale(1.015)";
       setTimeout(function() {
         cardEl.style.boxShadow = "";
         cardEl.style.transform = "";
@@ -3512,7 +4465,6 @@
     var normSearch = normalizeArabic(searchQuery.trim().toLowerCase());
 
     var filtered = pool.filter(function(meal) {
-      // 1. تصفية حسب التصنيف / الوسوم
       if (activeFilterCategory !== "all") {
         var inCat = (meal.category === activeFilterCategory);
         var inTags = Array.isArray(meal.tags) && meal.tags.some(function(t) {
@@ -3522,7 +4474,6 @@
         if (!inCat && !inTags && !inText) return false;
       }
 
-      // 2. تصفية حسب البحث بالاسم أو المكونات
       if (normSearch) {
         var nName = normalizeArabic(meal.name.toLowerCase());
         var nDesc = normalizeArabic((meal.description || "").toLowerCase());
@@ -3581,7 +4532,7 @@
             '<span class="picker-item-tag">⏱️ ' + (meal.prepTimeMinutes || 15) + ' دقيقة</span>' +
           '</div>' +
           '<div class="picker-item-footer">' +
-            '<div class="meal-slot__metrics">' +
+            '<div class="meal-slot__metrics" style="margin-bottom:0;">' +
               '<span class="macro-tag kcal">🔥 ' + scaled.calories + ' سعرة</span>' +
               '<span class="macro-tag">🥩 ' + scaled.macros.protein + ' جم بروتين</span>' +
               '<span class="macro-tag">🌾 ' + scaled.macros.carbs + ' جم كارب</span>' +
@@ -3597,7 +4548,6 @@
 
     listContainer.innerHTML = html;
 
-    // ربط نقر أزرار اختيار الوجبة
     var selectBtns = listContainer.querySelectorAll(".btn-select-meal:not(.current-btn)");
     selectBtns.forEach(function(btn) {
       btn.addEventListener("click", function() {
@@ -3611,39 +4561,57 @@
     openMealPicker(slotKey);
   }
 
+  // ============================================================
+  // تقويم الأسبوع الرسمي بتوقيت السعودية (Asia/Riyadh UTC+3)
+  // ============================================================
   var ARABIC_DAY_NAMES = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"];
 
+  function getRiyadhDateObj() {
+    return new Date(Date.now() + 3 * 3600 * 1000);
+  }
+
   function getTodayDayIndex() {
-    var riyadhDate = new Date(Date.now() + 3 * 3600 * 1000);
-    var jsDay = riyadhDate.getUTCDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday (Asia/Riyadh UTC+3)
-    return (jsDay + 1) % 7; // Saturday(6) => 0, Sunday(0) => 1, Monday(1) => 2, ..., Friday(5) => 6
+    var riyadhDate = getRiyadhDateObj();
+    var jsDay = riyadhDate.getUTCDay(); // 0 = Sunday .. 6 = Saturday
+    return (jsDay + 1) % 7; // Saturday(6) => 0 .. Friday(5) => 6
+  }
+
+  function getDateKeyForWeekTab(dayTabIdx) {
+    var r = getRiyadhDateObj();
+    var todayIdx = getTodayDayIndex();
+    var diff = dayTabIdx - todayIdx;
+    var dt = new Date(Date.UTC(r.getUTCFullYear(), r.getUTCMonth(), r.getUTCDate() + diff));
+    return dt.getUTCFullYear() + "-" + String(dt.getUTCMonth() + 1).padStart(2, "0") + "-" + String(dt.getUTCDate()).padStart(2, "0");
   }
 
   function setupDaysNavTabs() {
     var todayIdx = getTodayDayIndex();
+    var r = getRiyadhDateObj();
     var tabs = document.querySelectorAll(".day-tab");
     tabs.forEach(function(tab) {
       var d = parseInt(tab.getAttribute("data-day"), 10);
       var isToday = (d === todayIdx);
-      if (isToday) {
-        tab.innerHTML = '<span>🌟 اليوم (' + ARABIC_DAY_NAMES[d] + ')</span>';
-        tab.classList.add("today-indicator");
-      } else {
-        tab.innerHTML = '<span>اليوم ' + (d + 1) + ' (' + ARABIC_DAY_NAMES[d] + ')</span>';
-        tab.classList.remove("today-indicator");
-      }
+      var diff = d - todayIdx;
+      var dt = new Date(Date.UTC(r.getUTCFullYear(), r.getUTCMonth(), r.getUTCDate() + diff));
+      var dateNum = dt.getUTCDate();
+      var dateKey = getDateKeyForWeekTab(d);
+      var isDone = isDayDoneRecord(weekTrackingCache[dateKey]);
+
+      tab.classList.toggle("today-indicator", isToday);
+      tab.classList.toggle("is-done", isDone);
+      tab.innerHTML =
+        (isToday ? '<span class="day-today-pill">اليوم</span>' : '') +
+        '<span class="day-tab__name">' + ARABIC_DAY_NAMES[d] + '</span>' +
+        '<span class="day-tab__num">' + dateNum + '</span>' +
+        '<span class="day-tab__dot"></span>';
     });
   }
 
-  // تفعيل تبويبات الأيام بسكرول ناعم وتوسيط بالإبهام
   var dayTabs = document.querySelectorAll(".day-tab");
   dayTabs.forEach(function(tab) {
     tab.addEventListener("click", function() {
       var d = parseInt(tab.getAttribute("data-day"), 10);
       renderDayPlan(d);
-      if (tab.scrollIntoView) {
-        tab.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-      }
     });
   });
 
@@ -3654,10 +4622,6 @@
   var currentProfileData = null;
   var weekTrackingCache = {};
   var trackerListenersBound = false;
-
-  function getRiyadhDateObj() {
-    return new Date(Date.now() + 3 * 3600 * 1000);
-  }
 
   function getTodayKey() {
     var d = getRiyadhDateObj();
@@ -3737,7 +4701,6 @@
   function checkDayRollover() {
     var currentKey = getTodayKey();
     if (currentKey !== todayKey) {
-      console.log("[متوازي] انطلاق يوم جديد تلقائياً:", currentKey);
       todayKey = currentKey;
       yesterdayKey = getYesterdayKey();
       resetTodayTracking();
@@ -3763,6 +4726,15 @@
     return days[d.getUTCDay()] + "، " + d.getUTCDate() + " " + months[d.getUTCMonth()] + " " + d.getUTCFullYear();
   }
 
+  function toggleTrackerDrawer(forceState) {
+    var card = $("dailyTrackerCard");
+    var header = $("trackerToggleHeader");
+    if (!card) return;
+    var nextOpen = (typeof forceState === "boolean") ? forceState : !card.classList.contains("is-expanded");
+    card.classList.toggle("is-expanded", nextOpen);
+    if (header) header.setAttribute("aria-expanded", nextOpen ? "true" : "false");
+  }
+
   function updateTrackerUI() {
     var keys = ["breakfast", "lunch", "dinner", "snack", "workout", "water"];
     var completed = 0;
@@ -3783,11 +4755,49 @@
     var progressFill = $("trackerProgressBar");
     if (progressFill) progressFill.style.width = percent + "%";
 
-    var label = $("trackerProgressLabel");
-    if (label) label.textContent = "إنجاز اليوم: " + completed + " من " + keys.length + " مهام";
+    // تحديث الحلقة المصغرة في الشريط المدمج
+    var miniRing = $("trackerMiniRingCircle");
+    if (miniRing) {
+      var c = 100.53;
+      miniRing.style.strokeDashoffset = String(Math.round(c * (1 - percent / 100) * 100) / 100);
+    }
 
     var pText = $("trackerProgressPercent");
-    if (pText) pText.textContent = percent + "%";
+    if (pText) pText.textContent = isLocked ? "✓" : (percent + "%");
+
+    var compactSub = $("trackerCompactSub");
+    if (compactSub) {
+      if (isLocked) {
+        compactSub.textContent = "تم تقفيل واعتماد يومك (" + completed + "/6) 🌟";
+      } else {
+        compactSub.textContent = "أنجزت " + completed + " من 6 مهام · اضغط للتفاصيل";
+      }
+    }
+
+    // زر الماء السريع في الشريط العلوي
+    var qWater = $("btnQuickWater");
+    var qWaterTxt = $("quickWaterText");
+    if (qWater) {
+      qWater.classList.toggle("checked", !!todayTracking.water);
+      qWater.disabled = isLocked;
+      if (qWaterTxt) qWaterTxt.textContent = todayTracking.water ? "الماء ✓" : "الماء";
+    }
+
+    // بانر التقفيل السريع في الوضع المدمج
+    var compactLock = $("compactLockBanner");
+    var compactLockText = $("compactLockBannerText");
+    if (compactLock) {
+      var showQuickLock = (!isLocked && completed >= 3);
+      compactLock.classList.toggle("show", showQuickLock);
+      if (compactLockText && showQuickLock) {
+        compactLockText.textContent = completed === 6
+          ? "🌟 يوم ذهبي 100%! اضغط لاعتماد وتقفيل يومك"
+          : ("🎯 أنجزت " + completed + " من 6 مهام — جاهز لتقفيل اليوم");
+      }
+    }
+
+    var label = $("trackerProgressLabel");
+    if (label) label.textContent = "إنجاز اليوم: " + completed + " من " + keys.length + " مهام";
 
     var lockBtn = $("btnLockDay");
     var lockIcon = $("lockBtnIcon");
@@ -3817,7 +4827,6 @@
         }
       }
     } else if (completed >= 3) {
-      // مرونة ذكية: التقفيل متاح من 50% فأعلى (3 مهام فأكثر)
       if (lockBtn) {
         lockBtn.className = "btn-lock-day ready";
         lockBtn.disabled = false;
@@ -3833,7 +4842,6 @@
         if (lockText) lockText.textContent = "تأكيد وتقفيل التزام اليوم (" + completed + " من 6 مهام)";
       }
     } else {
-      // أقل من 3 مهام (تحت 50%)
       if (lockBtn) {
         lockBtn.className = "btn-lock-day";
         lockBtn.disabled = true;
@@ -3843,13 +4851,16 @@
       if (unlockBtn) unlockBtn.classList.remove("show");
       if (congrats) congrats.classList.remove("show");
     }
+
+    setupDaysNavTabs();
+    syncInlineCompletionButtons();
   }
 
   function handleLockDay() {
     if (!currentUserId) return;
     var keys = ["breakfast", "lunch", "dinner", "snack", "workout", "water"];
     var completed = keys.filter(function(k) { return !!todayTracking[k]; }).length;
-    if (completed < 3) return; // شرط المرونة الأدنى 50%
+    if (completed < 3) return;
 
     todayTracking.locked = true;
     todayTracking.lockedAt = new Date().toISOString();
@@ -3902,15 +4913,14 @@
     todayTracking.percent = Math.round((completed / keys.length) * 100);
 
     weekTrackingCache[todayKey] = Object.assign({}, todayTracking);
+    refreshStreakBadge();
 
-    // حفظ محلي فوري
     try {
       localStorage.setItem("motawazi_trk_" + currentUserId + "_" + todayKey, JSON.stringify(todayTracking));
     } catch(e) {}
 
     updateTrackerUI();
 
-    // حفظ في Firestore
     firebase.firestore().collection("profiles").doc(currentUserId)
       .collection("tracking").doc(todayKey).set(todayTracking, { merge: true })
       .catch(function(err) {
@@ -3928,7 +4938,6 @@
     var dateLabel = $("trackerDateText");
     if (dateLabel) dateLabel.textContent = getArabicDateText();
 
-    // استرجاع كافة أيام الالتزام المحلية فوراً لحساب السلسلة بدقة
     try {
       for (var k in localStorage) {
         if (k.indexOf("motawazi_trk_" + uid + "_") === 0) {
@@ -3946,7 +4955,6 @@
     refreshStreakBadge();
     updateTrackerUI();
 
-    // استرجاع سجل الالتزام من فايربيس لتحديث بيانات اليوم وحساب السلسلة المتتالية بدقة
     firebase.firestore().collection("profiles").doc(uid)
       .collection("tracking").get().then(function(querySnap) {
         var foundToday = false;
@@ -3970,7 +4978,6 @@
         console.warn("[متوازي] قراءة تتبع الأيام من فايربيس:", e);
       });
 
-    // ربط نقر الأزرار (مرة واحدة فقط لمنع التكرار عند انقلاب منتصف الليل)
     if (!trackerListenersBound) {
       trackerListenersBound = true;
       var btns = document.querySelectorAll(".tracker-check-btn");
@@ -3980,6 +4987,31 @@
           if (k) toggleTrackerItem(k);
         });
       });
+
+      var qWaterBtn = $("btnQuickWater");
+      if (qWaterBtn) {
+        qWaterBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          toggleTrackerItem("water");
+        });
+      }
+
+      var headerToggle = $("trackerToggleHeader");
+      if (headerToggle) {
+        headerToggle.addEventListener("click", function() { toggleTrackerDrawer(); });
+      }
+      var chevronToggle = $("btnToggleTrackerDrawer");
+      if (chevronToggle) {
+        chevronToggle.addEventListener("click", function() { toggleTrackerDrawer(); });
+      }
+
+      var compactLockNow = $("btnCompactLockNow");
+      if (compactLockNow) {
+        compactLockNow.addEventListener("click", function() {
+          handleLockDay();
+          toggleTrackerDrawer(true);
+        });
+      }
 
       var lockBtn = $("btnLockDay");
       if (lockBtn) {
@@ -4023,7 +5055,6 @@
     });
   }
 
-  // خيار 1: طباعة اليوم المحدد فقط
   var btnOptToday = $("btnOptPrintToday");
   if (btnOptToday) {
     btnOptToday.addEventListener("click", function() {
@@ -4033,7 +5064,6 @@
     });
   }
 
-  // خيار 2: طباعة الأسبوع كامل (7 أيام)
   var btnOptWeek = $("btnOptPrintWeek");
   if (btnOptWeek) {
     btnOptWeek.addEventListener("click", function() {
@@ -4042,7 +5072,6 @@
     });
   }
 
-  // خيار 3: طباعة مخطط الشهر (4 أسابيع)
   var btnOptMonth = $("btnOptPrintMonth");
   if (btnOptMonth) {
     btnOptMonth.addEventListener("click", function() {
@@ -4083,7 +5112,9 @@
         var pool = MEALS_DATA[slotKey] || [];
         var targetSlotKcal = Math.round(userTargetKcal * SLOT_NAMES[slotKey].ratio);
         if (!dayPlan[slotKey] && pool.length) {
-          dayPlan[slotKey] = scaleMeal(pool[d % pool.length], targetSlotKcal);
+          var savedId = getSavedMealChoice(d, slotKey);
+          var chosenBase = savedId ? pool.find(function(m) { return m.id === savedId; }) : null;
+          dayPlan[slotKey] = scaleMeal(chosenBase || pool[d % pool.length], targetSlotKcal);
         }
         var m = dayPlan[slotKey];
         if (m) {
@@ -4177,7 +5208,6 @@
         '</div>' +
       '</div>' +
 
-      '<!-- محطات الشهر الأربعة -->' +
       '<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px;">' +
         '<div style="border:1.5px solid #ccfbf1; background:#f0fdfa; border-radius:8px; padding:12px; text-align:center;">' +
           '<h3 style="margin:0 0 4px; font-size:0.95rem; color:var(--primary-dark);">الأسبوع 1 · التكيف</h3>' +
@@ -4197,7 +5227,6 @@
         '</div>' +
       '</div>' +
 
-      '<!-- جدول متابعة الأيام والالتزام اليومي (30 يوماً) -->' +
       '<div style="margin-bottom: 24px;">' +
         '<h3 style="font-size:1.1rem; color:var(--text-dark); margin:0 0 10px; font-weight:800;">سجل تقفيل الالتزام اليومي (علّم صح ✓ أمام كل يوم):</h3>' +
         '<div style="display:grid; grid-template-columns: repeat(7, 1fr); gap: 6px;">';
@@ -4218,7 +5247,6 @@
         '</div>' +
       '</div>' +
 
-      '<!-- جدول مواعيد قياس الوزن الأسبوعي -->' +
       '<div style="border:1.5px solid #e2e8f0; border-radius:10px; padding:14px 18px; background:#f8fafc;">' +
         '<h4 style="margin:0 0 8px; font-size:0.98rem; color:var(--text-dark);">⚖️ جدول تسجيل الأوزان الأسبوعية (صباحاً على الريق):</h4>' +
         '<div style="display:flex; justify-content:space-between; gap:10px; font-size:0.86rem; color:#475569;">' +
@@ -4319,7 +5347,6 @@
     else if (user && user.displayName) rawName = user.displayName;
 
     rawName = (rawName || "").trim();
-    // التحقق من وجود اسم عربي بدون أحرف إنجليزية أو بريد
     var hasArabic = /[\u0600-\u06FF]/.test(rawName);
     var greetingText = "أهلاً بك في متوازي! 🎯";
     if (hasArabic) {
@@ -4333,7 +5360,7 @@
     }
     var subEl = $("greetingSubtitle");
     if (subEl) {
-      subEl.textContent = "خطتك الغذائية والرياضية اليومية جاهزة وموزونة لهدفك.";
+      subEl.textContent = "جدولك اليومي موزون على " + userTargetKcal + " سعرة بمراجعة الأخصائي.";
     }
     var iconEl = $("greetingIcon");
     if (iconEl) {
@@ -4354,7 +5381,6 @@
       }
       firebase.firestore().collection("profiles").doc(u.uid).get().then(function(snap) {
         if (!snap.exists) {
-          // لم يعبئ الاستمارة أصلاً ➔ نوجهه للاستمارة
           location.replace("/start");
           return;
         }
@@ -4363,7 +5389,6 @@
         var status = p.status || "received";
         var isApproved = (status === "approved" || status === "delivered");
 
-        // حارس الأمان: إذا لم يكن الجدول معتمداً في فايربيس نظهر شاشة الانتظار
         if (!isApproved) {
           $("boot").classList.add("hidden");
           $("lockedPlanState").classList.remove("hidden");
@@ -4377,19 +5402,13 @@
         Promise.all([loadMealsDB(), loadWorkoutsDB()]).then(function() {
           $("boot").classList.add("hidden");
           $("planContent").classList.remove("hidden");
+          loadSavedMealChoices(u.uid);
           initGreeting(p, u);
-          setupDaysNavTabs();
+          setupPlanModeButtons();
           setupWorkoutTrackButtons();
+          initTracker(u.uid, p);
           var todayIdx = getTodayDayIndex();
           renderDayPlan(todayIdx);
-          // توسيط التبويب النشط لليوم بالإبهام
-          var activeTab = document.querySelector('.day-tab[data-day="' + todayIdx + '"]');
-          if (activeTab && activeTab.scrollIntoView) {
-            setTimeout(function() {
-              activeTab.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-            }, 100);
-          }
-          initTracker(u.uid, p);
         });
       }).catch(function() {
         $("boot").className = "msg err";
