@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="متوازي — منصة سعودية تجمع جدولك الغذائي وجدولك الرياضي بتوازي، بمراجعة أخصائي تغذية ومدرب لياقة. اشتراك شهري مرن بدون تجديد تلقائي.">
+  <meta name="description" content="متوازي — منصة سعودية تجمع جدولك الغذائي من أكلات بيتك وجدول تمارين آمن يناسب وضعك، بمراجعة أخصائي تغذية ومدرب لياقة معتمدين. اشتراك شهري مرن بدون تجديد تلقائي.">
   <meta name="theme-color" content="#0f766e">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,23 +11,135 @@
   <meta name="apple-mobile-web-app-title" content="متوازي">
   <link rel="manifest" href="/manifest.json">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <title>متوازي — جدول غذائي وجدول رياضي يمشون مع بعض</title>
+  <title>متوازي | جدول غذائي لنزول الوزن وتمارين آمنة بإشراف مختصين</title>
   <link rel="canonical" href="https://motawazi.com/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_SA">
   <meta property="og:site_name" content="متوازي">
   <meta property="og:url" content="https://motawazi.com/">
-  <meta property="og:title" content="متوازي — جدول غذائي وجدول رياضي يمشون مع بعض">
-  <meta property="og:description" content="جدول أكل من أكلات بلدك وجدول تمارين يناسب مستواك، يراجعهم أخصائي تغذية ومدرب لياقة.">
+  <meta property="og:title" content="متوازي | جدول غذائي لنزول الوزن وتمارين آمنة بإشراف مختصين">
+  <meta property="og:description" content="منصة سعودية تجمع جدول أكل من أكلات بيتك وجدول تمارين آمن يناسب وضعك، بمراجعة أخصائي تغذية ومدرب لياقة معتمدين.">
   <meta property="og:image" content="https://motawazi.com/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="675">
   <meta property="og:image:alt" content="منصة متوازي — التغذية واللياقة في مسار متوازي">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="متوازي — جدول غذائي وجدول رياضي يمشون مع بعض">
-  <meta name="twitter:description" content="جدول أكل من أكلات بلدك وجدول تمارين يناسب مستواك، يراجعهم أخصائي تغذية ومدرب لياقة.">
+  <meta name="twitter:title" content="متوازي | جدول غذائي لنزول الوزن وتمارين آمنة بإشراف مختصين">
+  <meta name="twitter:description" content="منصة سعودية تجمع جدول أكل من أكلات بيتك وجدول تمارين آمن يناسب وضعك، بمراجعة أخصائي تغذية ومدرب لياقة معتمدين.">
   <meta name="twitter:image" content="https://motawazi.com/og-image.jpg">
+
+  <!-- البيانات المنظّمة لمحركات البحث والذكاء الاصطناعي (Schema.org JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://motawazi.com/#organization",
+        "name": "متوازي",
+        "alternateName": "Motawazi",
+        "url": "https://motawazi.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://motawazi.com/icon-512.png",
+          "width": 512,
+          "height": 512
+        },
+        "email": "info@motawazi.com",
+        "areaServed": {
+          "@type": "Country",
+          "name": "المملكة العربية السعودية"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://motawazi.com/#website",
+        "url": "https://motawazi.com/",
+        "name": "متوازي",
+        "inLanguage": "ar-SA",
+        "publisher": {
+          "@id": "https://motawazi.com/#organization"
+        }
+      },
+      {
+        "@type": "Service",
+        "@id": "https://motawazi.com/#service",
+        "name": "خطة متوازي الغذائية والرياضية المخصّصة",
+        "provider": {
+          "@id": "https://motawazi.com/#organization"
+        },
+        "areaServed": "SA",
+        "description": "منصة سعودية لنزول الوزن تجمع جدولاً غذائياً موزوناً من أكلات البيت مع مسار تمارين آمن للمفاصل بمراجعة أخصائي تغذية مرخص ومدرب لياقة معتمد.",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "باقات متوازي الشهرية (30 يوماً)",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "name": "الباقة الأساسية",
+              "price": "149",
+              "priceCurrency": "SAR",
+              "description": "جدول غذائي مخصّص وبدائل فورية ومسار رياضي آمن مع اعتماد الأخصائي والمدرب ومراجعة نهاية الشهر."
+            },
+            {
+              "@type": "Offer",
+              "name": "باقة المتابعة",
+              "price": "249",
+              "priceCurrency": "SAR",
+              "description": "نقطة تفتيش أسبوعية كل 7 أيام لكسر ثبات الوزن وتعديل الحصص وموازنة المناسبات."
+            },
+            {
+              "@type": "Offer",
+              "name": "الباقة المكثّفة",
+              "price": "399",
+              "priceCurrency": "SAR",
+              "description": "تواصل مباشر مع الأخصائي عبر الواتساب وتخصيص دقيق للحالات الخاصة وأولوية التحديثات."
+            }
+          ]
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://motawazi.com/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "متى تتفعّل خطتي بعد تعبئة الاستمارة الصحية؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "فور إرسال الاستمارة تُحسب مؤشراتك وتصل للأخصائي للمراجعة والتدقيق، وبمجرد اعتمادها تتفعّل خطتك كاملة على حسابك ويصلك إشعار عبر الواتساب."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "عندي حالة صحية (سكري، ضغط، غدة، تكميم) أو أدوية، هل يناسبني؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "نعم، سلامتك أولويتنا؛ الاستمارة تفرز أي حالة صحية خاصة تلقائياً (سكري، ضغط، كلى، حمل ورضاعة، أو عمليات سابقة) ليتولى الأخصائي ضبط خطتك بما يلائم وضعك الصحي بأمان."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "لو انعزمت أو أكلت خارج البيت أو ما ناسبني طبق اليوم كيف أتصرف؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "بضغطة على زر «بدّل» تختار فوراً بديلاً يناسبك بنفس سعراتك من بين +200 خيار، وفي باقتَي المتابعة والمكثفة نساعدك في موازنة أيام المناسبات والمطاعم دون إفساد أسبوعك."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "هل هناك سحب أو تجديد تلقائي للاشتراك؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "لا يوجد أي سحب أو تجديد تلقائي نهائياً. كل باقة مدتها 30 يوماً مستقلة تماماً، ولك مطلق الحرية في التجديد متى رغبت."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <!-- خط تجوال العربي (الأوزان المتوفرة فقط — وزن غير متوفر يُفشل تحميل الخط كله) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

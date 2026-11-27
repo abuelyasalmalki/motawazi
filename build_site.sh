@@ -39,6 +39,7 @@ PUBLIC_FILES=(
   workouts.json
   meals.json
   robots.txt
+  sitemap.xml
   favicon.svg
 )
 

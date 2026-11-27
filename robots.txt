@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /login
-Disallow: /account
-Disallow: /start
-Disallow: /summary
+Disallow: /config/
+Disallow: /meals.json
+Disallow: /workouts.json
+
+Sitemap: https://motawazi.com/sitemap.xml
